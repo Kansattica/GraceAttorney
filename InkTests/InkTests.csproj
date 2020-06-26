@@ -23,10 +23,11 @@
 		<Unzip SourceFiles="@(InkArchiveLocation)" DestinationFolder="$(InkLocation)/extracted" OverwriteReadOnlyFiles="true" />
 	</Target>
 
-	<Target Name="CopyInkRutime" DependsOnTargets="DownloadInk" BeforeTargets="Build">
-		<Message Text="Copying ink runtime DLL to $(OutDir)." />
-		<Copy SourceFiles="$(InkLocation)/extracted/ink-engine-runtime.dll" DestinationFolder="$(OutDir)" />
-	</Target>
+	<ItemGroup>
+	  <Reference Include="ink-engine-runtime">
+	    <HintPath>bin\external\extracted\ink-engine-runtime.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 	<ItemGroup>
 		<InkFiles Include="Ink/*.ink" />
