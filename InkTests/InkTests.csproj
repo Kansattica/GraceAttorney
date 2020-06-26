@@ -12,13 +12,13 @@
 		<InkLocation>$(MSBuildProjectDirectory)/bin/external</InkLocation>
 	</PropertyGroup>
 
-	<Target Name="DownloadInk" BeforeTargets="Build">
+	<Target Name="DownloadInk" BeforeTargets="PrepareForBuild">
 		<DownloadFile SourceUrl="$(InkUrl)" DestinationFolder="$(InkLocation)">
 			<Output TaskParameter="DownloadedFile" ItemName="InkArchiveLocation" />
 		</DownloadFile>
 	</Target>
 
-	<Target Name="UnzipInk" DependsOnTargets="DownloadInk" BeforeTargets="Build">
+	<Target Name="UnzipInk" DependsOnTargets="DownloadInk" BeforeTargets="PrepareForBuild">
 		<Message Text="Extracting @(InkArchiveLocation) to $(InkLocation)/extracted." />
 		<Unzip SourceFiles="@(InkArchiveLocation)" DestinationFolder="$(InkLocation)/extracted" OverwriteReadOnlyFiles="true" />
 	</Target>
