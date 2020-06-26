@@ -23,4 +23,17 @@
 		<Unzip SourceFiles="@(InkArchiveLocation)" DestinationFolder="$(InkLocation)/extracted" OverwriteReadOnlyFiles="true" />
 	</Target>
 
+	<Target Name="CopyInkRutime" DependsOnTargets="DownloadInk" BeforeTargets="Build">
+		<Message Text="Copying ink runtime DLL to $(OutDir)." />
+		<Copy SourceFiles="$(InkLocation)/extracted/ink-engine-runtime.dll" DestinationFolder="$(OutDir)" />
+	</Target>
+
+	<ItemGroup>
+		<InkFiles Include="Ink/*.ink" />
+	</ItemGroup>
+
+	<Target Name="CompileInk" DependsOnTargets="UnzipInk" AfterTargets="Build" Inputs="@(InkFiles)" Outputs="$(OutDir)%(Identity).json">
+		<MakeDir Directories="$(OutDir)Ink" />
+		<Exec Command="$(InkLocation)/extracted/inklecate -o $(OutDir)@(InkFiles).json %(Identity)" />
+	</Target>
 </Project>

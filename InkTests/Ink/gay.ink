@@ -1,0 +1,1 @@
+﻿DIAMOND: fuck, I'm gay
