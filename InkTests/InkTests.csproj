@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+	<PropertyGroup>
+		<InkVersion>0.9.0</InkVersion>
+		<InkUrl>https://github.com/inkle/ink/releases/download/$(InkVersion)/inklecate_windows_and_linux.zip</InkUrl>
+		<InkLocation>$(MSBuildProjectDirectory)/bin/external</InkLocation>
+	</PropertyGroup>
+
+	<Target Name="DownloadInk" BeforeTargets="Build">
+		<DownloadFile SourceUrl="$(InkUrl)" DestinationFolder="$(InkLocation)">
+			<Output TaskParameter="DownloadedFile" ItemName="InkArchiveLocation" />
+		</DownloadFile>
+	</Target>
+
+	<Target Name="UnzipInk" DependsOnTargets="DownloadInk" BeforeTargets="Build">
+		<Message Text="Extracting @(InkArchiveLocation) to $(InkLocation)/extracted." />
+		<Unzip SourceFiles="@(InkArchiveLocation)" DestinationFolder="$(InkLocation)/extracted" OverwriteReadOnlyFiles="true" />
+	</Target>
+
+</Project>
