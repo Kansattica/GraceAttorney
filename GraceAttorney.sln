@@ -5,12 +5,12 @@ VisualStudioVersion = 16.0.30223.230
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI.GraceAttorney", "UI.GraceAttorney\UI.GraceAttorney.csproj", "{FAC79946-2CE3-481E-85A1-DE0D2BDDA348}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InkTests", "InkTests\InkTests.csproj", "{6D1289E5-A251-418B-A172-3977EBBACA2F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7263463-3D34-48F5-9285-1DD2C0F42101}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ink.GraceAttorney", "Ink.GraceAttorney\Ink.GraceAttorney.csproj", "{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,18 +34,18 @@ Global
 		{FAC79946-2CE3-481E-85A1-DE0D2BDDA348}.Release|x64.Build.0 = Release|Any CPU
 		{FAC79946-2CE3-481E-85A1-DE0D2BDDA348}.Release|x86.ActiveCfg = Release|Any CPU
 		{FAC79946-2CE3-481E-85A1-DE0D2BDDA348}.Release|x86.Build.0 = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|x64.Build.0 = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Debug|x86.Build.0 = Debug|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|x64.ActiveCfg = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|x64.Build.0 = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|x86.ActiveCfg = Release|Any CPU
-		{6D1289E5-A251-418B-A172-3977EBBACA2F}.Release|x86.Build.0 = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|x64.Build.0 = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Debug|x86.Build.0 = Debug|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|x64.ActiveCfg = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|x64.Build.0 = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|x86.ActiveCfg = Release|Any CPU
+		{447717F2-0A13-479B-88F5-5BCDA1EBBC1A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

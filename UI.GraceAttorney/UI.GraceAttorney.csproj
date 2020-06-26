@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -24,7 +24,16 @@
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EncompassECS.Framework" Version="0.20.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1375-develop" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1375-develop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ink.GraceAttorney\Ink.GraceAttorney.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ink-engine-runtime">
+      <HintPath>..\Ink.GraceAttorney\bin\external\extracted\ink-engine-runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
