@@ -9,7 +9,7 @@ namespace InkTests
 	{
 		static void Main(string[] args)
 		{
-			var story = new Story(File.ReadAllText("Ink/gay.ink.json"));
+			var story = new Story(File.ReadAllText("Ink/steamed_hams.ink.json"));
 
 			while(story.canContinue)
 			{
