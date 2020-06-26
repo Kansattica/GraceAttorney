@@ -1,3 +1,4 @@
+using Encompass;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,8 +9,9 @@ namespace UI.GraceAttorney
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+		private SpriteFont _verdana36;
 
-        public Game1()
+		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -18,7 +20,7 @@ namespace UI.GraceAttorney
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+			// TODO: Add your initialization logic here
 
             base.Initialize();
         }
@@ -27,6 +29,7 @@ namespace UI.GraceAttorney
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			_verdana36 = Content.Load<SpriteFont>("mycool");
             // TODO: use this.Content to load your game content here
         }
 
@@ -43,6 +46,10 @@ namespace UI.GraceAttorney
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+			_spriteBatch.Begin();
+			_spriteBatch.DrawString(_verdana36, "Yeehaw", new Vector2(50, 275), Color.White);
+			_spriteBatch.End();
 
             // TODO: Add your drawing code here
 
