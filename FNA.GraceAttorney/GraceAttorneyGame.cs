@@ -51,14 +51,17 @@ namespace FNA.GraceAttorney
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
 
 			var worldBuilder = new WorldBuilder();
-			worldBuilder.AddOrderedRenderer(new BackgroundRenderer());
+			worldBuilder.AddOrderedRenderer(new SpriteRenderer());
 
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine());
 			worldBuilder.AddEngine(new SetBackgroundEngine());
+			worldBuilder.AddEngine(new FadeEngine());
 
 			var bg = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(bg, new BackgroundComponent());
+			worldBuilder.SetComponent(bg, new OpacityComponent());
+			worldBuilder.SetComponent(bg, new SpriteComponent());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
 
@@ -93,7 +96,7 @@ namespace FNA.GraceAttorney
 
 			GraphicsDevice.Clear(Color.Black);
 			var scaleFactor = GraphicsDevice.Viewport.Height / _backgroundWidth;
-			SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Matrix.CreateScale(scaleFactor));
+			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, Matrix.CreateScale(scaleFactor));
 			_world.Draw();
 			SpriteBatch.End();
 

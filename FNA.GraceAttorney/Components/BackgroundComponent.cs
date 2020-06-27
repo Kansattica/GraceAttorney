@@ -6,10 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FNA.GraceAttorney.Components
 {
-	struct BackgroundComponent : IDrawableComponent, IComponent
+	struct BackgroundComponent : IComponent
 	{
-		public Texture2D Background;
-
-		public int Layer { get; set; }
 	}
 }
