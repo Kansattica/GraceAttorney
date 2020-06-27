@@ -22,8 +22,13 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="$(FnaLibsRoot)x64/*.dll">
+			<Visible>false</Visible>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
+<ItemGroup>
+	<DnxInvisibleFolder Include="$(FnaLibsRoot)x64" />
+</ItemGroup>
 
 </Project>
