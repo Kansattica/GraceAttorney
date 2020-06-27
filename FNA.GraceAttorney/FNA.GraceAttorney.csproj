@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -18,11 +18,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Win64Files Include="$(FnaLibsRoot)x64/SDL2.dll" />
+		<Win64Files Include="$(FnaLibsRoot)x64/*.dll" />
 	</ItemGroup>
 
 	<Target Name="CopyNativeLibs" AfterTargets="Build">
-		<Copy SourceFiles="@(Win64Files)" DestinationFolder="$(OutDir)" />
+		<Copy SourceFiles="@(Win64Files)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+	</Target>
+
+	<ItemGroup>
+		<GameContent Include="Content/**/*.*" />
+	</ItemGroup>
+
+	<Target Name="CopyAssets" AfterTargets="Build">
+		<Copy SourceFiles="@(GameContent)" DestinationFiles="@(GameContent->'$(OutDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
 	</Target>
 
 </Project>
