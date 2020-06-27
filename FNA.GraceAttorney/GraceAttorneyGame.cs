@@ -64,6 +64,11 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(bg, new OpacityComponent());
 			worldBuilder.SetComponent(bg, new SpriteComponent());
 
+			var character = worldBuilder.CreateEntity();
+			worldBuilder.SetComponent(character, new CharacterComponent());
+			worldBuilder.SetComponent(character, new OpacityComponent());
+			worldBuilder.SetComponent(character, new SpriteComponent());
+
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
 
 			_world = worldBuilder.Build();
