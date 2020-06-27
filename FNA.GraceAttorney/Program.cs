@@ -9,7 +9,16 @@ namespace FNA.GraceAttorney
     {
 		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool SetDefaultDllDirectories(int directoryFlags);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		static extern void AddDllDirectory(string lpPathName);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool SetDllDirectory(string lpPathName);
+
+		const int LOAD_LIBRARY_SEARCH_DEFAULT_DIRS = 0x00001000;
 
 		static void Main(string[] args)
 		{
