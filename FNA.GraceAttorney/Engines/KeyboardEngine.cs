@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FNA.GraceAttorney.Engines
 {
-	[Sends(typeof(ToggleFullscreenMessage))]
+	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage))]
 	class KeyboardEngine : Engine
 	{
 		private KeyboardState _keyboardPrev = new KeyboardState();
@@ -17,6 +17,9 @@ namespace FNA.GraceAttorney.Engines
 
 			if (KeysPressed(keyboardCur, Keys.Enter))
 				SendMessage(new ToggleFullscreenMessage());
+
+			if (KeysPressed(keyboardCur, Keys.C))
+				SendMessage(new ClearBackgroundMessage());
 
 			_keyboardPrev = keyboardCur;
 		}
