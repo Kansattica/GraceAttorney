@@ -25,12 +25,13 @@ namespace FNA.GraceAttorney
 		{
 			// This gets assigned to something internally, don't worry...
 
-			Graphics = new GraphicsDeviceManager(this);
-
-			Graphics.PreferredBackBufferWidth = 1280;
-			Graphics.PreferredBackBufferHeight = 720;
-			Graphics.IsFullScreen = false;
-			Graphics.SynchronizeWithVerticalRetrace = true;
+			Graphics = new GraphicsDeviceManager(this)
+			{
+				PreferredBackBufferWidth = 1280,
+				PreferredBackBufferHeight = 720,
+				IsFullScreen = false,
+				SynchronizeWithVerticalRetrace = true
+			};
 
 			Window.AllowUserResizing = true;
 			Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
@@ -89,13 +90,13 @@ namespace FNA.GraceAttorney
 			base.Update(gameTime);
 		}
 
-		const float _backgroundWidth = 1080f;
+		private const float BackgroundWidth = 1080f;
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
 
 			GraphicsDevice.Clear(Color.Black);
-			var scaleFactor = GraphicsDevice.Viewport.Height / _backgroundWidth;
+			var scaleFactor = GraphicsDevice.Viewport.Height / BackgroundWidth;
 			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, Matrix.CreateScale(scaleFactor));
 			_world.Draw();
 			SpriteBatch.End();

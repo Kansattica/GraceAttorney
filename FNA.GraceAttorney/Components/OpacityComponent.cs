@@ -8,9 +8,9 @@ namespace FNA.GraceAttorney.Components
 	enum FadeDirection { FadeIn, FadeOut, None }
 	readonly struct OpacityComponent : IComponent
 	{
-		readonly public float Opacity;
-		readonly public float FadeRate;
-		readonly public FadeDirection Direction;
+		public readonly float Opacity;
+		public readonly float FadeRate;
+		public readonly FadeDirection Direction;
 
 		public OpacityComponent(float opacity, float fadeRate, FadeDirection direction)
 		{
