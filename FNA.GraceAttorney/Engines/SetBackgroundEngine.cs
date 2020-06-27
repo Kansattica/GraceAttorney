@@ -32,11 +32,11 @@ namespace FNA.GraceAttorney.Engines
 				if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
 					sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
 				sprite.Position = Vector2.Zero;
-				SetComponent(entity, new OpacityComponent { Direction = FadeDirection.FadeIn, Opacity = 0, FadeRate = 1.0f });
+				SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
 			}
 			else if (SomeMessage<ClearBackgroundMessage>())
 			{
-				SetComponent(entity, new OpacityComponent { Direction = FadeDirection.FadeOut, Opacity = 255, FadeRate = 1.0f });
+				SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 255, fadeRate: 1.0f));
 			}
 
 			SetComponent(entity, sprite);

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FNA.GraceAttorney.Components
 {
-	struct BackgroundComponent : IComponent
+	readonly struct BackgroundComponent : IComponent
 	{
 	}
 }

@@ -6,10 +6,18 @@ using Encompass;
 namespace FNA.GraceAttorney.Components
 {
 	enum FadeDirection { FadeIn, FadeOut, None }
-	struct OpacityComponent : IComponent
+	readonly struct OpacityComponent : IComponent
 	{
-		public float Opacity;
-		public float FadeRate;
-		public FadeDirection Direction;
+		readonly public float Opacity;
+		readonly public float FadeRate;
+		readonly public FadeDirection Direction;
+
+		public OpacityComponent(float opacity, float fadeRate, FadeDirection direction)
+		{
+			Opacity = opacity;
+			FadeRate = fadeRate;
+			Direction = direction;
+		}
+
 	}
 }
