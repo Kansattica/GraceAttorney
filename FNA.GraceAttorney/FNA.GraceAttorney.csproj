@@ -18,19 +18,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Win64Files Include="$(FnaLibsRoot)x64/*.dll" />
+		<Content Include="Content/**/*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(FnaLibsRoot)x64/*.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
-
-	<Target Name="CopyNativeLibs" AfterTargets="Build">
-		<Copy SourceFiles="@(Win64Files)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
-	</Target>
-
-	<ItemGroup>
-		<GameContent Include="Content/**/*.*" />
-	</ItemGroup>
-
-	<Target Name="CopyAssets" AfterTargets="Build">
-		<Copy SourceFiles="@(GameContent)" DestinationFiles="@(GameContent->'$(OutDir)\Content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-	</Target>
 
 </Project>
