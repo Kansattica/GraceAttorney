@@ -40,12 +40,14 @@ namespace FNA.GraceAttorney
 			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 			Environment.SetEnvironmentVariable("FNA_KEYBOARD_USE_SCANCODES", "1");
 
-			using GraceAttorneyGame game = new GraceAttorneyGame();
-			bool isHighDPI = Environment.GetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI") == "1";
-			if (isHighDPI)
-				Debug.WriteLine("HiDPI Enabled");
+			using (GraceAttorneyGame game = new GraceAttorneyGame())
+			{
+				bool isHighDPI = Environment.GetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI") == "1";
+				if (isHighDPI)
+					Debug.WriteLine("HiDPI Enabled");
 
-			game.Run();
+				game.Run();
+			}
 		}
 	}
 }
