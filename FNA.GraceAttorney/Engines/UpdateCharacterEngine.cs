@@ -30,6 +30,7 @@ namespace FNA.GraceAttorney.Engines
 			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
 				sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
 
+			// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
 			float topOfHead = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height * CharacterStartsAtThisPercentDownTheScreen;
 			float spriteOrigin =  (GraceAttorneyGame.Game.GraphicsDevice.Viewport.Width - (GraceAttorneyGame.Game.ScaleFactor * sprite.Sprite.Width)) / 2;
 
