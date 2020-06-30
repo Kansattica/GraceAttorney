@@ -16,7 +16,7 @@ namespace FNA.GraceAttorney.Engines
 		{
 			if (!SomeMessage<ClearBackgroundMessage>()) { return; }
 
-			(var _, var entity) = ReadComponentIncludingEntity<BackgroundComponent>();
+			var entity = ReadEntity<BackgroundComponent>();
 
 			var currentOpacity = GetComponent<OpacityComponent>(entity).Opacity;
 
