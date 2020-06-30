@@ -9,10 +9,6 @@
 		<PackageReference Include="EncompassECS.Framework" Version="0.20.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\external\FNA\FNA.csproj" />
-	</ItemGroup>
-
 	<PropertyGroup>
 		<FnaLibsRoot>../external/fnalibs/</FnaLibsRoot>
 	</PropertyGroup>
@@ -25,6 +21,10 @@
 			<Visible>false</Visible>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\external\FNA\FNA.Core.csproj" />
 	</ItemGroup>
 
 </Project>
