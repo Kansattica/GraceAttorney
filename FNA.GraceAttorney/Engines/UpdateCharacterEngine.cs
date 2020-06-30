@@ -15,7 +15,6 @@ namespace FNA.GraceAttorney.Engines
 	[Receives(typeof(NewCharacterMessage))]
 	class UpdateCharacterEngine : Engine
 	{
-		private const float CharacterStartsAtThisPercentDownTheScreen = .05f;
 		public override void Update(double dt)
 		{
 			if (!SomeMessage<NewCharacterMessage>()) { return; }
@@ -26,15 +25,10 @@ namespace FNA.GraceAttorney.Engines
 
 			var message = ReadMessage<NewCharacterMessage>();
 
-
 			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
 				sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
 
-			// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
-			float topOfHead = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height * CharacterStartsAtThisPercentDownTheScreen;
-			float spriteOrigin =  (GraceAttorneyGame.Game.GraphicsDevice.Viewport.Width - (GraceAttorneyGame.Game.ScaleFactor * sprite.Sprite.Width)) / 2;
-
-			sprite.Position = new Vector2(spriteOrigin, topOfHead);
+			sprite.Position = DrawLocation.Centered;
 			sprite.Layer = 1;
 
 			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));

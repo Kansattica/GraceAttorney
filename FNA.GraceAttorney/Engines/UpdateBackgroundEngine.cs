@@ -27,7 +27,7 @@ namespace FNA.GraceAttorney.Engines
 
 			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
 				sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
-			sprite.Position = Vector2.Zero;
+			sprite.Position = DrawLocation.Background;
 			sprite.Layer = 0;
 
 			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));

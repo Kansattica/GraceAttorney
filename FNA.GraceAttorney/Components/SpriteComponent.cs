@@ -7,9 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FNA.GraceAttorney.Components
 {
+	enum DrawLocation { Background, Centered }
 	struct SpriteComponent : IDrawableComponent, IComponent
 	{
-		public Vector2 Position;
+		public DrawLocation Position;
 		public Texture2D Sprite;
 		public int Layer { get; set; }
 	}
