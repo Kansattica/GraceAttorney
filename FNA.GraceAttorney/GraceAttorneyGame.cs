@@ -94,13 +94,13 @@ namespace FNA.GraceAttorney
 			base.Update(gameTime);
 		}
 
-		private const float BackgroundWidth = 1080f;
+		private const float BackgroundHeight = 1080f;
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
 
 			GraphicsDevice.Clear(Color.Black);
-			var scaleFactor = GraphicsDevice.Viewport.Height / BackgroundWidth;
+			var scaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
 			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, Matrix.CreateScale(scaleFactor));
 			_world.Draw();
 			SpriteBatch.End();
