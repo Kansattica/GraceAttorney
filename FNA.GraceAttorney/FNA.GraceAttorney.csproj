@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\external\FNA\FNA.Core.csproj" />
+	  <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
 	</ItemGroup>
 
 </Project>

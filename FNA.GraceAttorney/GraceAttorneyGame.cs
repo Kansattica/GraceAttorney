@@ -52,10 +52,12 @@ namespace FNA.GraceAttorney
 
 			var worldBuilder = new WorldBuilder();
 			worldBuilder.AddOrderedRenderer(new SpriteRenderer());
+			worldBuilder.AddOrderedRenderer(new DialogueRenderer());
 
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine());
-			worldBuilder.AddEngine(new SetBackgroundEngine());
+			worldBuilder.AddEngine(new UpdateBackgroundEngine());
+			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new FadeEngine());
 
@@ -70,6 +72,13 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(character, new SpriteComponent());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
+
+			worldBuilder.RegisterDrawLayer(2);
+			var dialogueBox = worldBuilder.CreateEntity();
+			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
+
+			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
+				ShowBox = true, Dialogue = "Fuck, I'm gay.", Layer = 2, Speaker = "Diamond!" }));
 
 			_world = worldBuilder.Build();
 			base.Initialize();
@@ -101,17 +110,22 @@ namespace FNA.GraceAttorney
 			// Render stuff in here. Do NOT run game logic in here!
 
 			GraphicsDevice.Clear(Color.Black);
-			var scaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
-			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, null, null, null, null, Matrix.CreateScale(scaleFactor));
+
+			ScaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
+
+			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 			_world.Draw();
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
 		}
 
-		public GraphicsDeviceManager Graphics;
+		public float ScaleFactor { get; private set; }
+		public GraphicsDeviceManager Graphics { get; private set; }
 		private Point _oldWindowSize;
 		private float _aspectRatio;
+
+
 		// from https://stackoverflow.com/questions/8396677/uniformly-resizing-a-window-in-xna
 		private void WindowSizeChanged(object sender, EventArgs e)
 		{

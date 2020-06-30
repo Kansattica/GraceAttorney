@@ -14,8 +14,9 @@ namespace FNA.GraceAttorney.Renderers
 		{
 			if (drawComponent.Sprite != null)
 			{
-				GraceAttorneyGame.Game.SpriteBatch.Draw(drawComponent.Sprite, drawComponent.Position,
-					HasComponent<OpacityComponent>(entity) ? new Color(1f, 1f, 1f, GetComponent<OpacityComponent>(entity).Opacity) : Color.White);
+				GraceAttorneyGame.Game.SpriteBatch.Draw(drawComponent.Sprite, drawComponent.Position, null,
+					HasComponent<OpacityComponent>(entity) ? new Color(1f, 1f, 1f, GetComponent<OpacityComponent>(entity).Opacity) : Color.White,
+					0, Vector2.Zero, GraceAttorneyGame.Game.ScaleFactor, Microsoft.Xna.Framework.Graphics.SpriteEffects.None, 0);
 			}
 		}
 	}
