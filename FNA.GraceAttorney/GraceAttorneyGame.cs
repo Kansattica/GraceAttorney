@@ -56,6 +56,7 @@ namespace FNA.GraceAttorney
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine());
 			worldBuilder.AddEngine(new SetBackgroundEngine());
+			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new FadeEngine());
 
 			var bg = worldBuilder.CreateEntity();

@@ -12,32 +12,23 @@ namespace FNA.GraceAttorney.Engines
 	[DefaultWritePriority(0)]
 	[Writes(typeof(BackgroundComponent), typeof(SpriteComponent), typeof(OpacityComponent))]
 	[Reads(typeof(BackgroundComponent), typeof(SpriteComponent))]
-	[Receives(typeof(NewBackgroundMessage), typeof(ClearBackgroundMessage))]
+	[Receives(typeof(NewBackgroundMessage))]
 	class SetBackgroundEngine : Engine
 	{
 		public override void Update(double dt)
 		{
-			bool setBG = SomeMessage<NewBackgroundMessage>(), clearBG = SomeMessage<ClearBackgroundMessage>();
-
-			if (!setBG && !clearBG) { return; }
+			if (!SomeMessage<NewBackgroundMessage>()) { return; }
 
 			(var _, var entity) = ReadComponentIncludingEntity<BackgroundComponent>();
 
 			var sprite = GetComponent<SpriteComponent>(entity);
 
-			if (SomeMessage<NewBackgroundMessage>())
-			{
-				var message = ReadMessage<NewBackgroundMessage>();
+			var message = ReadMessage<NewBackgroundMessage>();
 
-				if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
-					sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
-				sprite.Position = Vector2.Zero;
-				SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
-			}
-			else if (SomeMessage<ClearBackgroundMessage>())
-			{
-				SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 255, fadeRate: 1.0f));
-			}
+			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
+				sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
+			sprite.Position = Vector2.Zero;
+			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
 
 			SetComponent(entity, sprite);
 		}
