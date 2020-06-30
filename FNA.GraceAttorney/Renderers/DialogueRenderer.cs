@@ -19,7 +19,7 @@ namespace FNA.GraceAttorney.Renderers
 
 		private const float SpeakerBoxXOffsetPercent = .005f;
 		private const float SpeakerBoxWidthPercent = 1.30f;
-		private const float SpeakerBoxHeightPercent = 1.10f;
+		private const float SpeakerBoxHeightPercent = 1.15f;
 
 		public override void Render(Entity entity, DialogueComponent drawComponent)
 		{
