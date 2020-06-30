@@ -74,14 +74,14 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(character, new SpriteComponent());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "skunkgrace")));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall")));
 
 			worldBuilder.RegisterDrawLayer(2);
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				ShowBox = true, Dialogue = "Fuck, I'm gay.", Layer = 2, Speaker = "Grace!" }));
+				ShowBox = true, Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?", Layer = 2, Speaker = "Bird Call" }));
 
 			_world = worldBuilder.Build();
 			base.Initialize();

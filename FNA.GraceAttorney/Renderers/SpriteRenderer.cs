@@ -22,7 +22,7 @@ namespace FNA.GraceAttorney.Renderers
 			}
 		}
 
-		private const float CharacterStartsAtThisPercentDownTheScreen = .05f;
+		private const float ShowThisMuch = .90f;
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
 			switch (location)
@@ -31,7 +31,7 @@ namespace FNA.GraceAttorney.Renderers
 					return Vector2.Zero;
 				case DrawLocation.Centered:
 					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
-					float topOfHead = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height * CharacterStartsAtThisPercentDownTheScreen;
+					float topOfHead = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height - (GraceAttorneyGame.Game.ScaleFactor * sprite.Height * ShowThisMuch);
 					float spriteOrigin = (GraceAttorneyGame.Game.GraphicsDevice.Viewport.Width - (GraceAttorneyGame.Game.ScaleFactor * sprite.Width)) / 2;
 					return new Vector2(spriteOrigin, topOfHead);
 			}
