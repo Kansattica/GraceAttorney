@@ -27,8 +27,4 @@
 	  <ProjectReference Include="..\external\FNA\FNA.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Properties\" />
-	</ItemGroup>
-
 </Project>
