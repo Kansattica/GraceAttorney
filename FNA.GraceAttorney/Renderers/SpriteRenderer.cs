@@ -15,6 +15,8 @@ namespace FNA.GraceAttorney.Renderers
 		{
 			if (drawComponent.Sprite != null)
 			{
+				// look at later:
+				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
 				GraceAttorneyGame.Game.SpriteBatch.Draw(drawComponent.Sprite, CalculatePosition(drawComponent.Position, drawComponent.Sprite),
 					null,
 					HasComponent<OpacityComponent>(entity) ? new Color(1f, 1f, 1f, GetComponent<OpacityComponent>(entity).Opacity) : Color.White,
