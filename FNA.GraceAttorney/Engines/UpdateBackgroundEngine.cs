@@ -32,7 +32,6 @@ namespace FNA.GraceAttorney.Engines
 
 			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
 			SetComponent(entity, sprite);
-
 		}
 	}
 }

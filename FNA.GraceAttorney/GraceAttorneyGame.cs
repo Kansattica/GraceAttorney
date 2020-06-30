@@ -57,6 +57,7 @@ namespace FNA.GraceAttorney
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine());
 			worldBuilder.AddEngine(new UpdateBackgroundEngine());
+			worldBuilder.AddEngine(new UpdateCharacterEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new FadeEngine());
@@ -66,19 +67,21 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(bg, new OpacityComponent());
 			worldBuilder.SetComponent(bg, new SpriteComponent());
 
+			worldBuilder.RegisterDrawLayer(1);
 			var character = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(character, new CharacterComponent());
 			worldBuilder.SetComponent(character, new OpacityComponent());
 			worldBuilder.SetComponent(character, new SpriteComponent());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "skunkgrace")));
 
 			worldBuilder.RegisterDrawLayer(2);
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				ShowBox = true, Dialogue = "Fuck, I'm gay.", Layer = 2, Speaker = "Diamond!" }));
+				ShowBox = true, Dialogue = "Fuck, I'm gay.", Layer = 2, Speaker = "Grace!" }));
 
 			_world = worldBuilder.Build();
 			base.Initialize();
@@ -100,6 +103,7 @@ namespace FNA.GraceAttorney
 		protected override void Update(GameTime gameTime)
 		{
 			// Run game logic in here. Do NOT render anything here!
+			ScaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
 			_world.Update(gameTime.ElapsedGameTime.TotalSeconds);
 			base.Update(gameTime);
 		}
@@ -110,9 +114,6 @@ namespace FNA.GraceAttorney
 			// Render stuff in here. Do NOT run game logic in here!
 
 			GraphicsDevice.Clear(Color.Black);
-
-			ScaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
-
 			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 			_world.Draw();
 			SpriteBatch.End();

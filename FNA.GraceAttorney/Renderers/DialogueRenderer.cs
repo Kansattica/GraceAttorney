@@ -36,7 +36,7 @@ namespace FNA.GraceAttorney.Renderers
 				TextBoxColor
 				);
 
-			DrawBorder(screenWidth, textBoxStartsAt, textBoxHeight, screenHeight);
+			DrawBorder(screenWidth, textBoxStartsAt, textBoxHeight, screenHeight, BorderColor);
 
 			DrawDialogue(drawComponent, screenHeight, screenWidth, textBoxStartsAt);
 
@@ -55,7 +55,7 @@ namespace FNA.GraceAttorney.Renderers
 				 .Game.SpriteBatch, drawComponent.Speaker,
 				new Vector2(nameTagStartsAtX + (speakerBoxWidth - speakerSize.X)/2, textBoxStartsAt - speakerBoxHeight), Color.White);
 
-			DrawBorder(speakerBoxWidth, textBoxStartsAt - speakerBoxHeight, speakerBoxHeight, textBoxStartsAt, nameTagStartsAtX, drawBottom: false);
+			DrawBorder(speakerBoxWidth, textBoxStartsAt - speakerBoxHeight, speakerBoxHeight, textBoxStartsAt, BorderColor, nameTagStartsAtX, drawBottom: false);
 		}
 
 		private static void DrawDialogue(DialogueComponent drawComponent, int screenHeight, int screenWidth, int textBoxStartsAt)
@@ -68,7 +68,7 @@ namespace FNA.GraceAttorney.Renderers
 				new Vector2(xDialogueOffset, textBoxStartsAt + yDialogueOffset), Color.White);
 		}
 
-		private void DrawBorder(int boxWidth, int topOfBox, int textBoxHeight, int BottomOfBox, int xOffset = 0, bool drawBottom = true)
+		private void DrawBorder(int boxWidth, int topOfBox, int textBoxHeight, int BottomOfBox, Color color, int xOffset = 0, bool drawBottom = true)
 		{
 			var colorTexture = new Texture2D(GraceAttorneyGame.Game.GraphicsDevice, 1, 1);
 			colorTexture.SetData(new[] { Color.White });
@@ -76,13 +76,13 @@ namespace FNA.GraceAttorney.Renderers
 			// top border
 			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
 				new Rectangle(xOffset, topOfBox, boxWidth, BorderWidthInPixels),
-				BorderColor
+				color
 				);
 
 			// left side
 			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
 				new Rectangle(xOffset, topOfBox, BorderWidthInPixels, textBoxHeight),
-				BorderColor
+				color
 				);
 
 			if (drawBottom)
@@ -90,14 +90,14 @@ namespace FNA.GraceAttorney.Renderers
 				// bottom side
 				GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
 					new Rectangle(xOffset, BottomOfBox - BorderWidthInPixels, boxWidth, BorderWidthInPixels),
-					BorderColor
+					color
 					);
 			}
 
 			// right side
 			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
 				new Rectangle(boxWidth - BorderWidthInPixels + xOffset, topOfBox, BorderWidthInPixels, textBoxHeight),
-				BorderColor
+				color
 				);
 		}
 	}

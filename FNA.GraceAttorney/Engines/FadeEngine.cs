@@ -7,7 +7,7 @@ using FNA.GraceAttorney.Components;
 namespace FNA.GraceAttorney.Engines
 {
 	[Reads(typeof(OpacityComponent))]
-	[Writes(typeof(OpacityComponent), 2)]
+	[Writes(typeof(OpacityComponent), 10)]
 	class FadeEngine : Engine
 	{
 		public override void Update(double dt)
