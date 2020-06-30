@@ -9,7 +9,7 @@ namespace FNA.GraceAttorney.Engines
 {
 	[Receives(typeof(ClearBackgroundMessage))]
 	[Writes(typeof(OpacityComponent), 1)]
-	[Reads(typeof(BackgroundComponent))]
+	[Reads(typeof(BackgroundComponent), typeof(OpacityComponent))]
 	class ClearBackgroundEngine : Engine
 	{
 		public override void Update(double dt)
@@ -18,7 +18,9 @@ namespace FNA.GraceAttorney.Engines
 
 			(var _, var entity) = ReadComponentIncludingEntity<BackgroundComponent>();
 
-			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 255, fadeRate: 1.0f));
+			var currentOpacity = GetComponent<OpacityComponent>(entity).Opacity;
+
+			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: currentOpacity, fadeRate: 1.0f));
 		}
 	}
 }
