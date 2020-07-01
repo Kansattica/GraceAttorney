@@ -16,7 +16,7 @@ namespace FNA.GraceAttorney.Renderers
 		private readonly Color InnerBorderColor = Color.DarkGray;
 
 		private const float DialogueBoxVerticalScreenPercentage = .40f;
-		private const float DialogueBoxHorizontalScreenPercentage = .80f;
+		private const float DialogueBoxHorizontalScreenPercentage = .85f;
 
 		private const int BorderWidthInPixels = 2;
 
@@ -27,7 +27,7 @@ namespace FNA.GraceAttorney.Renderers
 		public override void Render(Entity entity, DialogueComponent drawComponent)
 		{
 			if (!drawComponent.ShowBox) { return; }
-
+			
 			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions();
 
 			GraceAttorneyGame.Game.SpriteBatch.Draw(null, dialogueBoxRect, TextBoxColor);
@@ -36,7 +36,9 @@ namespace FNA.GraceAttorney.Renderers
 
 			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width);
 
-			DrawNameTag(drawComponent, dialogueBoxRect);
+			if (drawComponent.Speaker == null) { return; }
+
+			DrawNameTag(drawComponent.Speaker, dialogueBoxRect);
 		}
 
 		private static Rectangle CalculateDialogueBoxDimensions()
@@ -55,9 +57,9 @@ namespace FNA.GraceAttorney.Renderers
 
 		// "in" passes by immutable reference
 		// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-parameter-modifier
-		private void DrawNameTag(in DialogueComponent drawComponent, in Rectangle dialogueBoxRect)
+		private void DrawNameTag(string name, in Rectangle dialogueBoxRect)
 		{
-			var speakerSize = GameFonts.NameTag.MeasureString(drawComponent.Speaker);
+			var speakerSize = GameFonts.NameTag.MeasureString(name);
 
 			int nameTagHeight = (int)(speakerSize.Y * NameTagHeightPercent);
 
@@ -67,7 +69,7 @@ namespace FNA.GraceAttorney.Renderers
 			GraceAttorneyGame.Game.SpriteBatch.Draw(null, nameTagRect, TextBoxColor);
 
 			GameFonts.NameTag.DrawString(GraceAttorneyGame
-				 .Game.SpriteBatch, drawComponent.Speaker,
+				 .Game.SpriteBatch, name,
 				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, dialogueBoxRect.Y - nameTagRect.Height), Color.White);
 
 			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
@@ -84,10 +86,11 @@ namespace FNA.GraceAttorney.Renderers
 
 		private static void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth)
 		{
-			int xDialogueOffset = dialogueBoxX + BorderWidthInPixels + 10;
+			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBoxWidth * .01);
+			int xDialogueOffset = dialogueBoxX + dialoguePadding;
 			int yDialogueOffset = dialogueBoxY + BorderWidthInPixels + 5;
 
-			dialogueBoxWidth -= (BorderWidthInPixels * 2 + 10);
+			dialogueBoxWidth -= (dialoguePadding * 2);
 
 			var toWrite = new StringBuilder();
 
@@ -96,13 +99,12 @@ namespace FNA.GraceAttorney.Renderers
 				foreach (var word in line.Split(' ', StringSplitOptions.RemoveEmptyEntries))
 				{
 					toWrite.Append(word);
-					var measurement = GameFonts.Dialogue.MeasureString(toWrite);
-					if (measurement.X > dialogueBoxWidth)
+					if (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth)
 					{
-						// -2 because length-1 is the last index in the string, and because we appended a space.
+						// length-1 is the last index in the string
 						int beforeLastWordIdx = toWrite.Length - 1 - word.Length;
 
-						// Only hyphenate long words
+						// Only hyphenate long word
 						if (word.Length <= 7)
 						{
 							toWrite[beforeLastWordIdx] = '\n';
@@ -114,17 +116,22 @@ namespace FNA.GraceAttorney.Renderers
 						bool keepTrying = true;
 						do
 						{
-							int insertLineBreakAt = beforeLastWordIdx + tryBreakingWordAtThisIdx;
+							// +1 because beforeLastWordIdx is a space
+							// plus another one because we want to insert after the line break.
+							int insertLineBreakAt = beforeLastWordIdx + 2 + tryBreakingWordAtThisIdx;
 
 							bool insertedHyphen = false;
-							if (toWrite[insertLineBreakAt] != '-')
+							if (toWrite[insertLineBreakAt - 1] != '-')
 							{
 								insertedHyphen = true;
-								toWrite.Insert(insertLineBreakAt, '-');
+								toWrite.Insert(insertLineBreakAt, "-\n");
 							}
-							toWrite.Insert(insertLineBreakAt, '\n');
-							var measurements = GameFonts.Dialogue.MeasureString(toWrite);
-							keepTrying = (measurements.X > dialogueBoxWidth);
+							else
+							{
+								toWrite.Insert(insertLineBreakAt, '\n');
+							}	
+
+							keepTrying = (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth);
 							if (keepTrying)
 							{
 								toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
@@ -134,14 +141,12 @@ namespace FNA.GraceAttorney.Renderers
 						} while (keepTrying);
 					}
 					toWrite.Append(' ');
-
 				}
 
 				toWrite.Append('\n');
 			}
 
-			GameFonts.Dialogue.DrawString(GraceAttorneyGame
-				 .Game.SpriteBatch, toWrite,
+			GameFonts.Dialogue.DrawString(GraceAttorneyGame.Game.SpriteBatch, toWrite,
 				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
 		}
 
