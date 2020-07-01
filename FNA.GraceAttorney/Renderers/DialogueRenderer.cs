@@ -53,7 +53,9 @@ namespace FNA.GraceAttorney.Renderers
 			return new Rectangle(dialogueBoxOffsetFromScreenSide, textBoxStartsAt, dialogueBoxWidth, textBoxHeight);
 		}
 
-		private void DrawNameTag(DialogueComponent drawComponent, Rectangle dialogueBoxRect)
+		// "in" passes by immutable reference
+		// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-parameter-modifier
+		private void DrawNameTag(in DialogueComponent drawComponent, in Rectangle dialogueBoxRect)
 		{
 			var speakerSize = GameFonts.NameTag.MeasureString(drawComponent.Speaker);
 
@@ -92,8 +94,7 @@ namespace FNA.GraceAttorney.Renderers
 				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
 		}
 
-
-		private void DrawBorder(Rectangle bounds, Color color, bool drawBottom = true)
+		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
 		{
 			// top border
 			GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
