@@ -104,7 +104,7 @@ namespace FNA.GraceAttorney.Renderers
 						// length-1 is the last index in the string
 						int beforeLastWordIdx = toWrite.Length - 1 - word.Length;
 
-						// Only hyphenate long word
+						// Only hyphenate long words
 						if (word.Length <= 7)
 						{
 							toWrite[beforeLastWordIdx] = '\n';
