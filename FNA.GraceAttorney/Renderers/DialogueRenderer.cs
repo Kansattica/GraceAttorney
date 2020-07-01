@@ -77,17 +77,15 @@ namespace FNA.GraceAttorney.Renderers
 		{
 			DrawBorder(borderRect, OuterBorderColor);
 
-			borderRect.X += BorderWidthInPixels;
-			borderRect.Y += BorderWidthInPixels;
-			borderRect.Width -= BorderWidthInPixels * 2;
-			borderRect.Height -= BorderWidthInPixels * 2;
-			DrawBorder(borderRect, InnerBorderColor);
+			DrawBorder(new Rectangle(borderRect.X + BorderWidthInPixels, borderRect.Y + BorderWidthInPixels,
+				borderRect.Width - BorderWidthInPixels * 2, borderRect.Height - BorderWidthInPixels * 2)
+				, InnerBorderColor);
 		}
 
 		private static void DrawDialogue(StringBuilder dialogue, int dialogueBoxX, int dialogueBoxY)
 		{
-			int xDialogueOffset = (int)(dialogueBoxX * 1.10);
-			int yDialogueOffset = (int)(dialogueBoxY * 1.03);
+			int xDialogueOffset = dialogueBoxX + 2 * BorderWidthInPixels + 10;
+			int yDialogueOffset = dialogueBoxY + 2 * BorderWidthInPixels + 5;
 
 			GameFonts.Dialogue.DrawString(GraceAttorneyGame
 				 .Game.SpriteBatch, dialogue,
