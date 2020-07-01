@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Text;
 using Encompass;
 using FNA.GraceAttorney.Components;
@@ -14,91 +13,122 @@ namespace FNA.GraceAttorney.Renderers
 	{
 		private const float TextBoxScreenPercent = .40f;
 		private readonly Color TextBoxColor = new Color(0, 0, 0, .9f);
-		private readonly Color BorderColor = Color.DarkViolet;
-		private const int BorderWidthInPixels = 1;
+		private readonly Color OuterBorderColor = Color.Gray;
+		private readonly Color InnerBorderColor = Color.DarkGray;
+		private const int BorderWidthInPixels = 2;
 
-		private const float SpeakerBoxXOffsetPercent = .005f;
-		private const float SpeakerBoxWidthPercent = 1.30f;
-		private const float SpeakerBoxHeightPercent = 1.15f;
+		private const float DialogueBoxScreenPercentage = .80f;
+
+		private const float NameTagXOffsetPercent = 1.1f;
+		private const float NameTagWidthPercent = 1.30f;
+		private const float NameTagHeightPercent = 1.15f;
 
 		public override void Render(Entity entity, DialogueComponent drawComponent)
 		{
 			if (!drawComponent.ShowBox) { return; }
 
+			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions();
+
+			GraceAttorneyGame.Game.SpriteBatch.Draw(null, dialogueBoxRect, TextBoxColor);
+
+			DrawDialogueBoxBorder(dialogueBoxRect);
+
+			DrawDialogue(new StringBuilder(drawComponent.Dialogue), dialogueBoxRect.X, dialogueBoxRect.Y);
+
+			DrawNameTag(drawComponent, dialogueBoxRect);
+		}
+
+		private static Rectangle CalculateDialogueBoxDimensions()
+		{
 			int screenHeight = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height;
 			int screenWidth = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Width;
 
-			int textBoxStartsAt = (int)(screenHeight * (1 - TextBoxScreenPercent));
-			int textBoxHeight = (int)(screenHeight * TextBoxScreenPercent) + 1; //+1 so there's no gap due to rounding error
+			int textBoxStartsAt = (int)(screenHeight * (1 - TextBoxScreenPercent)) + 2 * BorderWidthInPixels;
+			int textBoxHeight = (int)(screenHeight * TextBoxScreenPercent) - 2 * BorderWidthInPixels;
 
-			GraceAttorneyGame.Game.SpriteBatch.Draw(null,
-				new Rectangle(0, textBoxStartsAt, screenWidth, textBoxHeight),
-				TextBoxColor
-				);
+			int dialogueBoxWidth = (int)(screenWidth * DialogueBoxScreenPercentage);
+			int dialogueBoxOffsetFromScreenSide = (screenWidth - dialogueBoxWidth) / 2;
 
-			DrawBorder(screenWidth, textBoxStartsAt, textBoxHeight, screenHeight, BorderColor);
+			return new Rectangle(dialogueBoxOffsetFromScreenSide, textBoxStartsAt, dialogueBoxWidth, textBoxHeight);
+		}
 
-			DrawDialogue(drawComponent, screenHeight, screenWidth, textBoxStartsAt);
-
+		private void DrawNameTag(DialogueComponent drawComponent, Rectangle dialogueBoxRect)
+		{
 			var speakerSize = GameFonts.NameTag.MeasureString(drawComponent.Speaker);
 
-			int speakerBoxWidth = (int)(speakerSize.X * SpeakerBoxWidthPercent);
-			int speakerBoxHeight = (int)(speakerSize.Y * SpeakerBoxHeightPercent);
+			int nameTagHeight = (int)(speakerSize.Y * NameTagHeightPercent);
 
-			int nameTagStartsAtX = (int)(screenWidth * SpeakerBoxXOffsetPercent);
+			var nameTagRect = new Rectangle((int)(dialogueBoxRect.X * NameTagXOffsetPercent), dialogueBoxRect.Y - nameTagHeight,
+				 (int)(speakerSize.X * NameTagWidthPercent), nameTagHeight);
 
-			GraceAttorneyGame.Game.SpriteBatch.Draw(null,
-				new Rectangle(nameTagStartsAtX, textBoxStartsAt - speakerBoxHeight, speakerBoxWidth, speakerBoxHeight),
-				TextBoxColor);
+			GraceAttorneyGame.Game.SpriteBatch.Draw(null, nameTagRect, TextBoxColor);
 
 			GameFonts.NameTag.DrawString(GraceAttorneyGame
 				 .Game.SpriteBatch, drawComponent.Speaker,
-				new Vector2(nameTagStartsAtX + (speakerBoxWidth - speakerSize.X)/2, textBoxStartsAt - speakerBoxHeight), Color.White);
+				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, dialogueBoxRect.Y - nameTagRect.Height), Color.White);
 
-			DrawBorder(speakerBoxWidth, textBoxStartsAt - speakerBoxHeight, speakerBoxHeight, textBoxStartsAt, BorderColor, nameTagStartsAtX, drawBottom: false);
+			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
 		}
 
-		private static void DrawDialogue(DialogueComponent drawComponent, int screenHeight, int screenWidth, int textBoxStartsAt)
+		private void DrawDialogueBoxBorder(Rectangle borderRect)
 		{
-			int xDialogueOffset = (int)(screenWidth * .01);
-			int yDialogueOffset = (int)(screenHeight * .02);
+			DrawBorder(borderRect, OuterBorderColor);
+
+			borderRect.X += BorderWidthInPixels;
+			borderRect.Y += BorderWidthInPixels;
+			borderRect.Width -= BorderWidthInPixels * 2;
+			borderRect.Height -= BorderWidthInPixels * 2;
+			DrawBorder(borderRect, InnerBorderColor);
+		}
+
+		private static void DrawDialogue(StringBuilder dialogue, int dialogueBoxX, int dialogueBoxY)
+		{
+			int xDialogueOffset = (int)(dialogueBoxX * 1.10);
+			int yDialogueOffset = (int)(dialogueBoxY * 1.03);
 
 			GameFonts.Dialogue.DrawString(GraceAttorneyGame
-				 .Game.SpriteBatch, drawComponent.Dialogue,
-				new Vector2(xDialogueOffset, textBoxStartsAt + yDialogueOffset), Color.White);
+				 .Game.SpriteBatch, dialogue,
+				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
 		}
 
-		private void DrawBorder(int boxWidth, int topOfBox, int textBoxHeight, int BottomOfBox, Color color, int xOffset = 0, bool drawBottom = true)
+
+		private void DrawBorder(Rectangle bounds, Color color, bool drawBottom = true)
 		{
-			var colorTexture = new Texture2D(GraceAttorneyGame.Game.GraphicsDevice, 1, 1);
-			colorTexture.SetData(new[] { Color.White });
 
 			// top border
-			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
-				new Rectangle(xOffset, topOfBox, boxWidth, BorderWidthInPixels),
+			GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X, bounds.Y, bounds.Width, BorderWidthInPixels),
 				color
 				);
 
 			// left side
-			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
-				new Rectangle(xOffset, topOfBox, BorderWidthInPixels, textBoxHeight),
+			GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X, bounds.Y, BorderWidthInPixels, bounds.Height),
 				color
 				);
 
 			if (drawBottom)
 			{
 				// bottom side
-				GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
-					new Rectangle(xOffset, BottomOfBox - BorderWidthInPixels, boxWidth, BorderWidthInPixels),
+				GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
+					new Rectangle(bounds.X, bounds.Y + bounds.Height - BorderWidthInPixels, bounds.Width, BorderWidthInPixels),
 					color
 					);
 			}
 
 			// right side
-			GraceAttorneyGame.Game.SpriteBatch.Draw(colorTexture,
-				new Rectangle(boxWidth - BorderWidthInPixels + xOffset, topOfBox, BorderWidthInPixels, textBoxHeight),
+			GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X + bounds.Width - BorderWidthInPixels, bounds.Y, BorderWidthInPixels, bounds.Height),
 				color
 				);
+		}
+
+		private static readonly Texture2D _colorTexture = MakeTexture();
+		private static Texture2D MakeTexture()
+		{
+			var colorTexture = new Texture2D(GraceAttorneyGame.Game.GraphicsDevice, 1, 1);
+			colorTexture.SetData(new[] { Color.White });
+			return colorTexture;
 		}
 	}
 }
