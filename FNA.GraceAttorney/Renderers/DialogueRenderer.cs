@@ -11,13 +11,14 @@ namespace FNA.GraceAttorney.Renderers
 {
 	class DialogueRenderer : OrderedRenderer<DialogueComponent>
 	{
-		private const float TextBoxScreenPercent = .40f;
 		private readonly Color TextBoxColor = new Color(0, 0, 0, .9f);
 		private readonly Color OuterBorderColor = Color.Gray;
 		private readonly Color InnerBorderColor = Color.DarkGray;
-		private const int BorderWidthInPixels = 2;
 
-		private const float DialogueBoxScreenPercentage = .80f;
+		private const float DialogueBoxVerticalScreenPercentage = .40f;
+		private const float DialogueBoxHorizontalScreenPercentage = .80f;
+
+		private const int BorderWidthInPixels = 2;
 
 		private const float NameTagXOffsetPercent = 1.1f;
 		private const float NameTagWidthPercent = 1.30f;
@@ -43,10 +44,10 @@ namespace FNA.GraceAttorney.Renderers
 			int screenHeight = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Height;
 			int screenWidth = GraceAttorneyGame.Game.GraphicsDevice.Viewport.Width;
 
-			int textBoxStartsAt = (int)(screenHeight * (1 - TextBoxScreenPercent)) + 2 * BorderWidthInPixels;
-			int textBoxHeight = (int)(screenHeight * TextBoxScreenPercent) - 2 * BorderWidthInPixels;
+			int textBoxStartsAt = (int)(screenHeight * (1 - DialogueBoxVerticalScreenPercentage)) + 2 * BorderWidthInPixels;
+			int textBoxHeight = (int)(screenHeight * DialogueBoxVerticalScreenPercentage) - 2 * BorderWidthInPixels;
 
-			int dialogueBoxWidth = (int)(screenWidth * DialogueBoxScreenPercentage);
+			int dialogueBoxWidth = (int)(screenWidth * DialogueBoxHorizontalScreenPercentage);
 			int dialogueBoxOffsetFromScreenSide = (screenWidth - dialogueBoxWidth) / 2;
 
 			return new Rectangle(dialogueBoxOffsetFromScreenSide, textBoxStartsAt, dialogueBoxWidth, textBoxHeight);
@@ -94,7 +95,6 @@ namespace FNA.GraceAttorney.Renderers
 
 		private void DrawBorder(Rectangle bounds, Color color, bool drawBottom = true)
 		{
-
 			// top border
 			GraceAttorneyGame.Game.SpriteBatch.Draw(_colorTexture,
 				new Rectangle(bounds.X, bounds.Y, bounds.Width, BorderWidthInPixels),
