@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Encompass;
+using FNA.GraceAttorney.DependencyInjection;
 using FNA.GraceAttorney.Messages;
 using Microsoft.Xna.Framework;
 
@@ -10,22 +11,29 @@ namespace FNA.GraceAttorney.Engines
 	[Receives(typeof(ToggleFullscreenMessage))]
 	class FullScreenEngine : Engine
 	{
+		private readonly GraphicsDeviceManager _graphics;
+		private readonly UpdatedSize _windowBounds;
 		private Point _windowedScreenSize;
+		public FullScreenEngine(GraphicsDeviceManager graphics, UpdatedSize windowBounds)
+		{
+			_graphics = graphics;
+			_windowBounds = windowBounds;
+		}
+
 		public override void Update(double dt)
 		{
 			if (!SomeMessage<ToggleFullscreenMessage>()) { return; }
 
-			var game = GraceAttorneyGame.Game;
-			if (!game.Graphics.IsFullScreen)
-				_windowedScreenSize = new Point(game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
+			if (!_graphics.IsFullScreen)
+				_windowedScreenSize = new Point(_windowBounds.Width, _windowBounds.Height);
 
-			game.Graphics.ToggleFullScreen();
+			_graphics.ToggleFullScreen();
 
-			if (!game.Graphics.IsFullScreen)
+			if (!_graphics.IsFullScreen)
 			{
-				game.Graphics.PreferredBackBufferWidth = _windowedScreenSize.X;
-				game.Graphics.PreferredBackBufferHeight = _windowedScreenSize.Y;
-				game.Graphics.ApplyChanges();
+				_graphics.PreferredBackBufferWidth = _windowedScreenSize.X;
+				_graphics.PreferredBackBufferHeight = _windowedScreenSize.Y;
+				_graphics.ApplyChanges();
 			}
 		}
 	}

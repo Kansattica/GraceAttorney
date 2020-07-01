@@ -5,6 +5,7 @@ using Encompass;
 using FNA.GraceAttorney.Components;
 using FNA.GraceAttorney.Messages;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FNA.GraceAttorney.Engines
@@ -15,6 +16,13 @@ namespace FNA.GraceAttorney.Engines
 	[Receives(typeof(NewBackgroundMessage))]
 	class UpdateBackgroundEngine : Engine
 	{
+		private readonly ContentManager _content;
+
+		public UpdateBackgroundEngine(ContentManager content)
+		{
+			_content = content;
+		}
+
 		public override void Update(double dt)
 		{
 			if (!SomeMessage<NewBackgroundMessage>()) { return; }
@@ -26,7 +34,7 @@ namespace FNA.GraceAttorney.Engines
 			var message = ReadMessage<NewBackgroundMessage>();
 
 			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
-				sprite.Sprite = GraceAttorneyGame.Game.Content.Load<Texture2D>(message.AssetName);
+				sprite.Sprite = _content.Load<Texture2D>(message.AssetName);
 			sprite.Position = DrawLocation.Background;
 			sprite.Layer = 0;
 

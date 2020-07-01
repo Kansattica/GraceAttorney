@@ -5,26 +5,27 @@ using System.Net.Http.Headers;
 using System.Text;
 using Encompass;
 using FNA.GraceAttorney.Components;
+using FNA.GraceAttorney.DependencyInjection;
 using FNA.GraceAttorney.Engines;
 using FNA.GraceAttorney.Messages;
 using FNA.GraceAttorney.Renderers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace FNA.GraceAttorney
 {
 	class GraceAttorneyGame : Game
 	{
 		private World _world;
-		public SpriteBatch SpriteBatch;
-		public static GraceAttorneyGame Game;
+		private SpriteBatch _spriteBatch;
+		private UpdatedSize _viewport = new UpdatedSize();
+		private UpdatedSize _windowSize = new UpdatedSize();
 
 		public GraceAttorneyGame()
 		{
 			// This gets assigned to something internally, don't worry...
 
-			Graphics = new GraphicsDeviceManager(this)
+			_graphics = new GraphicsDeviceManager(this)
 			{
 				PreferredBackBufferWidth = 1280,
 				PreferredBackBufferHeight = 720,
@@ -39,25 +40,30 @@ namespace FNA.GraceAttorney
 			IsMouseVisible = true;
 
 			Content.RootDirectory = "Content";
+		}
 
-			Game = this;
+		private Texture2D MakeColorTexture()
+		{
+			var colorTexture = new Texture2D(GraphicsDevice, 1, 1);
+			colorTexture.SetData(new[] { Color.White });
+			return colorTexture;
 		}
 
 		protected override void Initialize()
 		{
-			SpriteBatch = new SpriteBatch(GraphicsDevice);
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			_aspectRatio = GraphicsDevice.Viewport.AspectRatio;
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
 
 			var worldBuilder = new WorldBuilder();
-			worldBuilder.AddOrderedRenderer(new SpriteRenderer());
-			worldBuilder.AddOrderedRenderer(new DialogueRenderer());
+			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch, _scaleFactor, _viewport));
+			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture()));
 
 			worldBuilder.AddEngine(new KeyboardEngine());
-			worldBuilder.AddEngine(new FullScreenEngine());
-			worldBuilder.AddEngine(new UpdateBackgroundEngine());
-			worldBuilder.AddEngine(new UpdateCharacterEngine());
+			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
+			worldBuilder.AddEngine(new UpdateBackgroundEngine(Content));
+			worldBuilder.AddEngine(new UpdateCharacterEngine(Content));
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new FadeEngine());
@@ -96,14 +102,13 @@ namespace FNA.GraceAttorney
 		protected override void UnloadContent()
 		{
 			// Clean up after yourself!
-			SpriteBatch.Dispose();
+			_spriteBatch.Dispose();
 			base.UnloadContent();
 		}
 
 		protected override void Update(GameTime gameTime)
 		{
 			// Run game logic in here. Do NOT render anything here!
-			ScaleFactor = GraphicsDevice.Viewport.Height / BackgroundHeight;
 			_world.Update(gameTime.ElapsedGameTime.TotalSeconds);
 			base.Update(gameTime);
 		}
@@ -112,17 +117,24 @@ namespace FNA.GraceAttorney
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
+			_scaleFactor.Factor = GraphicsDevice.Viewport.Height / BackgroundHeight;
+
+			_viewport.Height = GraphicsDevice.Viewport.Height;
+			_viewport.Width = GraphicsDevice.Viewport.Width;
+
+			_windowSize.Height = Window.ClientBounds.Height;
+			_windowSize.Width = Window.ClientBounds.Width;
 
 			GraphicsDevice.Clear(Color.Black);
-			SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 			_world.Draw();
-			SpriteBatch.End();
+			_spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
 
-		public float ScaleFactor { get; private set; }
-		public GraphicsDeviceManager Graphics { get; private set; }
+		private ScaleFactor _scaleFactor = new ScaleFactor();
+		private GraphicsDeviceManager _graphics;
 		private Point _oldWindowSize;
 		private float _aspectRatio;
 
@@ -136,17 +148,17 @@ namespace FNA.GraceAttorney
 			if (Window.ClientBounds.Width != _oldWindowSize.X)
 			{ // We're changing the width
 			  // Set the new backbuffer size
-				Graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-				Graphics.PreferredBackBufferHeight = (int)(Window.ClientBounds.Width / _aspectRatio);
+				_graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+				_graphics.PreferredBackBufferHeight = (int)(Window.ClientBounds.Width / _aspectRatio);
 			}
 			else if (Window.ClientBounds.Height != _oldWindowSize.Y)
 			{ // we're changing the height
 			  // Set the new backbuffer size
-				Graphics.PreferredBackBufferWidth = (int)(Window.ClientBounds.Height * _aspectRatio);
-				Graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+				_graphics.PreferredBackBufferWidth = (int)(Window.ClientBounds.Height * _aspectRatio);
+				_graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
 			}
 
-			Graphics.ApplyChanges();
+			_graphics.ApplyChanges();
 
 			// Update the old window size with what it is currently
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
