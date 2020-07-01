@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using Encompass;
 using FNA.GraceAttorney.Components;
@@ -169,9 +170,26 @@ namespace FNA.GraceAttorney.Renderers
 			var hyphenIdx = word.IndexOf('-');
 			if (hyphenIdx == -1)
 			{
-				return word.Length / 2;
+				return TryPickVowel(word, word.Length / 2) + 1;
 			}
 			return hyphenIdx;
+		}
+
+		private static readonly char[] _vowels = new[] { 'a', 'e', 'i', 'o', 'u', 'y' };
+		private static bool IsVowel(char c)
+		{
+			foreach (char vowel in _vowels)
+			{
+				if (c == vowel) { return true; }
+			}
+			return false;
+		}
+		private static int TryPickVowel(string word, int idx)
+		{
+			if (IsVowel(word[idx])) { return idx; }
+			if (IsVowel(word[idx-1])) { return idx-1; }
+			if (IsVowel(word[idx+1])) { return idx+1; }
+			return idx;
 		}
 
 		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
