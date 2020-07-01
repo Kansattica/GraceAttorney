@@ -89,7 +89,7 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				ShowBox = true, Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?\nIs it free gavel day already? I'm gonna take so many of those little hammery friends home, then wait for tiny wooden nail day.", Layer = 2, Speaker = "Bird Call" }));
+				ShowBox = true, Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?\nIs it free gavel day already? I'm gonna take so many of those little hammery friends home, then wait for tiny wooden nail day.\nHey, I'm gonna talk more and also did you know that the word grumbler is exactly eight letters long?", Layer = 2, Speaker = "Bird Call" }));
 
 			_world = worldBuilder.Build();
 			base.Initialize();
