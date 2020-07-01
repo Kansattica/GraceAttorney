@@ -111,8 +111,10 @@ namespace FNA.GraceAttorney.Renderers
 
 			foreach (var line in dialogue.Split('\n'))
 			{
-				foreach (var word in line.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+				var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				for (var idx = 0; idx < words.Length; idx++) 
 				{
+					var word = words[idx];
 					toWrite.Append(word);
 					if (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth)
 					{
@@ -155,7 +157,12 @@ namespace FNA.GraceAttorney.Renderers
 
 						} while (keepTrying);
 					}
-					toWrite.Append(' ');
+
+					// basically, if you append a space to the last word in the line, it leads a bug where,
+					// for certain pathological dialogue box sizes, the space makes the string wider than the box,
+					// which means that the rest of the function will put each word on its own line.
+					if (idx != words.Length - 1)
+						toWrite.Append(' ');
 				}
 
 				toWrite.Append('\n');
