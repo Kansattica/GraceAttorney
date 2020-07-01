@@ -34,7 +34,7 @@ namespace FNA.GraceAttorney.Renderers
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
-			DrawDialogue(new StringBuilder(drawComponent.Dialogue), dialogueBoxRect.X, dialogueBoxRect.Y);
+			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width);
 
 			DrawNameTag(drawComponent, dialogueBoxRect);
 		}
@@ -82,14 +82,77 @@ namespace FNA.GraceAttorney.Renderers
 				, InnerBorderColor);
 		}
 
-		private static void DrawDialogue(StringBuilder dialogue, int dialogueBoxX, int dialogueBoxY)
+		private static void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth)
 		{
-			int xDialogueOffset = dialogueBoxX + 2 * BorderWidthInPixels + 10;
-			int yDialogueOffset = dialogueBoxY + 2 * BorderWidthInPixels + 5;
+			int xDialogueOffset = dialogueBoxX + BorderWidthInPixels + 10;
+			int yDialogueOffset = dialogueBoxY + BorderWidthInPixels + 5;
+
+			dialogueBoxWidth -= (BorderWidthInPixels * 2 + 10);
+
+			var toWrite = new StringBuilder();
+
+			foreach (var line in dialogue.Split('\n'))
+			{
+				foreach (var word in line.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+				{
+					toWrite.Append(word);
+					var measurement = GameFonts.Dialogue.MeasureString(toWrite);
+					if (measurement.X > dialogueBoxWidth)
+					{
+						// -2 because length-1 is the last index in the string, and because we appended a space.
+						int beforeLastWordIdx = toWrite.Length - 1 - word.Length;
+
+						// Only hyphenate long words
+						if (word.Length <= 7)
+						{
+							toWrite[beforeLastWordIdx] = '\n';
+							toWrite.Append(' ');
+							continue;
+						}
+
+						int tryBreakingWordAtThisIdx = HyphenationGuess(word);
+						bool keepTrying = true;
+						do
+						{
+							int insertLineBreakAt = beforeLastWordIdx + tryBreakingWordAtThisIdx;
+
+							bool insertedHyphen = false;
+							if (toWrite[insertLineBreakAt] != '-')
+							{
+								insertedHyphen = true;
+								toWrite.Insert(insertLineBreakAt, '-');
+							}
+							toWrite.Insert(insertLineBreakAt, '\n');
+							var measurements = GameFonts.Dialogue.MeasureString(toWrite);
+							keepTrying = (measurements.X > dialogueBoxWidth);
+							if (keepTrying)
+							{
+								toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
+								tryBreakingWordAtThisIdx--;
+							}
+
+						} while (keepTrying);
+					}
+					toWrite.Append(' ');
+
+				}
+
+				toWrite.Append('\n');
+			}
 
 			GameFonts.Dialogue.DrawString(GraceAttorneyGame
-				 .Game.SpriteBatch, dialogue,
+				 .Game.SpriteBatch, toWrite,
 				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+		}
+
+		private static int HyphenationGuess(string word)
+		{
+			var hyphenIdx = word.IndexOf('-');
+			if (hyphenIdx == -1)
+			{
+				return word.Length / 2;
+			}
+			return hyphenIdx;
 		}
 
 		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
