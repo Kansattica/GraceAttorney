@@ -45,11 +45,18 @@ namespace FNA.GraceAttorney.Renderers
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
-			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width);
+			DrawDialogue(TruncateForAnimation(entity, drawComponent.Dialogue), dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width);
 
 			if (drawComponent.Speaker == null) { return; }
 
 			DrawNameTag(drawComponent.Speaker, dialogueBoxRect);
+		}
+
+		private string TruncateForAnimation(Entity entity, string dialogue)
+		{
+			if (!HasComponent<AnimatedTextComponent>(entity))
+				return dialogue;
+			return dialogue.Substring(0, (int)GetComponent<AnimatedTextComponent>(entity).CharactersVisible);
 		}
 
 		private static Rectangle CalculateDialogueBoxDimensions(int screenWidth, int screenHeight)

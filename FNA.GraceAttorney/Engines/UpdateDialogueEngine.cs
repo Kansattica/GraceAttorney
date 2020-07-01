@@ -9,7 +9,7 @@ namespace FNA.GraceAttorney.Engines
 {
 	[Receives(typeof(NewDialogueMessage))]
 	[Reads(typeof(DialogueComponent))]
-	[Writes(typeof(DialogueComponent))]
+	[Writes(typeof(DialogueComponent), 0)]
 	class UpdateDialogueEngine : Engine
 	{
 		public override void Update(double dt)
