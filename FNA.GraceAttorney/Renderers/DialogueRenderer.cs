@@ -99,26 +99,62 @@ namespace FNA.GraceAttorney.Renderers
 				, InnerBorderColor);
 		}
 
+		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
+		{
+			// top border
+			_spriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X, bounds.Y, bounds.Width, BorderWidthInPixels),
+				color);
+
+			// left side
+			_spriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X, bounds.Y, BorderWidthInPixels, bounds.Height),
+				color);
+
+			if (drawBottom)
+			{
+				// bottom side
+				_spriteBatch.Draw(_colorTexture,
+					new Rectangle(bounds.X, bounds.Y + bounds.Height - BorderWidthInPixels, bounds.Width, BorderWidthInPixels),
+					color);
+			}
+
+			// right side
+			_spriteBatch.Draw(_colorTexture,
+				new Rectangle(bounds.X + bounds.Width - BorderWidthInPixels, bounds.Y, BorderWidthInPixels, bounds.Height),
+				color);
+		}
+
 		private void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth)
 		{
 			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBoxWidth * .01);
+
 			int xDialogueOffset = dialogueBoxX + dialoguePadding;
 			int yDialogueOffset = dialogueBoxY + BorderWidthInPixels + 5;
 
-			dialogueBoxWidth -= (dialoguePadding * 2);
+			GameFonts.Dialogue.DrawString(_spriteBatch, HyphenateAndWrapString(dialogue, dialogueBoxWidth - (dialoguePadding * 2)),
+				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+		}
 
+		// I'm sorry that this is so hairy, but this does a reasonable job breaking up longer words
+		// and handles the screen resizing pretty gracefully.
+		private static StringBuilder HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
+		{
 			var toWrite = new StringBuilder();
 
 			foreach (var line in dialogue.Split('\n'))
 			{
 				var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-				for (var idx = 0; idx < words.Length; idx++) 
+				for (var idx = 0; idx < words.Length; idx++)
 				{
 					var word = words[idx];
 					toWrite.Append(word);
+
+					// if the string is currently too long to fit in the dialogue box, hoo boy.
 					if (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth)
 					{
 						// length-1 is the last index in the string
+						// toWrite[beforeLastWordIdx] should always be a space
 						int beforeLastWordIdx = toWrite.Length - 1 - word.Length;
 
 						// Only hyphenate long words
@@ -134,9 +170,14 @@ namespace FNA.GraceAttorney.Renderers
 						do
 						{
 							// +1 because beforeLastWordIdx is a space
-							// plus another one because we want to insert after the line break.
+							// plus another one because we want to insert the newline after whatever HyphenationGuess picked.
+							// (hyphens go on the earlier of the two lines, 
+							// and HyphenationGuess will try to break on a hyphen if there's one in the word)
 							int insertLineBreakAt = beforeLastWordIdx + 2 + tryBreakingWordAtThisIdx;
 
+							// if there's already a hyphen in the word, don't add another one
+							// this -1 is because, if there's a hyphen, insertLineBreakAt is the index after it, because
+							// that's where we want to insert the line break.
 							bool insertedHyphen = false;
 							if (toWrite[insertLineBreakAt - 1] != '-')
 							{
@@ -146,12 +187,16 @@ namespace FNA.GraceAttorney.Renderers
 							else
 							{
 								toWrite.Insert(insertLineBreakAt, '\n');
-							}	
+							}
 
 							keepTrying = (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth);
 							if (keepTrying)
 							{
+								// if we have to try again, because the string is too long,
+								// undo what we just did.
 								toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
+
+								// and try breaking the word earlier.
 								tryBreakingWordAtThisIdx--;
 							}
 
@@ -168,8 +213,7 @@ namespace FNA.GraceAttorney.Renderers
 				toWrite.Append('\n');
 			}
 
-			GameFonts.Dialogue.DrawString(_spriteBatch, toWrite,
-				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+			return toWrite;
 		}
 
 		private static int HyphenationGuess(string word)
@@ -182,6 +226,9 @@ namespace FNA.GraceAttorney.Renderers
 			return hyphenIdx;
 		}
 
+		// words tend to look better when hyphenated along a vowel. I don't know if this really helps
+		// and I might take it out later.
+		// if nothing else, it helps keep the hyphenation a little more stable across screen resizes.
 		private static readonly char[] _vowels = new[] { 'a', 'e', 'i', 'o', 'u', 'y' };
 		private static bool IsVowel(char c)
 		{
@@ -197,36 +244,6 @@ namespace FNA.GraceAttorney.Renderers
 			if (IsVowel(word[idx-1])) { return idx-1; }
 			if (IsVowel(word[idx+1])) { return idx+1; }
 			return idx;
-		}
-
-		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
-		{
-			// top border
-			_spriteBatch.Draw(_colorTexture,
-				new Rectangle(bounds.X, bounds.Y, bounds.Width, BorderWidthInPixels),
-				color
-				);
-
-			// left side
-			_spriteBatch.Draw(_colorTexture,
-				new Rectangle(bounds.X, bounds.Y, BorderWidthInPixels, bounds.Height),
-				color
-				);
-
-			if (drawBottom)
-			{
-				// bottom side
-				_spriteBatch.Draw(_colorTexture,
-					new Rectangle(bounds.X, bounds.Y + bounds.Height - BorderWidthInPixels, bounds.Width, BorderWidthInPixels),
-					color
-					);
-			}
-
-			// right side
-			_spriteBatch.Draw(_colorTexture,
-				new Rectangle(bounds.X + bounds.Width - BorderWidthInPixels, bounds.Y, BorderWidthInPixels, bounds.Height),
-				color
-				);
 		}
 	}
 }
