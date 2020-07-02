@@ -18,8 +18,8 @@ namespace FNA.GraceAttorney
 	{
 		private World _world;
 		private SpriteBatch _spriteBatch;
-		private UpdatedSize _viewport = new UpdatedSize();
-		private UpdatedSize _windowSize = new UpdatedSize();
+		private readonly UpdatedSize _viewport = new UpdatedSize();
+		private readonly UpdatedSize _windowSize = new UpdatedSize();
 
 		public GraceAttorneyGame()
 		{
@@ -135,8 +135,8 @@ namespace FNA.GraceAttorney
 			base.Draw(gameTime);
 		}
 
-		private ScaleFactor _scaleFactor = new ScaleFactor();
-		private GraphicsDeviceManager _graphics;
+		private readonly ScaleFactor _scaleFactor = new ScaleFactor();
+		private readonly GraphicsDeviceManager _graphics;
 		private Point _oldWindowSize;
 		private float _aspectRatio;
 
