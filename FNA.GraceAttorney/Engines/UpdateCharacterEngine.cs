@@ -12,9 +12,10 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FNA.GraceAttorney.Engines
 {
 	[DefaultWritePriority(3)]
-	[Writes(typeof(CharacterComponent), typeof(SpriteComponent), typeof(OpacityComponent), typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent))]
+	[Writes(typeof(CharacterComponent), typeof(SpriteComponent))]
 	[Reads(typeof(CharacterComponent), typeof(SpriteComponent))]
 	[Receives(typeof(NewCharacterMessage))]
+	[Sends(typeof(StartMotionMessage))]
 	class UpdateCharacterEngine : Engine
 	{
 		private readonly ContentManager _content;
@@ -40,33 +41,10 @@ namespace FNA.GraceAttorney.Engines
 			sprite.Position = DrawLocation.Centered;
 			sprite.Layer = 1;
 
-			if (message.EnterFrom == EntranceDirection.FadeIn)
-			{
-				SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
-			}
-			else
-			{
-				SetComponent(entity, new MovingSpriteComponent { Direction = MotionDirection.In, Velocity = .5f });
-				SetComponent(entity, new SpriteOffsetComponent { PositionPercentageOffset = GetDirectionVector(message.EnterFrom) });
-			}
+			SendMessage(new StartMotionMessage { Entity = entity, EnterFrom = message.EnterFrom });
 
 			SetComponent(entity, sprite);
 		}
 
-		private static Vector2 GetDirectionVector(EntranceDirection direction)
-		{
-			switch (direction)
-			{
-				case EntranceDirection.Top:
-					return -Vector2.UnitY;
-				case EntranceDirection.Bottom:
-					return Vector2.UnitY;
-				case EntranceDirection.Right:
-					return Vector2.UnitX;
-				case EntranceDirection.Left:
-					return -Vector2.UnitX;
-			}
-			throw new ArgumentException("What, bud, did you invent a new direction or something");
-		}
 	}
 }

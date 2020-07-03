@@ -67,6 +67,7 @@ namespace FNA.GraceAttorney
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new SpriteMotionEngine());
+			worldBuilder.AddEngine(new StartMotionEngine());
 			worldBuilder.AddEngine(new TextAnimationEngine());
 			worldBuilder.AddEngine(new FadeEngine());
 

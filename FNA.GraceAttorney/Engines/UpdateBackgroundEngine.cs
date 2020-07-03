@@ -11,8 +11,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FNA.GraceAttorney.Engines
 {
 	[DefaultWritePriority(0)]
-	[Writes(typeof(BackgroundComponent), typeof(SpriteComponent), typeof(OpacityComponent))]
+	[Writes(typeof(BackgroundComponent), typeof(SpriteComponent))]
 	[Reads(typeof(BackgroundComponent), typeof(SpriteComponent))]
+	[Sends(typeof(StartMotionMessage))]
 	[Receives(typeof(NewBackgroundMessage))]
 	class UpdateBackgroundEngine : Engine
 	{
@@ -38,8 +39,8 @@ namespace FNA.GraceAttorney.Engines
 			sprite.Position = DrawLocation.Background;
 			sprite.Layer = 0;
 
-			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
 			SetComponent(entity, sprite);
+			SendMessage(new StartMotionMessage { EnterFrom = EntranceDirection.FadeIn, Entity = entity });
 		}
 	}
 }

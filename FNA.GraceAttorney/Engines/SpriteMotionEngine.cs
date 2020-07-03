@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace FNA.GraceAttorney.Engines
 {
-	[DefaultWritePriority(4)]
+	[DefaultWritePriority(2)]
 	[Reads(typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent))]
 	[Writes(typeof(SpriteOffsetComponent), typeof(MovingSpriteComponent))]
 	class SpriteMotionEngine : Engine
