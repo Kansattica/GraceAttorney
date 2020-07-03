@@ -31,7 +31,8 @@ namespace FNA.GraceAttorney.Renderers
 			{
 				// look at later:
 				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
-				_spriteBatch.Draw(drawComponent.Sprite, CalculatePosition(drawComponent.Position, drawComponent.Sprite),
+				_spriteBatch.Draw(drawComponent.Sprite,
+					CalculatePosition(drawComponent.Position, drawComponent.Sprite) + CalculateOffset(entity),
 					null,
 					HasComponent<OpacityComponent>(entity) ? new Color(1f, 1f, 1f, GetComponent<OpacityComponent>(entity).Opacity) : Color.White,
 					0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);
@@ -52,6 +53,14 @@ namespace FNA.GraceAttorney.Renderers
 					return new Vector2(spriteOrigin, topOfHead);
 			}
 			throw new NotImplementedException("You fell out of the switch.");
+		}
+
+		private Vector2 CalculateOffset(in Entity entity)
+		{
+			if (!HasComponent<SpriteOffsetComponent>(entity))
+				return Vector2.Zero;
+			var offset = GetComponent<SpriteOffsetComponent>(entity).PositionPercentageOffset;
+			return new Vector2(_viewport.Width * offset.X, _viewport.Height * offset.Y);
 		}
 	}
 }

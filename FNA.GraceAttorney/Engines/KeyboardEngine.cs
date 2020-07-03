@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FNA.GraceAttorney.Engines
 {
-	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage))]
+	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage), typeof(NewCharacterMessage))]
 	class KeyboardEngine : Engine
 	{
 		private KeyboardState _keyboardPrev = new KeyboardState();
@@ -24,6 +24,21 @@ namespace FNA.GraceAttorney.Engines
 
 			if (KeysPressed(keyboardCur, Keys.B))
 				SendMessage(new NewBackgroundMessage(Path.Combine("Case1", "background")));
+
+			if (KeysPressed(keyboardCur, Keys.Up))
+				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Top));
+
+			if (KeysPressed(keyboardCur, Keys.Down))
+				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Bottom));
+
+			if (KeysPressed(keyboardCur, Keys.Left))
+				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Left));
+
+			if (KeysPressed(keyboardCur, Keys.Right))
+				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Right));
+
+			if (KeysPressed(keyboardCur, Keys.F))
+				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.FadeIn));
 
 			_keyboardPrev = keyboardCur;
 		}

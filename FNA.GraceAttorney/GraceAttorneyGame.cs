@@ -66,6 +66,7 @@ namespace FNA.GraceAttorney
 			worldBuilder.AddEngine(new UpdateCharacterEngine(Content));
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
+			worldBuilder.AddEngine(new SpriteMotionEngine());
 			worldBuilder.AddEngine(new TextAnimationEngine());
 			worldBuilder.AddEngine(new FadeEngine());
 
@@ -89,7 +90,8 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				ShowBox = true, Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?\nIs it free gavel day already? I'm gonna take so many of those little hammery friends home, then wait for tiny wooden nail day.", Layer = 2, Speaker = "Bird Call" }));
+				//ShowBox = true, Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?\nIs it free gavel day already? I'm gonna take so many of those little hammery friends home, then wait for tiny wooden nail day.", Layer = 2, Speaker = "Bird Call" }));
+				ShowBox = true, Dialogue = "Vsauce! Michael here. I'm a bird.", Layer = 2, Speaker = "Bird Call" }));
 
 			_world = worldBuilder.Build();
 			base.Initialize();
