@@ -17,8 +17,10 @@ namespace FNA.GraceAttorney.Renderers
 		private readonly Color OuterBorderColor = Color.Gray;
 		private readonly Color InnerBorderColor = Color.DarkGray;
 
-		private const float DialogueBoxVerticalScreenPercentage = .40f;
-		private const float DialogueBoxHorizontalScreenPercentage = .85f;
+		private const float DialogueBoxVerticalScreenPercentage = .30f;
+		private const float DialogueBoxHorizontalScreenPercentage = .80f;
+
+		private const float DialogueBoxVerticalOffsetFromGroundPercentage = .05f;
 
 		private const int BorderWidthInPixels = 2;
 
@@ -46,24 +48,24 @@ namespace FNA.GraceAttorney.Renderers
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
-			DrawDialogue(TruncateForAnimation(entity, drawComponent.Dialogue), dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width);
+			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width, LengthToTruncateTo(entity));
 
 			if (drawComponent.Speaker == null) { return; }
 
 			DrawNameTag(drawComponent.Speaker, dialogueBoxRect);
 		}
 
-		private string TruncateForAnimation(Entity entity, string dialogue)
+		private int LengthToTruncateTo(Entity entity)
 		{
 			if (!HasComponent<AnimatedTextComponent>(entity))
-				return dialogue;
-			return dialogue.Substring(0, (int)GetComponent<AnimatedTextComponent>(entity).CharactersVisible);
+				return -1;
+			return (int)GetComponent<AnimatedTextComponent>(entity).CharactersVisible;
 		}
 
 		private static Rectangle CalculateDialogueBoxDimensions(int screenWidth, int screenHeight)
         {
 			int textBoxStartsAt = (int)(screenHeight * (1 - DialogueBoxVerticalScreenPercentage)) + 2 * BorderWidthInPixels;
-			int textBoxHeight = (int)(screenHeight * DialogueBoxVerticalScreenPercentage) - 2 * BorderWidthInPixels;
+			int textBoxHeight = (int)(screenHeight * DialogueBoxVerticalScreenPercentage - screenHeight * DialogueBoxVerticalOffsetFromGroundPercentage) - 2 * BorderWidthInPixels;
 
 			int dialogueBoxWidth = (int)(screenWidth * DialogueBoxHorizontalScreenPercentage);
 			int dialogueBoxOffsetFromScreenSide = (screenWidth - dialogueBoxWidth) / 2;
@@ -125,43 +127,50 @@ namespace FNA.GraceAttorney.Renderers
 				color);
 		}
 
-		private void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth)
+		private void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth, int truncateTo)
 		{
 			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBoxWidth * .01);
 
 			int xDialogueOffset = dialogueBoxX + dialoguePadding;
 			int yDialogueOffset = dialogueBoxY + BorderWidthInPixels + 5;
 
-			GameFonts.Dialogue.DrawString(_spriteBatch, HyphenateAndWrapString(dialogue, dialogueBoxWidth - (dialoguePadding * 2)),
-				new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+			var toDisplay = HyphenateAndWrapString(dialogue, dialogueBoxWidth - (dialoguePadding * 2));
+
+			if (truncateTo != -1 && truncateTo < toDisplay.Length)
+			{
+				toDisplay.Remove(truncateTo, toDisplay.Length - truncateTo);
+			}
+
+			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+			_toWrite.Clear();
 		}
 
 		// I'm sorry that this is so hairy, but this does a reasonable job breaking up longer words
 		// and handles the screen resizing pretty gracefully.
+
+		private static StringBuilder _toWrite = new StringBuilder(); // don't leak a stringbuilder every frame
 		private static StringBuilder HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
 		{
-			var toWrite = new StringBuilder();
-
 			foreach (var line in dialogue.Split('\n'))
 			{
 				var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 				for (var idx = 0; idx < words.Length; idx++)
 				{
 					var word = words[idx];
-					toWrite.Append(word);
+					_toWrite.Append(word);
 
 					// if the string is currently too long to fit in the dialogue box, hoo boy.
-					if (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth)
+					if (GameFonts.Dialogue.MeasureString(_toWrite).X > dialogueBoxWidth)
 					{
 						// length-1 is the last index in the string
 						// toWrite[beforeLastWordIdx] should always be a space
-						int beforeLastWordIdx = toWrite.Length - 1 - word.Length;
+						int beforeLastWordIdx = _toWrite.Length - 1 - word.Length;
 
 						// Only hyphenate long words
 						if (word.Length <= 7)
 						{
-							toWrite[beforeLastWordIdx] = '\n';
-							toWrite.Append(' ');
+							_toWrite[beforeLastWordIdx] = '\n';
+							_toWrite.Append(' ');
 							continue;
 						}
 
@@ -179,22 +188,22 @@ namespace FNA.GraceAttorney.Renderers
 							// this -1 is because, if there's a hyphen, insertLineBreakAt is the index after it, because
 							// that's where we want to insert the line break.
 							bool insertedHyphen = false;
-							if (toWrite[insertLineBreakAt - 1] != '-')
+							if (_toWrite[insertLineBreakAt - 1] != '-')
 							{
 								insertedHyphen = true;
-								toWrite.Insert(insertLineBreakAt, "-\n");
+								_toWrite.Insert(insertLineBreakAt, "-\n");
 							}
 							else
 							{
-								toWrite.Insert(insertLineBreakAt, '\n');
+								_toWrite.Insert(insertLineBreakAt, '\n');
 							}
 
-							keepTrying = (GameFonts.Dialogue.MeasureString(toWrite).X > dialogueBoxWidth);
+							keepTrying = (GameFonts.Dialogue.MeasureString(_toWrite).X > dialogueBoxWidth);
 							if (keepTrying)
 							{
 								// if we have to try again, because the string is too long,
 								// undo what we just did.
-								toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
+								_toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
 
 								// and try breaking the word earlier.
 								tryBreakingWordAtThisIdx--;
@@ -207,13 +216,13 @@ namespace FNA.GraceAttorney.Renderers
 					// for certain pathological dialogue box sizes, the space makes the string wider than the box,
 					// which means that the rest of the function will put each word on its own line.
 					if (idx != words.Length - 1)
-						toWrite.Append(' ');
+						_toWrite.Append(' ');
 				}
 
-				toWrite.Append('\n');
+				_toWrite.Append('\n');
 			}
 
-			return toWrite;
+			return _toWrite;
 		}
 
 		private static int HyphenationGuess(string word)

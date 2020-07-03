@@ -20,7 +20,9 @@ namespace FNA.GraceAttorney.Engines
 				if (HasComponent<DialogueComponent>(entity))
 				{
 					var dialogue = GetComponent<DialogueComponent>(entity).Dialogue;
-					if (dialogue != null && charactersVisible >= dialogue.Length)
+
+					// +6 because the string can have hyphens and such added when printing
+					if (dialogue != null && charactersVisible >= dialogue.Length + 6) 
 					{
 						RemoveComponent<AnimatedTextComponent>(entity);
 						continue;
