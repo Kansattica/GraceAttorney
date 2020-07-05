@@ -42,15 +42,16 @@ namespace FNA.GraceAttorney.Renderers
 
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
+			var originToCenterTheSpriteAlongTheXAxis = (_viewport.Width - (_scaleFactor.Factor * sprite.Width)) / 2;
 			switch (location)
 			{
 				case DrawLocation.Background:
-					return Vector2.Zero;
+					// center the background so that it displays okay even if the window has been maximized to something non-16:9.
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis, 0);
 				case DrawLocation.Centered:
 					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
 					float topOfHead = _viewport.Height - (_scaleFactor.Factor * sprite.Height * ShowThisMuch);
-					float spriteOrigin = (_viewport.Width - (_scaleFactor.Factor * sprite.Width)) / 2;
-					return new Vector2(spriteOrigin, topOfHead);
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis, topOfHead);
 			}
 			throw new NotImplementedException("You fell out of the switch.");
 		}
