@@ -15,9 +15,9 @@ namespace FNA.GraceAttorney.Engines
 	{
 		public override void Update(double dt)
 		{
-			foreach (var message in ReadMessages<StartMotionMessage>())
+			foreach (ref readonly var message in ReadMessages<StartMotionMessage>())
 			{
-				var entity = message.Entity;
+				ref readonly var entity = ref message.Entity;
 
 				if (message.EnterFrom == EntranceDirection.FadeIn)
 				{

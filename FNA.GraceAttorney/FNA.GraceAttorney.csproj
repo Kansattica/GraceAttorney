@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EncompassECS.Framework" Version="0.20.0" />
+		<PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
 	</ItemGroup>
 
 	<PropertyGroup>

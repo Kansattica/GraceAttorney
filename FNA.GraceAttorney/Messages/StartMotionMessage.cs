@@ -5,9 +5,15 @@ using Encompass;
 
 namespace FNA.GraceAttorney.Messages
 {
-	struct StartMotionMessage : IMessage, IHasEntity
+	readonly struct StartMotionMessage : IMessage
 	{
-		public Entity Entity { get; set; }
-		public EntranceDirection EnterFrom { get; set; }
+
+		public readonly Entity Entity;
+		public readonly EntranceDirection EnterFrom;
+		public StartMotionMessage(in Entity entity, EntranceDirection enterFrom)
+		{
+			Entity = entity;
+			EnterFrom = enterFrom;
+		}
 	}
 }

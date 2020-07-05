@@ -38,7 +38,7 @@ namespace FNA.GraceAttorney.Renderers
 			_colorTexture = colorTexture;
 		}
 
-		public override void Render(Entity entity, DialogueComponent drawComponent)
+		public override void Render(Entity entity, in DialogueComponent drawComponent)
 		{
 			if (!drawComponent.ShowBox) { return; }
 			
@@ -92,7 +92,7 @@ namespace FNA.GraceAttorney.Renderers
 			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
 		}
 
-		private void DrawDialogueBoxBorder(Rectangle borderRect)
+		private void DrawDialogueBoxBorder(in Rectangle borderRect)
 		{
 			DrawBorder(borderRect, OuterBorderColor);
 

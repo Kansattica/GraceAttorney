@@ -16,9 +16,9 @@ namespace FNA.GraceAttorney.Engines
 		{
 			if (!SomeMessage<ClearBackgroundMessage>()) { return; }
 
-			var entity = ReadEntity<BackgroundComponent>();
+			ref readonly var entity = ref ReadEntity<BackgroundComponent>();
 
-			var currentOpacity = GetComponent<OpacityComponent>(entity).Opacity;
+			ref readonly var currentOpacity = ref GetComponent<OpacityComponent>(entity).Opacity;
 
 			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: currentOpacity, fadeRate: 1.0f));
 		}

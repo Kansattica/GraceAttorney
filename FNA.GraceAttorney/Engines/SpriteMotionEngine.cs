@@ -14,14 +14,15 @@ namespace FNA.GraceAttorney.Engines
 	{
 		public override void Update(double dt)
 		{
-			foreach ((var movingSprite, var entity) in ReadComponentsIncludingEntity<MovingSpriteComponent>())
+			foreach (ref readonly var entity in ReadEntities<MovingSpriteComponent>())
 			{
+				ref readonly var movingSprite = ref GetComponent<MovingSpriteComponent>(entity);
 				// Offset is the percentage of the distance the sprite is away from where it will eventually end up
 				// This engine's job is to move each one closer to zero based on its velocity
 
-				var offset = GetComponent<SpriteOffsetComponent>(entity);
+				ref readonly var offset = ref GetComponent<SpriteOffsetComponent>(entity);
 				var newOffset = offset.PositionPercentageOffset +
-									VelocityVector(movingSprite.Velocity, dt, offset.PositionPercentageOffset, movingSprite.Direction);
+								   VelocityVector(movingSprite.Velocity, dt, offset.PositionPercentageOffset, movingSprite.Direction);
 
 				if (!ShouldStop(newOffset, movingSprite.Direction))
 				{

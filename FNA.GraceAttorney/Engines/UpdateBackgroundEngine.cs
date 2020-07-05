@@ -40,7 +40,7 @@ namespace FNA.GraceAttorney.Engines
 			sprite.Layer = 0;
 
 			SetComponent(entity, sprite);
-			SendMessage(new StartMotionMessage { EnterFrom = EntranceDirection.FadeIn, Entity = entity });
+			SendMessage(new StartMotionMessage(entity, EntranceDirection.FadeIn));
 		}
 	}
 }

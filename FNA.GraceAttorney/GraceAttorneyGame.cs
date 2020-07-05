@@ -77,10 +77,6 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(bg, new SpriteComponent());
 
 			worldBuilder.RegisterDrawLayer(1);
-			var character = worldBuilder.CreateEntity();
-			worldBuilder.SetComponent(character, new CharacterComponent());
-			worldBuilder.SetComponent(character, new OpacityComponent());
-			worldBuilder.SetComponent(character, new SpriteComponent());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
 			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall")));

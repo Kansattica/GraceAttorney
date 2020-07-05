@@ -13,13 +13,14 @@ namespace FNA.GraceAttorney.Engines
 	{
 		public override void Update(double dt)
 		{
-			foreach ((var animatingText, var entity) in ReadComponentsIncludingEntity<AnimatedTextComponent>())
+			foreach (ref readonly var entity in ReadEntities<AnimatedTextComponent>())
 			{
+				ref readonly var animatingText = ref GetComponent<AnimatedTextComponent>(entity);
 				double charactersVisible = animatingText.CharactersVisible + (animatingText.CharactersPerSecond * dt);
 
 				if (HasComponent<DialogueComponent>(entity))
 				{
-					var dialogue = GetComponent<DialogueComponent>(entity).Dialogue;
+					ref readonly var dialogue = ref GetComponent<DialogueComponent>(entity).Dialogue;
 
 					// +6 because the string can have hyphens and such added when printing
 					if (dialogue != null && charactersVisible >= dialogue.Length + 6) 

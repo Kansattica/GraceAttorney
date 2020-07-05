@@ -12,8 +12,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FNA.GraceAttorney.Engines
 {
 	[DefaultWritePriority(3)]
-	[Writes(typeof(CharacterComponent), typeof(SpriteComponent))]
-	[Reads(typeof(CharacterComponent), typeof(SpriteComponent))]
+	[Writes(typeof(SpriteComponent))]
+	[Reads(typeof(SpriteComponent))]
 	[Receives(typeof(NewCharacterMessage))]
 	[Sends(typeof(StartMotionMessage))]
 	class UpdateCharacterEngine : Engine
@@ -29,21 +29,20 @@ namespace FNA.GraceAttorney.Engines
 		{
 			if (!SomeMessage<NewCharacterMessage>()) { return; }
 
-			var entity = ReadEntity<CharacterComponent>();
+			var entity = CreateEntity();
 
-			var sprite = GetComponent<SpriteComponent>(entity);
+			ref readonly var message = ref ReadMessage<NewCharacterMessage>();
 
-			var message = ReadMessage<NewCharacterMessage>();
+			var sprite = new SpriteComponent
+			{
+				Sprite = _content.Load<Texture2D>(message.AssetName),
+				Position = DrawLocation.Centered,
+				Layer = 1
+			};
 
-			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
-				sprite.Sprite = _content.Load<Texture2D>(message.AssetName);
+			AddComponent(entity, sprite);
 
-			sprite.Position = DrawLocation.Centered;
-			sprite.Layer = 1;
-
-			SendMessage(new StartMotionMessage { Entity = entity, EnterFrom = message.EnterFrom });
-
-			SetComponent(entity, sprite);
+			SendMessage(new StartMotionMessage(entity, message.EnterFrom));
 		}
 
 	}

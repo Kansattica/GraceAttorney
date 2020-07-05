@@ -12,15 +12,16 @@ namespace FNA.GraceAttorney.Engines
 	{
 		public override void Update(double dt)
 		{
-			foreach (var pair in ReadComponentsIncludingEntity<OpacityComponent>())
+			foreach (ref readonly var entity in ReadEntities<OpacityComponent>())
 			{
-				switch (pair.Item1.Direction)
+				ref readonly var opacity = ref GetComponent<OpacityComponent>(entity);
+				switch (opacity.Direction)
 				{
 					case FadeDirection.FadeIn:
-						SetComponent(pair.Item2, UpdateOpacity(pair.Item1.Opacity + (dt * pair.Item1.FadeRate), 1f, pair.Item1.Direction, pair.Item1.FadeRate));
+						SetComponent(entity, UpdateOpacity(opacity.Opacity + (dt * opacity.FadeRate), 1f, opacity.Direction, opacity.FadeRate));
 						break;
 					case FadeDirection.FadeOut:
-						SetComponent(pair.Item2, UpdateOpacity(pair.Item1.Opacity - (dt * pair.Item1.FadeRate), 0f, pair.Item1.Direction, pair.Item1.FadeRate));
+						SetComponent(entity, UpdateOpacity(opacity.Opacity - (dt * opacity.FadeRate), 0f, opacity.Direction, opacity.FadeRate));
 						break;
 				}
 			}

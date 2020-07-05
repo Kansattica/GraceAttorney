@@ -25,7 +25,7 @@ namespace FNA.GraceAttorney.Renderers
 			_viewport = viewport;
 		}
 
-		public override void Render(Entity entity, SpriteComponent drawComponent)
+		public override void Render(Entity entity, in SpriteComponent drawComponent)
 		{
 			if (drawComponent.Sprite != null)
 			{
@@ -34,11 +34,16 @@ namespace FNA.GraceAttorney.Renderers
 				_spriteBatch.Draw(drawComponent.Sprite,
 					CalculatePosition(drawComponent.Position, drawComponent.Sprite) + CalculateOffset(entity),
 					null,
-					HasComponent<OpacityComponent>(entity) ? new Color(1f, 1f, 1f, GetComponent<OpacityComponent>(entity).Opacity) : Color.White,
+					HasComponent<OpacityComponent>(entity) ? OpacityColor(entity) : Color.White,
 					0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);
 			}
 		}
 
+		private Color OpacityColor(in Entity entity)
+		{
+			ref readonly var opacity = ref GetComponent<OpacityComponent>(entity);
+			return new Color(1f, 1f, 1f, opacity.Opacity);
+		}
 
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
