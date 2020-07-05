@@ -57,6 +57,9 @@ namespace FNA.GraceAttorney
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
 
 			var worldBuilder = new WorldBuilder();
+
+			worldBuilder.RegisterDrawLayer(1);
+			worldBuilder.RegisterDrawLayer(2);
 			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch, _scaleFactor, _viewport));
 			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture()));
 
@@ -76,12 +79,10 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(bg, new OpacityComponent());
 			worldBuilder.SetComponent(bg, new SpriteComponent());
 
-			worldBuilder.RegisterDrawLayer(1);
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
 			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall")));
 
-			worldBuilder.RegisterDrawLayer(2);
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
 			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });

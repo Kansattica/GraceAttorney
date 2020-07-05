@@ -33,14 +33,12 @@ namespace FNA.GraceAttorney.Engines
 
 			ref readonly var message = ref ReadMessage<NewCharacterMessage>();
 
-			var sprite = new SpriteComponent
+			AddComponent(entity, new SpriteComponent
 			{
 				Sprite = _content.Load<Texture2D>(message.AssetName),
 				Position = DrawLocation.Centered,
 				Layer = 1
-			};
-
-			AddComponent(entity, sprite);
+			});
 
 			SendMessage(new StartMotionMessage(entity, message.EnterFrom));
 		}
