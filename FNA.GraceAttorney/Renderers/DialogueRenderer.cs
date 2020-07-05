@@ -55,7 +55,7 @@ namespace FNA.GraceAttorney.Renderers
 			DrawNameTag(drawComponent.Speaker, dialogueBoxRect);
 		}
 
-		private int LengthToTruncateTo(Entity entity)
+		private int LengthToTruncateTo(in Entity entity)
 		{
 			if (!HasComponent<AnimatedTextComponent>(entity))
 				return -1;
