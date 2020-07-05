@@ -24,7 +24,8 @@ namespace FNA.GraceAttorney.Renderers
 
 		private const int BorderWidthInPixels = 2;
 
-		private const float NameTagXOffsetPercent = 1.1f;
+		private const float LeftNameTagXOffsetPercent = 1.1f;
+		private const float RightNameTagXOffsetPercent = 1.3f;
 		private const float NameTagWidthPercent = 1.30f;
 		private const float NameTagHeightPercent = 1.15f;
 
@@ -40,7 +41,7 @@ namespace FNA.GraceAttorney.Renderers
 
 		public override void Render(Entity entity, in DialogueComponent drawComponent)
 		{
-			if (!drawComponent.ShowBox) { return; }
+			if (!drawComponent.Display) { return; }
 			
 			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions(_viewport.Width, _viewport.Height);
 
@@ -52,7 +53,7 @@ namespace FNA.GraceAttorney.Renderers
 
 			if (drawComponent.Speaker == null) { return; }
 
-			DrawNameTag(drawComponent.Speaker, dialogueBoxRect);
+			DrawNameTag(drawComponent.Speaker, dialogueBoxRect, drawComponent.NameTagLocation);
 		}
 
 		private int LengthToTruncateTo(in Entity entity)
@@ -75,14 +76,16 @@ namespace FNA.GraceAttorney.Renderers
 
 		// "in" passes by immutable reference
 		// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-parameter-modifier
-		private void DrawNameTag(string name, in Rectangle dialogueBoxRect)
+		private void DrawNameTag(string name, in Rectangle dialogueBoxRect, NameTagLocation location)
 		{
 			var speakerSize = GameFonts.NameTag.MeasureString(name);
 
+			int nameTagWidth = (int)(speakerSize.X * NameTagWidthPercent);
 			int nameTagHeight = (int)(speakerSize.Y * NameTagHeightPercent);
 
-			var nameTagRect = new Rectangle((int)(dialogueBoxRect.X * NameTagXOffsetPercent), dialogueBoxRect.Y - nameTagHeight,
-				 (int)(speakerSize.X * NameTagWidthPercent), nameTagHeight);
+			var nameTagRect = new Rectangle(NameTagXPosition(location, dialogueBoxRect.X, dialogueBoxRect.Width, nameTagWidth),
+				dialogueBoxRect.Y - nameTagHeight,
+				nameTagWidth, nameTagHeight);
 
 			_spriteBatch.Draw(null, nameTagRect, TextBoxColor);
 
@@ -90,6 +93,20 @@ namespace FNA.GraceAttorney.Renderers
 				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, dialogueBoxRect.Y - nameTagRect.Height), Color.White);
 
 			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
+		}
+
+		private int NameTagXPosition(NameTagLocation location, int dialogueBoxStartX, int dialogueBoxWidth, int nameTagWidth)
+		{
+			switch (location)
+			{
+				case NameTagLocation.Center:
+					return (_viewport.Width - nameTagWidth) / 2;
+				case NameTagLocation.Right:
+					return (int)(dialogueBoxStartX + dialogueBoxWidth - (nameTagWidth * RightNameTagXOffsetPercent));
+				case NameTagLocation.Left:
+				default:
+					return (int)(dialogueBoxStartX * LeftNameTagXOffsetPercent);
+			}
 		}
 
 		private void DrawDialogueBoxBorder(in Rectangle borderRect)

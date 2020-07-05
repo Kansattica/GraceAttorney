@@ -90,10 +90,11 @@ namespace FNA.GraceAttorney
 			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				ShowBox = true,
-				Dialogue = "Can you believe they're trying to nail us for attempted murder?",
+				Display = true,
+				NameTagLocation = NameTagLocation.Center,
+				Dialogue = "Ah, fuck, it happened again",
 				Layer = (int)SpriteLayers.DialogueBox,
-				Speaker = "Three Bird Calls"
+				Speaker = "Way Too Many Bird Calls"
 			}));
 
 			_world = worldBuilder.Build();
