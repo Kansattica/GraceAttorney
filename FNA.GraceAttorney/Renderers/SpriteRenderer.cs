@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Encompass;
 using FNA.GraceAttorney.Components;
@@ -13,6 +14,7 @@ namespace FNA.GraceAttorney.Renderers
 	class SpriteRenderer : OrderedRenderer<SpriteComponent>
 	{
 		private const float ShowThisMuch = .90f;
+		private const float SideCharacterXOffset = .30f;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly ScaleFactor _scaleFactor;
@@ -45,6 +47,10 @@ namespace FNA.GraceAttorney.Renderers
 			return new Color(1f, 1f, 1f, opacity.Opacity);
 		}
 
+		private float CalculateTopOfHeadYPosition(int spriteHeight)
+		{ 
+			return _viewport.Height - (_scaleFactor.Factor * spriteHeight * ShowThisMuch);
+		}
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
 			var originToCenterTheSpriteAlongTheXAxis = (_viewport.Width - (_scaleFactor.Factor * sprite.Width)) / 2;
@@ -55,8 +61,14 @@ namespace FNA.GraceAttorney.Renderers
 					return new Vector2(originToCenterTheSpriteAlongTheXAxis, 0);
 				case DrawLocation.Centered:
 					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
-					float topOfHead = _viewport.Height - (_scaleFactor.Factor * sprite.Height * ShowThisMuch);
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis, topOfHead);
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis, CalculateTopOfHeadYPosition(sprite.Height));
+				case DrawLocation.Left:
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis + (SideCharacterXOffset * _viewport.Width)
+						, CalculateTopOfHeadYPosition(sprite.Height));
+				case DrawLocation.Right:
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis - (SideCharacterXOffset * _viewport.Width)
+						, CalculateTopOfHeadYPosition(sprite.Height));
+
 			}
 			throw new NotImplementedException("You fell out of the switch.");
 		}

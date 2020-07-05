@@ -37,7 +37,7 @@ namespace FNA.GraceAttorney.Engines
 			if (sprite.Sprite == null || sprite.Sprite.Name != message.AssetName)
 				sprite.Sprite = _content.Load<Texture2D>(message.AssetName);
 			sprite.Position = DrawLocation.Background;
-			sprite.Layer = 0;
+			sprite.Layer = (int)SpriteLayers.Background;
 
 			SetComponent(entity, sprite);
 			SendMessage(new StartMotionMessage(entity, EntranceDirection.FadeIn));

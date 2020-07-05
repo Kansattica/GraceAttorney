@@ -58,8 +58,8 @@ namespace FNA.GraceAttorney
 
 			var worldBuilder = new WorldBuilder();
 
-			worldBuilder.RegisterDrawLayer(1);
-			worldBuilder.RegisterDrawLayer(2);
+			for (int i = 0; i <= (int)SpriteLayers.VeryTop; i++)
+				worldBuilder.RegisterDrawLayer(i);
 			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch, _scaleFactor, _viewport));
 			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture()));
 
@@ -81,7 +81,9 @@ namespace FNA.GraceAttorney
 
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall")));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Centered));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Left));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
@@ -89,9 +91,9 @@ namespace FNA.GraceAttorney
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				ShowBox = true,
-				Dialogue = "Ah, Lostokyoangeles. The greatest city in the world for telecommunications-based bird crime.\nWhat are we doin' in court again, Di?\nIs it free gavel day already? I'm gonna take so many of those little hammery friends home, then wait for tiny wooden nail day.",
-				Layer = 2,
-				Speaker = "Bird Call"
+				Dialogue = "Can you believe they're trying to nail us for attempted murder?",
+				Layer = (int)SpriteLayers.DialogueBox,
+				Speaker = "Three Bird Calls"
 			}));
 
 			_world = worldBuilder.Build();

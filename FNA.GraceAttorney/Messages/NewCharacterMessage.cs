@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Encompass;
+using FNA.GraceAttorney.Components;
 
 namespace FNA.GraceAttorney.Messages
 {
@@ -10,10 +11,12 @@ namespace FNA.GraceAttorney.Messages
 	{
 		public readonly string AssetName;
 		public readonly EntranceDirection EnterFrom;
-		public NewCharacterMessage(string assetName, EntranceDirection enterFrom = EntranceDirection.FadeIn)
+		public readonly DrawLocation DrawLocation;
+		public NewCharacterMessage(string assetName, EntranceDirection enterFrom = EntranceDirection.FadeIn, DrawLocation drawLocation = DrawLocation.Centered)
 		{
 			AssetName = assetName;
 			EnterFrom = enterFrom;
+			DrawLocation = drawLocation;
 		}
 	}
 }

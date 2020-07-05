@@ -26,21 +26,19 @@ namespace FNA.GraceAttorney.Engines
 
 		public override void Update(double dt)
 		{
-			if (!SomeMessage<NewCharacterMessage>()) { return; }
-
-			var entity = CreateEntity();
-
-			ref readonly var message = ref ReadMessage<NewCharacterMessage>();
-
-			AddComponent(entity, new SpriteComponent
+			foreach (ref readonly var message in ReadMessages<NewCharacterMessage>())
 			{
-				Sprite = _content.Load<Texture2D>(message.AssetName),
-				Position = DrawLocation.Centered,
-				Layer = 1
-			});
+				var entity = CreateEntity();
 
-			SendMessage(new StartMotionMessage(entity, message.EnterFrom));
+				AddComponent(entity, new SpriteComponent
+				{
+					Sprite = _content.Load<Texture2D>(message.AssetName),
+					Position = message.DrawLocation,
+					Layer = (int)SpriteLayers.CharacterSprites
+				});
+
+				SendMessage(new StartMotionMessage(entity, message.EnterFrom));
+			}
 		}
-
 	}
 }
