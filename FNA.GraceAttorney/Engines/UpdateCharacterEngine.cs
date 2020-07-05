@@ -13,7 +13,6 @@ namespace FNA.GraceAttorney.Engines
 {
 	[DefaultWritePriority(3)]
 	[Writes(typeof(SpriteComponent))]
-	[Reads(typeof(SpriteComponent))]
 	[Receives(typeof(NewCharacterMessage))]
 	[Sends(typeof(StartMotionMessage))]
 	class UpdateCharacterEngine : Engine
