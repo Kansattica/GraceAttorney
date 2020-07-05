@@ -63,10 +63,10 @@ namespace FNA.GraceAttorney.Renderers
 					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
 					return new Vector2(originToCenterTheSpriteAlongTheXAxis, CalculateTopOfHeadYPosition(sprite.Height));
 				case DrawLocation.Left:
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis + (SideCharacterXOffset * _viewport.Width)
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis - (SideCharacterXOffset * _viewport.Width)
 						, CalculateTopOfHeadYPosition(sprite.Height));
 				case DrawLocation.Right:
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis - (SideCharacterXOffset * _viewport.Width)
+					return new Vector2(originToCenterTheSpriteAlongTheXAxis + (SideCharacterXOffset * _viewport.Width)
 						, CalculateTopOfHeadYPosition(sprite.Height));
 
 			}
