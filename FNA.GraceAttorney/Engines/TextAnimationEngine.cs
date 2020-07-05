@@ -8,7 +8,7 @@ namespace FNA.GraceAttorney.Engines
 {
 	[DefaultWritePriority(1)]
 	[Reads(typeof(AnimatedTextComponent), typeof(DialogueComponent))]
-	[Writes(typeof(AnimatedTextComponent), typeof(DialogueComponent))]
+	[Writes(typeof(AnimatedTextComponent))]
 	class TextAnimationEngine : Engine
 	{
 		public override void Update(double dt)
