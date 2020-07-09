@@ -26,8 +26,8 @@ jobs:
     - name: Build Game
       run: |
         mkdir GraceAttorney_Win
-        msbuild ${{ env.GRACE_ATTORNEY_SOLUTION }} /p:Configuration=Release /m /p:OutputPath=GraceAttorney_Win
-        ls GraceAttorney_Win       
+        msbuild ${{ env.GRACE_ATTORNEY_SOLUTION }} /p:Configuration=Release /m /p:OutputPath=.\GraceAttorney_Win
+        ls GraceAttorney_Win
  
     - name: Upload Game
       uses: actions/upload-artifact@v2
