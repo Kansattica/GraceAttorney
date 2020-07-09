@@ -7,3 +7,9 @@ jobs:
       mono: latest
     - os: windows
       mono: none
+
+install:
+  - nuget restore GraceAttorney.sln
+
+script:
+  - msbuild /p:Configuration=Release GraceAttorney.sln
