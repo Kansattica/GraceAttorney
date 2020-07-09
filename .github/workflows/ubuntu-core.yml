@@ -16,10 +16,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: dotnet restore
     - name: Build
-      run: dotnet build ./GraceAttorney.Core.sln --configuration Release --no-restore -o release_build
+      run: dotnet build ./GraceAttorney.Core.sln --configuration Release -o release_build
     - name: Upload 
       uses: actions/upload-artifact@v2
       with:
