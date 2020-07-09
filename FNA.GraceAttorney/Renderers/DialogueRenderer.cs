@@ -26,9 +26,9 @@ namespace FNA.GraceAttorney.Renderers
 		private const int BorderWidthInPixels = 3;
 
 		private const float LeftNameTagXOffsetPercent = 1.1f;
-		private const float RightNameTagXOffsetPercent = 1.7f;
-		private const float NameTagWidthPercent = 1.30f;
-		private const float NameTagHeightPercent = 1.8f;
+		private const float RightNameTagXOffsetPercent = .98f;
+		private const float NameTagIsThisPercentWiderThanTheText = 1.30f;
+		private const float NameTagIsThisPercentTallerThanTheText = 1.8f;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly UpdatedSize _viewport;
@@ -81,8 +81,8 @@ namespace FNA.GraceAttorney.Renderers
 		{
 			var speakerSize = GameFonts.NameTag.MeasureString(name);
 
-			int nameTagWidth = (int)(speakerSize.X * NameTagWidthPercent);
-			int nameTagHeight = (int)(speakerSize.Y * NameTagHeightPercent);
+			int nameTagWidth = (int)(speakerSize.X * NameTagIsThisPercentWiderThanTheText);
+			int nameTagHeight = (int)(speakerSize.Y * NameTagIsThisPercentTallerThanTheText);
 
 			var nameTagRect = new Rectangle(NameTagXPosition(location, dialogueBoxRect.X, dialogueBoxRect.Width, nameTagWidth),
 				dialogueBoxRect.Y - nameTagHeight,
@@ -103,7 +103,7 @@ namespace FNA.GraceAttorney.Renderers
 				case NameTagLocation.Center:
 					return (_viewport.Width - nameTagWidth) / 2;
 				case NameTagLocation.Right:
-					return (int)(dialogueBoxStartX + dialogueBoxWidth - (nameTagWidth * RightNameTagXOffsetPercent));
+					return (int)(dialogueBoxStartX + (RightNameTagXOffsetPercent * dialogueBoxWidth) - nameTagWidth);
 				case NameTagLocation.Left:
 				default:
 					return (int)(dialogueBoxStartX * LeftNameTagXOffsetPercent);
