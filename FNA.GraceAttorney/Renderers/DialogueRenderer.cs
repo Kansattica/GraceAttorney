@@ -145,8 +145,7 @@ namespace FNA.GraceAttorney.Renderers
 				color);
 		}
 
-		private const int CharactersPerLine = 40;
-		private static readonly string MaxLineWidth = new string('W', CharactersPerLine);
+		private static readonly string MaxLineWidth = new string('W', Constants.CharactersPerLine);
 		private const float LineWidthLeeway = .05f;
 		private float CalculateTextFit(int dialogueBoxWidth)
 		{
