@@ -29,8 +29,15 @@ namespace FNA.GraceAttorney.Engines
 
 		private OpacityComponent UpdateOpacity(double newValue, float target, FadeDirection direction, float fadeRate)
 		{
-			var newOpacity = (float)Math.Clamp(newValue, 0, 1.0);
+			var newOpacity = Clamp((float)newValue, 0, 1.0f);
 			return new OpacityComponent(direction: newOpacity == target ? FadeDirection.None : direction, opacity: newOpacity, fadeRate: fadeRate);
+		}
+
+		private static float Clamp(float value, float low, float high)
+		{
+			if (value < low) { return low; }
+			if (value > high) { return high; }
+			return value;
 		}
 	}
 }

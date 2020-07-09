@@ -43,7 +43,7 @@ namespace FNA.GraceAttorney.Renderers
 		public override void Render(Entity entity, in DialogueComponent drawComponent)
 		{
 			if (!drawComponent.Display) { return; }
-			
+
 			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions(_viewport.Width, _viewport.Height);
 
 			_spriteBatch.Draw(null, dialogueBoxRect, TextBoxColor);
@@ -65,7 +65,7 @@ namespace FNA.GraceAttorney.Renderers
 		}
 
 		private static Rectangle CalculateDialogueBoxDimensions(int screenWidth, int screenHeight)
-        {
+		{
 			int textBoxStartsAt = (int)(screenHeight * (1 - DialogueBoxVerticalScreenPercentage)) + 2 * BorderWidthInPixels;
 			int textBoxHeight = (int)(screenHeight * DialogueBoxVerticalScreenPercentage - screenHeight * DialogueBoxVerticalOffsetFromGroundPercentage) - 2 * BorderWidthInPixels;
 
@@ -194,11 +194,12 @@ namespace FNA.GraceAttorney.Renderers
 		// and handles the screen resizing pretty gracefully.
 
 		private static StringBuilder _toWrite = new StringBuilder(); // don't leak a stringbuilder every frame
+		private static readonly char[] _space = new char[] { ' ' }; // .net framework 4.6.1 insists
 		private static StringBuilder HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
 		{
 			foreach (var line in dialogue.Split('\n'))
 			{
-				var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				var words = line.Split(_space, StringSplitOptions.RemoveEmptyEntries);
 				for (var idx = 0; idx < words.Length; idx++)
 				{
 					var word = words[idx];
