@@ -2,6 +2,9 @@ name: Windows build
 
 on: [push]
 
+env:
+  GRACE_ATTORNEY_SOLUTION: GraceAttorney.Framework.sln
+
 jobs:
   build:
     runs-on: windows-latest
@@ -18,13 +21,13 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
      
     - name: Restore NuGet Packages
-      run: nuget restore GraceAttorney.Framework.sln
+      run: nuget restore ${{ env.GRACE_ATTORNEY_SOLUTION }}
  
     - name: Build Game
-      run: msbuild GraceAttorney.Framework.sln /p:Configuration=Release /m /p:OutputPath=GraceAttorney_Win
+      run: msbuild ${{ env.GRACE_ATTORNEY_SOLUTION }} /p:Configuration=Release /m /p:OutputPath=GraceAttorney_Win
  
     - name: Upload Game
       uses: actions/upload-artifact@v2
       with:
         name: GraceAttorneyWin
-        path: GraceAttorney_Win
+        path: ${{ github.workspace }}/GraceAttorney_Win/
