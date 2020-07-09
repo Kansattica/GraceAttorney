@@ -16,10 +16,18 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
       
     - name: Build project with Mono
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/code -v ${{ github.workspace }}/built:/srv/code/built \
-         mono:latest bin/bash -c "nuget restore && msbuild /p:Configuration=Release /p:OutDir=built"
+         mono:latest bin/bash -c "cd /srv/code && nuget restore && msbuild /p:Configuration=Release /p:OutDir=built"
+
+    - name: Upload built project
+      uses: actions/upload-artifact@v2
+      with:
+        # Artifact name
+        name: GraceAttorney-mono
+        # A file, directory or wildcard pattern that describes what to upload
+        path: built
