@@ -25,6 +25,11 @@ jobs:
  
     - name: Build Game
       run: msbuild ${{ env.GRACE_ATTORNEY_SOLUTION }} /p:Configuration=Release /m /p:OutputPath=GraceAttorney_Win
+    
+    - name: Verify that there's stuff in there.
+      run: |
+        ls GraceAttorney_Win
+        dir GraceAttorney_Win
  
     - name: Upload Game
       uses: actions/upload-artifact@v2
