@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Linq;
 using System.Text;
 using Encompass;
 using FNA.GraceAttorney.Components;
@@ -22,12 +20,12 @@ namespace FNA.GraceAttorney.Renderers
 
 		private const float DialogueBoxVerticalOffsetFromGroundPercentage = .05f;
 
-		private const int BorderWidthInPixels = 2;
+		private const int BorderWidthInPixels = 3;
 
 		private const float LeftNameTagXOffsetPercent = 1.1f;
-		private const float RightNameTagXOffsetPercent = 1.8f;
+		private const float RightNameTagXOffsetPercent = 1.7f;
 		private const float NameTagWidthPercent = 1.30f;
-		private const float NameTagHeightPercent = 1.30f;
+		private const float NameTagHeightPercent = 1.8f;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly UpdatedSize _viewport;
@@ -49,7 +47,7 @@ namespace FNA.GraceAttorney.Renderers
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
-			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect.X, dialogueBoxRect.Y, dialogueBoxRect.Width, LengthToTruncateTo(entity));
+			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
 
 			if (drawComponent.Speaker == null) { return; }
 
@@ -144,14 +142,41 @@ namespace FNA.GraceAttorney.Renderers
 				color);
 		}
 
-		private void DrawDialogue(string dialogue, int dialogueBoxX, int dialogueBoxY, int dialogueBoxWidth, int truncateTo)
+		private const int CharactersPerLine = 40;
+		private static readonly string MaxLineWidth = new string('W', CharactersPerLine);
+		private const float LineWidthLeeway = .05f;
+		private float CalculateTextFit(int dialogueBoxWidth)
 		{
-			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBoxWidth * .01);
+			var textHeight = GameFonts.Dialogue.MeasureString(MaxLineWidth).X;
+			return dialogueBoxWidth / textHeight;
+		}
 
-			int xDialogueOffset = dialogueBoxX + dialoguePadding;
-			int yDialogueOffset = dialogueBoxY + BorderWidthInPixels + 5;
+		private void SetFontSize(int dialogueBoxWidth)
+		{
+			// basically, if the line isn't long enough to fit 40 or so wide characters comfortably, reduce the font size
+			// if the line is too long, increase the font size.
 
-			var toDisplay = HyphenateAndWrapString(dialogue, dialogueBoxWidth - (dialoguePadding * 2));
+			for (var lineWidthFit = CalculateTextFit(dialogueBoxWidth); !(1 < lineWidthFit && lineWidthFit < (1 + LineWidthLeeway)); lineWidthFit = CalculateTextFit(dialogueBoxWidth))
+			{
+				// if the text is too big, make the font smaller
+				if (lineWidthFit < 1) GameFonts.Dialogue.Size--;
+				else GameFonts.Dialogue.Size++;
+			}
+		}
+
+		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
+		{
+
+			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * .02);
+
+			int xDialogueOffset = dialogueBox.X + dialoguePadding;
+			int yDialogueOffset = dialogueBox.Y + BorderWidthInPixels + (int)(dialogueBox.Height * .1);
+
+			int actualDialogueWidth = dialogueBox.Width - (dialoguePadding * 2);
+
+			SetFontSize(actualDialogueWidth);
+
+			var toDisplay = HyphenateAndWrapString(dialogue, actualDialogueWidth);
 
 			if (truncateTo != -1 && truncateTo < toDisplay.Length)
 			{
