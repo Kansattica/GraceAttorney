@@ -9,6 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -16,9 +19,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore -o release_build
+      run: dotnet build ./GraceAttorney.Core.sln --configuration Release --no-restore -o release_build
     - name: Upload 
       uses: actions/upload-artifact@v2
       with:
-        name: GraceAttorneyCore
+        name: GraceAttorney.Core
         path: release_build
