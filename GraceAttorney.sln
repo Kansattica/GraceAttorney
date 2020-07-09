@@ -18,6 +18,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpriteFontPlus.FNA", "exter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "external\FNA\FNA.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ink_compiler", "external\ink\compiler\ink_compiler.csproj", "{52E3F3D0-2702-44E5-82F5-783B82647CA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ink-engine-runtime", "external\ink\ink-engine-runtime\ink-engine-runtime.csproj", "{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{AE940780-7015-4683-B6B3-0027653C881F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,9 +94,39 @@ Global
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x64.Build.0 = Release|x64
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.ActiveCfg = Release|x86
 		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|x86.Build.0 = Release|x86
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|x64.Build.0 = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Debug|x86.Build.0 = Debug|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|x64.ActiveCfg = Release|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|x64.Build.0 = Release|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|x86.ActiveCfg = Release|Any CPU
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5}.Release|x86.Build.0 = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|x64.Build.0 = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Debug|x86.Build.0 = Debug|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|x64.ActiveCfg = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|x64.Build.0 = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|x86.ActiveCfg = Release|Any CPU
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6AF15C18-CE7A-4C5E-A6E4-C2E32CD1DBC6} = {AE940780-7015-4683-B6B3-0027653C881F}
+		{35253CE1-C864-4CD3-8249-4D1319748E8F} = {AE940780-7015-4683-B6B3-0027653C881F}
+		{52E3F3D0-2702-44E5-82F5-783B82647CA5} = {AE940780-7015-4683-B6B3-0027653C881F}
+		{F68D0EE2-1831-4A06-8FFA-CBD0315EFD0E} = {AE940780-7015-4683-B6B3-0027653C881F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B48838D8-BCC5-4C15-806A-40D396EBFC2A}

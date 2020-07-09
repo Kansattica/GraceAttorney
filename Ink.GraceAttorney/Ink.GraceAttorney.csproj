@@ -5,36 +5,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-
-	<PropertyGroup>
-		<InkVersion>0.9.0</InkVersion>
-		<InkUrl>https://github.com/inkle/ink/releases/download/$(InkVersion)/inklecate_windows_and_linux.zip</InkUrl>
-		<InkLocation>$(MSBuildProjectDirectory)/bin/external</InkLocation>
-	</PropertyGroup>
-
-	<Target Name="DownloadInk" BeforeTargets="PrepareForBuild">
-		<DownloadFile SourceUrl="$(InkUrl)" DestinationFolder="$(InkLocation)">
-			<Output TaskParameter="DownloadedFile" ItemName="InkArchiveLocation" />
-		</DownloadFile>
-	</Target>
-
-	<Target Name="UnzipInk" DependsOnTargets="DownloadInk" BeforeTargets="PrepareForBuild">
-		<Message Text="Extracting @(InkArchiveLocation) to $(InkLocation)/extracted." />
-		<Unzip SourceFiles="@(InkArchiveLocation)" DestinationFolder="$(InkLocation)/extracted" OverwriteReadOnlyFiles="true" />
-	</Target>
-
-	<ItemGroup>
-	  <Reference Include="ink-engine-runtime">
-	    <HintPath>bin\external\extracted\ink-engine-runtime.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
 	<ItemGroup>
 		<InkFiles Include="Ink/*.ink" />
 	</ItemGroup>
 
-	<Target Name="CompileInk" DependsOnTargets="UnzipInk" AfterTargets="Build" Inputs="@(InkFiles)" Outputs="$(OutDir)%(Identity).json">
+	<ItemGroup>
+	  <ProjectReference Include="..\external\ink\ink-engine-runtime\ink-engine-runtime.csproj" />
+	</ItemGroup>
+
+	<!--<Target Name="CompileInk" DependsOnTargets="UnzipInk" AfterTargets="Build" Inputs="@(InkFiles)" Outputs="$(OutDir)%(Identity).json">
 		<MakeDir Directories="$(OutDir)Ink" />
 		<Exec Command="$(InkLocation)/extracted/inklecate -o $(OutDir)@(InkFiles).json %(Identity)" />
-	</Target>
+	</Target>-->
 </Project>
