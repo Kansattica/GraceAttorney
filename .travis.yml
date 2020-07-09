@@ -5,11 +5,11 @@ jobs:
   include:
     - os: linux
       mono: latest
-    - os: windows
-      mono: none
+#    - os: windows
+#      mono: none
 
 #install:
 #  - msbuild -t:restore
 
-script:
-  - msbuild /p:Configuration=Release GraceAttorney.sln
+#script:
+#  - msbuild /p:Configuration=Release GraceAttorney.sln
