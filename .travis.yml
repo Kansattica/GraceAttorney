@@ -8,8 +8,8 @@ jobs:
     - os: windows
       mono: none
 
-install:
-  - nuget restore GraceAttorney.sln
+#install:
+#  - msbuild -t:restore
 
 script:
   - msbuild /p:Configuration=Release GraceAttorney.sln
