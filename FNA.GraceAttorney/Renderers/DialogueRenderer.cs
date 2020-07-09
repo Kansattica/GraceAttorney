@@ -20,6 +20,9 @@ namespace FNA.GraceAttorney.Renderers
 
 		private const float DialogueBoxVerticalOffsetFromGroundPercentage = .05f;
 
+		private const float HorizontalDialoguePadding = .02f;
+		private const float VerticalDialoguePadding = .1f;
+
 		private const int BorderWidthInPixels = 3;
 
 		private const float LeftNameTagXOffsetPercent = 1.1f;
@@ -164,13 +167,14 @@ namespace FNA.GraceAttorney.Renderers
 			}
 		}
 
+
 		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
 		{
 
-			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * .02);
+			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * HorizontalDialoguePadding);
 
 			int xDialogueOffset = dialogueBox.X + dialoguePadding;
-			int yDialogueOffset = dialogueBox.Y + BorderWidthInPixels + (int)(dialogueBox.Height * .1);
+			int yDialogueOffset = dialogueBox.Y + BorderWidthInPixels + (int)(dialogueBox.Height * VerticalDialoguePadding);
 
 			int actualDialogueWidth = dialogueBox.Width - (dialoguePadding * 2);
 
