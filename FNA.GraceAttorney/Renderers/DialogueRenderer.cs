@@ -25,9 +25,9 @@ namespace FNA.GraceAttorney.Renderers
 		private const int BorderWidthInPixels = 2;
 
 		private const float LeftNameTagXOffsetPercent = 1.1f;
-		private const float RightNameTagXOffsetPercent = 1.3f;
+		private const float RightNameTagXOffsetPercent = 1.8f;
 		private const float NameTagWidthPercent = 1.30f;
-		private const float NameTagHeightPercent = 1.15f;
+		private const float NameTagHeightPercent = 1.30f;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly UpdatedSize _viewport;
@@ -90,7 +90,7 @@ namespace FNA.GraceAttorney.Renderers
 			_spriteBatch.Draw(null, nameTagRect, TextBoxColor);
 
 			GameFonts.NameTag.DrawString(_spriteBatch, name,
-				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, dialogueBoxRect.Y - nameTagRect.Height), Color.White);
+				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, nameTagRect.Y + (nameTagRect.Height - speakerSize.Y) / 2), Color.White);
 
 			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
 		}
