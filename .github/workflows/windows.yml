@@ -25,6 +25,6 @@ jobs:
  
     - name: Upload Game
       uses: actions/upload-artifact@v2
-        with:
-          name: GraceAttorneyWin
-          path: GraceAttorney_Win
+      with:
+        name: GraceAttorneyWin
+        path: GraceAttorney_Win
