@@ -8,4 +8,13 @@
     <ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Content\Fonts\Aroania.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Fonts\AroaniaBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
