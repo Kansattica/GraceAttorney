@@ -1,0 +1,8 @@
+language: csharp
+solution: GraceAttorney.sln
+
+mono: latest
+
+os:
+  - linux
+  - windows
