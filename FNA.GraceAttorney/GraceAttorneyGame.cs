@@ -81,9 +81,9 @@ namespace FNA.GraceAttorney
 
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Centered));
 			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Left));
+			//worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
+			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "skunkgrace"), drawLocation: DrawLocation.Left));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
@@ -91,10 +91,10 @@ namespace FNA.GraceAttorney
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
-				NameTagLocation = NameTagLocation.Center,
-				Dialogue = "Ah, fuck, it happened again",
+				NameTagLocation = NameTagLocation.Right,
+				Dialogue = "What are you gonna do, nerd? I'm over here now. I'd like to see you try to get over here and skunk on me. I can do all the telecommunications-based crimes I want, and only Bod (bird god) can stop me. And Bod loves crime.",
 				Layer = (int)SpriteLayers.DialogueBox,
-				Speaker = "Way Too Many Bird Calls"
+				Speaker = "Bird Call"
 			}));
 
 			_world = worldBuilder.Build();
@@ -146,6 +146,7 @@ namespace FNA.GraceAttorney
 		private Point _oldWindowSize;
 		private float _aspectRatio;
 
+		private const int MinimumWindowWidth = 1000;
 
 		// from https://stackoverflow.com/questions/8396677/uniformly-resizing-a-window-in-xna
 		private void WindowSizeChanged(object sender, EventArgs e)
@@ -156,8 +157,9 @@ namespace FNA.GraceAttorney
 			if (Window.ClientBounds.Width != _oldWindowSize.X)
 			{ // We're changing the width
 			  // Set the new backbuffer size
-				_graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-				_graphics.PreferredBackBufferHeight = (int)(Window.ClientBounds.Width / _aspectRatio);
+				int targetWidth = Math.Max(MinimumWindowWidth, Window.ClientBounds.Width);
+				_graphics.PreferredBackBufferWidth = targetWidth;
+				_graphics.PreferredBackBufferHeight = (int)(targetWidth / _aspectRatio);
 			}
 			else if (Window.ClientBounds.Height != _oldWindowSize.Y)
 			{ // we're changing the height
