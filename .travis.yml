@@ -6,3 +6,4 @@ jobs:
     - os: linux
       mono: latest
     - os: windows
+      mono: none
