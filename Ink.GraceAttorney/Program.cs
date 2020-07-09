@@ -11,21 +11,21 @@ namespace InkTests
 		{
 			var story = new Story(File.ReadAllText("Ink/gay.ink.json"));
 
-			while(story.canContinue)
-			{
-				var nextLine = story.Continue().Split('*', StringSplitOptions.None);
+			//while(story.canContinue)
+			//{
+			//	var nextLine = story.Continue().Split('*', StringSplitOptions.None);
 
-				using (var c = new ConsoleColorer(story.currentTags.Contains("red") ? ConsoleColor.Red : new ConsoleColor?()))
-				{
-					for (var i = 0; i < nextLine.Length; i++)
-					{
-						using (var cc = new ConsoleColorer(i % 2 == 1 ? ConsoleColor.Blue : new ConsoleColor?(), c.Current))
-						{
-							Console.Write(nextLine[i]);
-						}
-					}
-				}
-			}
+			//	using (var c = new ConsoleColorer(story.currentTags.Contains("red") ? ConsoleColor.Red : new ConsoleColor?()))
+			//	{
+			//		for (var i = 0; i < nextLine.Length; i++)
+			//		{
+			//			using (var cc = new ConsoleColorer(i % 2 == 1 ? ConsoleColor.Blue : new ConsoleColor?(), c.Current))
+			//			{
+			//				Console.Write(nextLine[i]);
+			//			}
+			//		}
+			//	}
+			//}
 		}
 	}
 

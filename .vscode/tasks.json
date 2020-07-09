@@ -1,0 +1,224 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceRoot}"
+  },
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "cmd.exe",
+        "args": [
+          "/d",
+          "/c"
+        ]
+      }
+    }
+  },
+  "presentation": {
+    "reveal": "always",
+    "focus": true,
+    "panel": "shared"
+  },
+  "tasks": [
+    {
+      "label": "Build: Framework Release",
+      "command": "msbuild",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/GraceAttorney.Framework.sln",
+        "-p:Configuration=Release"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run: Framework Release",
+      "command": "mono",
+      "args": [
+        "GraceAttorney.exe"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/GraceAttorney/bin/Release/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Framework Release",
+      "dependsOn": [
+        "Build: Framework Release",
+        "Run: Framework Release"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Framework Debug",
+      "command": "msbuild",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/GraceAttorney.Framework.sln",
+        "-p:Configuration=Debug"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Framework Debug",
+      "command": "mono",
+      "args": [
+        "GraceAttorney.exe"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/GraceAttorney/bin/Debug/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Framework Debug",
+      "dependsOn": [
+        "Build: Framework Debug",
+        "Run: Framework Debug"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Core Debug",
+      "type": "shell",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build: Core Debug",
+        "Run: Core Debug"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Core Debug",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "./GraceAttorney.Core.sln",
+        "-f",
+        "netcoreapp3.1"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Core Debug",
+      "command": "dotnet",
+      "args": [
+        "./GraceAttorney.dll"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/GraceAttorney/bin/Debug/netcoreapp3.1"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Core Release",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "./GraceAttorney.Core.sln",
+        "--configuration",
+        "Release",
+        "-f",
+        "netcoreapp3.1"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Core Release",
+      "command": "dotnet",
+      "args": [
+        "./GraceAttorney.dll"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/GraceAttorney/bin/Release/netcoreapp3.1"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Core Release",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build: Core Release",
+        "Run: Core Release"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
