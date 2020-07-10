@@ -23,7 +23,7 @@ jobs:
         docker run \
         -v ${{ github.workspace }}:/srv/code -v ${{ github.workspace }}/built:/srv/code/built \
          mono:latest bin/bash -c \
-         "cd /srv/code && nuget restore GraceAttorney.Framework.sln && msbuild GraceAttorney.Framework.sln /p:Configuration=Release && mv GraceAttorney/bin/Release/net461/ /srv/code/built"
+         "cd /srv/code && nuget restore GraceAttorney.Framework.sln && msbuild GraceAttorney.Framework.sln /p:Configuration=Release && mv GraceAttorney/bin/Release/net461/* /srv/code/built"
          
     - name: Upload built project
       uses: actions/upload-artifact@v2
