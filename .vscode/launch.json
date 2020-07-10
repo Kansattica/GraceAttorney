@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to Core Debugger",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build: Core Debug",
+      "program": "${workspaceFolder}/GraceAttorney/bin/Debug/netcoreapp3.1/GraceAttorney.dll",
+      "args": [],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/GraceAttorney/bin/Debug/netcoreapp3.1/lib64",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/GraceAttorney/bin/Debug/netcoreapp3.1/osx"
+      },
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

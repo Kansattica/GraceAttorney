@@ -1,0 +1,34 @@
+<Project>
+	<PropertyGroup>
+		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+	</PropertyGroup>
+	<Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetName>GraceAttorney</TargetName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <LangVersion>8.0</LangVersion>
+    <StartupObject>GraceAttorney.Program</StartupObject>
+    <AssemblyName>GraceAttorney</AssemblyName>
+    <RootNamespace>GraceAttorney</RootNamespace>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+    <ApplicationIcon />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\external\FNA\FNA.Core.csproj" />
+    <ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
+  </ItemGroup>
+  <Import Project="..\build\CopyFNALibs.targets" />
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+</Project>
