@@ -1,0 +1,33 @@
+name: Windows build
+
+on: [push]
+
+env:
+  GRACE_ATTORNEY_SOLUTION: GraceAttorney.Framework.sln
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+# adapted from https://www.timheuer.com/blog/building-net-framework-apps-using-github-actions/
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+     
+    - name: Restore NuGet Packages
+      run: nuget restore ${{ env.GRACE_ATTORNEY_SOLUTION }}
+ 
+    - name: Build Game
+      run: msbuild ${{ env.GRACE_ATTORNEY_SOLUTION }} /p:Configuration=Release /m
+ 
+    - name: Upload Game
+      uses: actions/upload-artifact@v2
+      with:
+        name: GraceAttorneyWin
+        path:  ${{ github.workspace }}\GraceAttorney\bin
