@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
 	<PropertyGroup>
 		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
@@ -20,6 +20,10 @@
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);DllMap.cs</DefaultItemExcludes>
   </PropertyGroup>
+	<PropertyGroup>
+		<!-- see https://github.com/ericstj/Microsoft.Packaging.Tools.Trimming -->
+		<TrimUnusedDependencies>true</TrimUnusedDependencies>
+	</PropertyGroup>
   <ItemGroup>
     <Content Include="Content\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -27,10 +31,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
+    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\FNA\FNA.csproj" />
-    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
+    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" PrivateAssets="all" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
