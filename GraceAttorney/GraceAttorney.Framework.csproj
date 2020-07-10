@@ -4,21 +4,21 @@
 	</PropertyGroup>
 	<Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net461</TargetFramework>
-    <TargetName>GraceAttorney</TargetName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <LangVersion>8.0</LangVersion>
-    <StartupObject>GraceAttorney.Program</StartupObject>
-    <AssemblyName>GraceAttorney</AssemblyName>
-    <RootNamespace>GraceAttorney</RootNamespace>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
-    <ApplicationIcon />
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net461</TargetFramework>
+	<TargetName>GraceAttorney</TargetName>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+	<LangVersion>8.0</LangVersion>
+	<StartupObject>GraceAttorney.Program</StartupObject>
+	<AssemblyName>GraceAttorney</AssemblyName>
+	<RootNamespace>GraceAttorney</RootNamespace>
+	<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+	<RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+	<ApplicationIcon />
   </PropertyGroup>
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);DllMap.cs</DefaultItemExcludes>
+	<DefaultItemExcludes>$(DefaultItemExcludes);DllMap.cs</DefaultItemExcludes>
   </PropertyGroup>
 	<PropertyGroup>
 		<!-- see https://github.com/ericstj/Microsoft.Packaging.Tools.Trimming
@@ -26,17 +26,17 @@
 		<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	</PropertyGroup>
   <ItemGroup>
-    <Content Include="Content\**\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+	<Content Include="Content\**\*.*">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
-    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
+	<PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
+	<PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\external\FNA\FNA.csproj" />
-    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
+	<ProjectReference Include="..\external\FNA\FNA.csproj" />
+	<ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
