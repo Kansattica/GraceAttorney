@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\FNA\FNA.Core.csproj" />
-    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
+    <ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EncompassECS.Framework" Version="0.21.0" />

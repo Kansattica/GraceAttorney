@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
 	<PropertyGroup>
 		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
@@ -36,7 +36,15 @@
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\external\FNA\FNA.csproj" />
-	<ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
+	<ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Content\Fonts\Aroania.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Fonts\AroaniaBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
