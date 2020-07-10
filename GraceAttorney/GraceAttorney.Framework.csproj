@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
 	<PropertyGroup>
 		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\FNA\FNA.csproj" />
-    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Fonts.GraceAttorney\Fonts.GraceAttorney.csproj" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
