@@ -21,7 +21,8 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);DllMap.cs</DefaultItemExcludes>
   </PropertyGroup>
 	<PropertyGroup>
-		<!-- see https://github.com/ericstj/Microsoft.Packaging.Tools.Trimming -->
+		<!-- see https://github.com/ericstj/Microsoft.Packaging.Tools.Trimming
+				This can apparently be fixed by targetting .net 4.7.1, but I don't think that's happening.-->
 		<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	</PropertyGroup>
   <ItemGroup>
