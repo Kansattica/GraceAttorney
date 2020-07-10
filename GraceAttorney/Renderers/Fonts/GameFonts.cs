@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using SpriteFontPlus;
 
-namespace Fonts.GraceAttorney
+namespace GraceAttorney.Renderers.Fonts
 {
     public class GameFonts
     {

@@ -3,7 +3,7 @@ using System.Text;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.DependencyInjection;
-using Fonts.GraceAttorney;
+using GraceAttorney.Renderers.Fonts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
