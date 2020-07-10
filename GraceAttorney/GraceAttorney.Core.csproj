@@ -27,7 +27,7 @@
     <ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EncompassECS.Framework" Version="0.21.0" />
+    <PackageReference Include="EncompassECS.Framework" Version="0.21.1" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
