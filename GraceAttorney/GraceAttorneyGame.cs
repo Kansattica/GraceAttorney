@@ -95,7 +95,7 @@ namespace GraceAttorney
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "I have to go now. My planet needs me to flap at stuff and caw. I'll be back in a week or so.",
+				Dialogue = "Ah, shit, I got that Back To The Future disease that makes you go all transparent. I knew I should have helped my parents hook up.",
 				Layer = (int)SpriteLayers.DialogueBox,
 				Speaker = "Bird Call"
 			}));

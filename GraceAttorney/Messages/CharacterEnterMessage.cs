@@ -6,7 +6,7 @@ using GraceAttorney.Components;
 
 namespace GraceAttorney.Messages
 {
-	enum EnterExitDirection { Top, Bottom, Left, Right, Fade }
+	enum EnterExitDirection { Top, Bottom, Left, Right, Fade, NoAnimation }
 	readonly struct CharacterEnterMessage : IMessage
 	{
 		public readonly string CharacterName;

@@ -10,14 +10,17 @@ using GraceAttorney.Messages;
 namespace GraceAttorney.Engines
 {
 	[Receives(typeof(CharacterExitMessage))]
-	[Sends(typeof(StartMotionMessage))]
+	[Sends(typeof(StartMotionMessage), typeof(RemoveCharacterMessage))]
 	class CharacterExitEngine : Engine
 	{
 		public override void Update(double dt)
 		{
 			foreach (ref readonly var message in ReadMessages<CharacterExitMessage>())
 			{
-				SendMessage(new StartMotionMessage(message.Character, message.ExitTo, MotionDirection.Out));
+				if (message.ExitTo == EnterExitDirection.NoAnimation)
+					SendMessage(new RemoveCharacterMessage(message.Character));
+				else
+					SendMessage(new StartMotionMessage(message.Character, message.ExitTo, MotionDirection.Out));
 			}
 		}
 	}

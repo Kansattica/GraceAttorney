@@ -41,6 +41,9 @@ namespace GraceAttorney.Engines
 			if (KeysPressed(keyboardCur, Keys.F))
 				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Fade));
 
+			if (KeysPressed(keyboardCur, Keys.O))
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.NoAnimation));
+
 			if (KeysPressed(keyboardCur, Keys.W))
 				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Top));
 
@@ -55,6 +58,9 @@ namespace GraceAttorney.Engines
 
 			if (KeysPressed(keyboardCur, Keys.X))
 				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Fade));
+
+			if (KeysPressed(keyboardCur, Keys.P))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.NoAnimation));
 
 			_keyboardPrev = keyboardCur;
 		}
