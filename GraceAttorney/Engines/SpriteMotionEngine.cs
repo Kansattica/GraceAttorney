@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Encompass;
 using GraceAttorney.Components;
+using GraceAttorney.Messages;
 using Microsoft.Xna.Framework;
 
 namespace GraceAttorney.Engines
@@ -10,6 +11,7 @@ namespace GraceAttorney.Engines
 	[DefaultWritePriority(2)]
 	[Reads(typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent))]
 	[Writes(typeof(SpriteOffsetComponent), typeof(MovingSpriteComponent))]
+	[Sends(typeof(RemoveCharacterMessage))]
 	class SpriteMotionEngine : Engine
 	{
 		public override void Update(double dt)
@@ -24,15 +26,17 @@ namespace GraceAttorney.Engines
 				var newOffset = offset.PositionPercentageOffset +
 								   VelocityVector(movingSprite.Velocity, dt, offset.PositionPercentageOffset, movingSprite.Direction);
 
-				if (!ShouldStop(newOffset, movingSprite.Direction))
-				{
-					SetComponent(entity,
-						new SpriteOffsetComponent { PositionPercentageOffset = newOffset });
-				}
-				else
+				if (ShouldStop(newOffset, movingSprite.Direction))
 				{
 					RemoveComponent<MovingSpriteComponent>(entity);
 					RemoveComponent<SpriteOffsetComponent>(entity);
+					if (movingSprite.Direction == MotionDirection.Out)
+						SendMessage(new RemoveCharacterMessage(entity));
+				}
+				else
+				{
+					SetComponent(entity,
+						new SpriteOffsetComponent { PositionPercentageOffset = newOffset });
 				}
 			}
 		}
@@ -59,8 +63,13 @@ namespace GraceAttorney.Engines
         {
 			if (direction == MotionDirection.In && offsetVector.Length() <= .006f)
 				return true;
-			if (direction == MotionDirection.Out && offsetVector.Length() >= 1)
+
+			// remove characters only when you're sure they're offscreen
+			// because if they're leaving, say, up, their feet are still on the screen at 1.0 offset
+			// in the future, it'd be a good idea to get the sprite size to calculate exactly when they're offscreen.
+			if (direction == MotionDirection.Out && offsetVector.Length() >= 2.0)
 				return true;
+
 			return false;
 		}
 	}

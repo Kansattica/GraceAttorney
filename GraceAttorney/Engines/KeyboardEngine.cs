@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Encompass;
+using GraceAttorney.Components;
 using GraceAttorney.Messages;
 using Microsoft.Xna.Framework.Input;
 
 namespace GraceAttorney.Engines
 {
-	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage), typeof(NewCharacterMessage))]
+	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage), typeof(CharacterEnterMessage), typeof(CharacterExitByPositionMessage))]
 	class KeyboardEngine : Engine
 	{
 		private KeyboardState _keyboardPrev = new KeyboardState();
@@ -26,19 +27,34 @@ namespace GraceAttorney.Engines
 				SendMessage(new NewBackgroundMessage(Path.Combine("Case1", "background")));
 
 			if (KeysPressed(keyboardCur, Keys.Up))
-				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Top));
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Top));
 
 			if (KeysPressed(keyboardCur, Keys.Down))
-				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Bottom));
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Bottom));
 
 			if (KeysPressed(keyboardCur, Keys.Left))
-				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Left));
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Left));
 
 			if (KeysPressed(keyboardCur, Keys.Right))
-				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.Right));
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Right));
 
 			if (KeysPressed(keyboardCur, Keys.F))
-				SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EntranceDirection.FadeIn));
+				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Fade));
+
+			if (KeysPressed(keyboardCur, Keys.W))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Top));
+
+			if (KeysPressed(keyboardCur, Keys.S))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Bottom));
+
+			if (KeysPressed(keyboardCur, Keys.A))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Left));
+
+			if (KeysPressed(keyboardCur, Keys.D))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Right));
+
+			if (KeysPressed(keyboardCur, Keys.X))
+				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Fade));
 
 			_keyboardPrev = keyboardCur;
 		}

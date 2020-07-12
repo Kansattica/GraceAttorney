@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using Encompass;
 using GraceAttorney.Components;
+using GraceAttorney.Messages;
 
 namespace GraceAttorney.Engines
 {
 	[Reads(typeof(OpacityComponent))]
 	[Writes(typeof(OpacityComponent), 10)]
+	[Sends(typeof(RemoveCharacterMessage))]
 	class FadeEngine : Engine
 	{
 		public override void Update(double dt)
@@ -15,15 +17,32 @@ namespace GraceAttorney.Engines
 			foreach (ref readonly var entity in ReadEntities<OpacityComponent>())
 			{
 				ref readonly var opacity = ref GetComponent<OpacityComponent>(entity);
-				switch (opacity.Direction)
+				var calculated = NewOpacity(dt, opacity);
+				if (calculated.Direction == FadeDirection.None)
 				{
-					case FadeDirection.FadeIn:
-						SetComponent(entity, UpdateOpacity(opacity.Opacity + (dt * opacity.FadeRate), 1f, opacity.Direction, opacity.FadeRate));
-						break;
-					case FadeDirection.FadeOut:
-						SetComponent(entity, UpdateOpacity(opacity.Opacity - (dt * opacity.FadeRate), 0f, opacity.Direction, opacity.FadeRate));
-						break;
+					if (opacity.Direction == FadeDirection.FadeOut)
+						SendMessage(new RemoveCharacterMessage(entity)); // if they fade all the way out, remove 'em
+					else
+						RemoveComponent<OpacityComponent>(entity); // if they fade all the way in, stop animating.
 				}
+				else
+				{
+					SetComponent(entity, calculated);
+				}
+
+			}
+		}
+
+		private OpacityComponent NewOpacity(double dt, in OpacityComponent opacity)
+		{
+			switch (opacity.Direction)
+			{
+				case FadeDirection.FadeIn:
+					return UpdateOpacity(opacity.Opacity + (dt * opacity.FadeRate), 1f, opacity.Direction, opacity.FadeRate);
+				case FadeDirection.FadeOut:
+					return UpdateOpacity(opacity.Opacity - (dt * opacity.FadeRate), 0f, opacity.Direction, opacity.FadeRate);
+				default:
+					throw new NotImplementedException("Hm, this shouldn't happen in the fade engine.");
 			}
 		}
 

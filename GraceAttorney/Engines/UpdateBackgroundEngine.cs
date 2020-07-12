@@ -40,7 +40,7 @@ namespace GraceAttorney.Engines
 			sprite.Layer = (int)SpriteLayers.Background;
 
 			SetComponent(entity, sprite);
-			SendMessage(new StartMotionMessage(entity, EntranceDirection.FadeIn));
+			SendMessage(new StartMotionMessage(entity, EnterExitDirection.Fade, MotionDirection.In));
 		}
 	}
 }

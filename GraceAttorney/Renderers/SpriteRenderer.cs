@@ -59,7 +59,7 @@ namespace GraceAttorney.Renderers
 				case DrawLocation.Background:
 					// center the background so that it displays okay even if the window has been maximized to something non-16:9.
 					return new Vector2(originToCenterTheSpriteAlongTheXAxis, 0);
-				case DrawLocation.Centered:
+				case DrawLocation.Center:
 					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
 					return new Vector2(originToCenterTheSpriteAlongTheXAxis, CalculateTopOfHeadYPosition(sprite.Height));
 				case DrawLocation.Left:

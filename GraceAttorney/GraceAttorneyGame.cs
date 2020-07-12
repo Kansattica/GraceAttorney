@@ -67,7 +67,10 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
 			worldBuilder.AddEngine(new UpdateBackgroundEngine(Content));
 			worldBuilder.AddEngine(new UpdateCharacterEngine(Content));
+			worldBuilder.AddEngine(new CharacterExitEngine());
+			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
+			worldBuilder.AddEngine(new RemoveCharacterEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new SpriteMotionEngine());
 			worldBuilder.AddEngine(new StartMotionEngine());
@@ -81,9 +84,9 @@ namespace GraceAttorney
 
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
+			//worldBuilder.SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
 			//worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
-			worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "skunkgrace"), drawLocation: DrawLocation.Left));
+			//worldBuilder.SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "skunkgrace"), drawLocation: DrawLocation.Left));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
@@ -91,14 +94,13 @@ namespace GraceAttorney
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
-				NameTagLocation = NameTagLocation.Right,
-				Dialogue = "What are you gonna do, nerd? I'm over here now. I'd like to see you try to get over here and skunk on me. I can do all the telecommunications-based crimes I want, and only Bod (bird god) can stop me. And Bod loves crime.",
+				NameTagLocation = NameTagLocation.Left,
+				Dialogue = "I have to go now. My planet needs me to flap at stuff and caw. I'll be back in a week or so.",
 				Layer = (int)SpriteLayers.DialogueBox,
 				Speaker = "Bird Call"
 			}));
 
 			_world = worldBuilder.Build();
-			base.Initialize();
 		}
 
 		protected override void LoadContent()

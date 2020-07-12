@@ -13,7 +13,7 @@ namespace GraceAttorney.Engines
 {
 	[DefaultWritePriority(3)]
 	[Writes(typeof(SpriteComponent))]
-	[Receives(typeof(NewCharacterMessage))]
+	[Receives(typeof(CharacterEnterMessage))]
 	[Sends(typeof(StartMotionMessage))]
 	class UpdateCharacterEngine : Engine
 	{
@@ -26,18 +26,18 @@ namespace GraceAttorney.Engines
 
 		public override void Update(double dt)
 		{
-			foreach (ref readonly var message in ReadMessages<NewCharacterMessage>())
+			foreach (ref readonly var message in ReadMessages<CharacterEnterMessage>())
 			{
 				var entity = CreateEntity();
 
 				AddComponent(entity, new SpriteComponent
 				{
-					Sprite = _content.Load<Texture2D>(message.AssetName),
+					Sprite = _content.Load<Texture2D>(message.CharacterName),
 					Position = message.DrawLocation,
 					Layer = (int)SpriteLayers.CharacterSprites
 				});
 
-				SendMessage(new StartMotionMessage(entity, message.EnterFrom));
+				SendMessage(new StartMotionMessage(entity, message.EnterFrom, MotionDirection.In));
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 
 ### Things to implement
 - [ ] Darkening the sprites that aren't "speaking"
-- [ ] Animated exits
+- [X] Animated exits
 - [ ] Choices
 - [ ] Cross-Examination
 - [ ] Ink integration
