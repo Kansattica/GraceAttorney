@@ -30,6 +30,8 @@ namespace GraceAttorney
 				PreferredBackBufferWidth = 1280,
 				PreferredBackBufferHeight = 720,
 				IsFullScreen = false,
+				GraphicsProfile = GraphicsProfile.HiDef,
+				PreferMultiSampling = true,
 				SynchronizeWithVerticalRetrace = true
 			};
 
