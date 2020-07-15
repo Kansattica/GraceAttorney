@@ -51,9 +51,9 @@ namespace GraceAttorney.Renderers
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
 			if (drawComponent.Justification == JustifyText.Left)
-				DrawDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
+				DrawDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity), drawComponent.TextColor);
 			else if (drawComponent.Justification == JustifyText.Center)
-				DrawCenteredDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
+				DrawCenteredDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity), drawComponent.TextColor);
 
 			if (drawComponent.Speaker == null) { return; }
 
@@ -169,7 +169,7 @@ namespace GraceAttorney.Renderers
 			}
 		}
 
-		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
+		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
 		{
 			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
 			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
@@ -183,13 +183,13 @@ namespace GraceAttorney.Renderers
 				toDisplay.Remove(truncateTo, toDisplay.Length - truncateTo);
 			}
 
-			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
+			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
 			_toWrite.Clear();
 
 		}
 
 		private const float PaddingBetweenCenteredLines = 1.4f;
-		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
+		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
 		{
 			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
 			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
@@ -206,7 +206,7 @@ namespace GraceAttorney.Renderers
 			{
 				var lineSize = GameFonts.Dialogue.MeasureString(line);
 				int centeredX = (int)((actualDialogueWidth - lineSize.X) / 2 + xDialogueOffset);
-				GameFonts.Dialogue.DrawString(_spriteBatch, line, new Vector2(centeredX, runningYOffset), Color.White);
+				GameFonts.Dialogue.DrawString(_spriteBatch, line, new Vector2(centeredX, runningYOffset), color);
 				runningYOffset += (lineSize.Y * PaddingBetweenCenteredLines);
 			}
 		}

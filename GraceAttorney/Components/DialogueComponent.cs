@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Encompass;
+using Microsoft.Xna.Framework;
 
 namespace GraceAttorney.Components
 {
@@ -14,6 +15,7 @@ namespace GraceAttorney.Components
 		public string Dialogue;
 		public NameTagLocation NameTagLocation;
 		public JustifyText Justification;
+		public Color TextColor;
 
 		public int Layer { get; set; }
 	}
