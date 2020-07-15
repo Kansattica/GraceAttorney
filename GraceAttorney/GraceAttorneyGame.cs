@@ -74,6 +74,7 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new RemoveSpriteEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
+			worldBuilder.AddEngine(new ClearAllCharactersEngine());
 			worldBuilder.AddEngine(new SpriteMotionEngine());
 			worldBuilder.AddEngine(new StartMotionEngine());
 			worldBuilder.AddEngine(new TextAnimationEngine());

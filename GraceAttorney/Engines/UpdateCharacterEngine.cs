@@ -37,6 +37,8 @@ namespace GraceAttorney.Engines
 					Layer = (int)SpriteLayers.CharacterSprites
 				});
 
+				AddComponent(entity, new CharacterComponent(message.CharacterName));
+
 				if (message.EnterFrom != EnterExitDirection.NoAnimation)
 					SendMessage(new StartMotionMessage(entity, message.EnterFrom, MotionDirection.In));
 			}
