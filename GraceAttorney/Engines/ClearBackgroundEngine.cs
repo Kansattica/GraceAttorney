@@ -18,9 +18,18 @@ namespace GraceAttorney.Engines
 
 			ref readonly var entity = ref ReadEntity<BackgroundComponent>();
 
-			ref readonly var currentOpacity = ref GetComponent<OpacityComponent>(entity).Opacity;
+			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: GetOpacity(entity), fadeRate: 1.0f));
+		}
+		private float GetOpacity(in Entity entity)
+		{
+			if (HasComponent<OpacityComponent>(entity))
+			{
+				ref readonly var opacityComponent = ref GetComponent<OpacityComponent>(entity);
+				return opacityComponent.Opacity;
+			}
 
-			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: currentOpacity, fadeRate: 1.0f));
+			return 1.0f;
 		}
 	}
+
 }
