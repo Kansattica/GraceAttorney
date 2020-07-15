@@ -50,7 +50,10 @@ namespace GraceAttorney.Renderers
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
-			DrawDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
+			if (drawComponent.Justification == JustifyText.Left)
+				DrawDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
+			else if (drawComponent.Justification == JustifyText.Center)
+				DrawCenteredDialogue(drawComponent.Dialogue, dialogueBoxRect, LengthToTruncateTo(entity));
 
 			if (drawComponent.Speaker == null) { return; }
 
@@ -166,16 +169,10 @@ namespace GraceAttorney.Renderers
 			}
 		}
 
-
 		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
 		{
-
-			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * HorizontalDialoguePadding);
-
-			int xDialogueOffset = dialogueBox.X + dialoguePadding;
-			int yDialogueOffset = dialogueBox.Y + BorderWidthInPixels + (int)(dialogueBox.Height * VerticalDialoguePadding);
-
-			int actualDialogueWidth = dialogueBox.Width - (dialoguePadding * 2);
+			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
+			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
 
 			SetFontSize(actualDialogueWidth);
 
@@ -188,6 +185,39 @@ namespace GraceAttorney.Renderers
 
 			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), Color.White);
 			_toWrite.Clear();
+
+		}
+
+		private const float PaddingBetweenCenteredLines = 1.4f;
+		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo)
+		{
+			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
+			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
+
+			SetFontSize(actualDialogueWidth);
+
+			if (truncateTo != -1 && truncateTo < dialogue.Length)
+			{
+				dialogue = dialogue.Substring(0, truncateTo);
+			}
+
+			float runningYOffset = yDialogueOffset;
+			foreach (var line in dialogue.Split('\n'))
+			{
+				var lineSize = GameFonts.Dialogue.MeasureString(line);
+				int centeredX = (int)((actualDialogueWidth - lineSize.X) / 2 + xDialogueOffset);
+				GameFonts.Dialogue.DrawString(_spriteBatch, line, new Vector2(centeredX, runningYOffset), Color.White);
+				runningYOffset += (lineSize.Y * PaddingBetweenCenteredLines);
+			}
+		}
+
+		private static void CalculateTextBounds(Rectangle dialogueBox, out int xDialogueOffset, out int yDialogueOffset, out int actualDialogueWidth)
+		{
+			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * HorizontalDialoguePadding);
+
+			xDialogueOffset = dialogueBox.X + dialoguePadding;
+			yDialogueOffset = dialogueBox.Y + BorderWidthInPixels + (int)(dialogueBox.Height * VerticalDialoguePadding);
+			actualDialogueWidth = dialogueBox.Width - (dialoguePadding * 2);
 		}
 
 		// I'm sorry that this is so hairy, but this does a reasonable job breaking up longer words
