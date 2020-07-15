@@ -11,7 +11,7 @@ namespace GraceAttorney.Engines
 	[DefaultWritePriority(2)]
 	[Reads(typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent))]
 	[Writes(typeof(SpriteOffsetComponent), typeof(MovingSpriteComponent))]
-	[Sends(typeof(RemoveCharacterMessage))]
+	[Sends(typeof(RemoveSpriteMessage))]
 	class SpriteMotionEngine : Engine
 	{
 		public override void Update(double dt)
@@ -32,7 +32,7 @@ namespace GraceAttorney.Engines
 					RemoveComponent<MovingSpriteComponent>(entity);
 					RemoveComponent<SpriteOffsetComponent>(entity);
 					if (movingSprite.Direction == MotionDirection.Out)
-						SendMessage(new RemoveCharacterMessage(entity));
+						SendMessage(new RemoveSpriteMessage(entity));
 				}
 				else
 				{

@@ -7,12 +7,12 @@ using Encompass;
 
 namespace GraceAttorney.Messages
 {
-	readonly struct RemoveCharacterMessage : IMessage 
+	readonly struct RemoveSpriteMessage : IMessage 
 	{
-		public readonly Entity Character;
-		public RemoveCharacterMessage(Entity character)
+		public readonly Entity Sprite;
+		public RemoveSpriteMessage(Entity sprite)
 		{
-			Character = character;
+			Sprite = sprite;
 		}
 	}
 }
