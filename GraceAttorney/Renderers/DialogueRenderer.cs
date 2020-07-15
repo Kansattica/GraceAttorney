@@ -171,8 +171,7 @@ namespace GraceAttorney.Renderers
 
 		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
 		{
-			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
-			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
+			CalculateTextBounds(dialogueBox, out var xDialogueOffset, out var yDialogueOffset, out var actualDialogueWidth);
 
 			SetFontSize(actualDialogueWidth);
 
@@ -191,8 +190,7 @@ namespace GraceAttorney.Renderers
 		private const float PaddingBetweenCenteredLines = 1.4f;
 		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
 		{
-			int xDialogueOffset, yDialogueOffset, actualDialogueWidth;
-			CalculateTextBounds(dialogueBox, out xDialogueOffset, out yDialogueOffset, out actualDialogueWidth);
+			CalculateTextBounds(dialogueBox, out var xDialogueOffset, out var yDialogueOffset, out var actualDialogueWidth);
 
 			SetFontSize(actualDialogueWidth);
 
@@ -223,7 +221,7 @@ namespace GraceAttorney.Renderers
 		// I'm sorry that this is so hairy, but this does a reasonable job breaking up longer words
 		// and handles the screen resizing pretty gracefully.
 
-		private static StringBuilder _toWrite = new StringBuilder(); // don't leak a stringbuilder every frame
+		private static readonly StringBuilder _toWrite = new StringBuilder(); // don't leak a stringbuilder every frame
 		private static readonly char[] _space = new char[] { ' ' }; // .net framework 4.6.1 insists
 		private static StringBuilder HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
 		{
@@ -251,7 +249,7 @@ namespace GraceAttorney.Renderers
 						}
 
 						int tryBreakingWordAtThisIdx = HyphenationGuess(word);
-						bool keepTrying = true;
+						bool keepTrying;
 						do
 						{
 							// +1 because beforeLastWordIdx is a space
