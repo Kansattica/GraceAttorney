@@ -84,6 +84,7 @@ namespace GraceAttorney.Renderers
 		{
 			var speakerSize = GameFonts.NameTag.MeasureString(name);
 
+			// this should probably be based on the width of the screen so long names don't get a weirdly wide name tag.
 			int nameTagWidth = (int)(speakerSize.X * NameTagIsThisPercentWiderThanTheText);
 			int nameTagHeight = (int)(speakerSize.Y * NameTagIsThisPercentTallerThanTheText);
 
@@ -184,7 +185,6 @@ namespace GraceAttorney.Renderers
 
 			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
 			_toWrite.Clear();
-
 		}
 
 		private const float PaddingBetweenCenteredLines = 1.4f;
