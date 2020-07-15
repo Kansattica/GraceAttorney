@@ -20,7 +20,8 @@ namespace GraceAttorney.Engines
 			{
 				ref readonly var movingSprite = ref GetComponent<MovingSpriteComponent>(entity);
 				// Offset is the percentage of the distance the sprite is away from where it will eventually end up
-				// This engine's job is to move each one closer to zero based on its velocity
+				// This engine's job is to move each one closer to zero based on its velocity if it's entering
+				// or make it bigger if it's leaving
 
 				ref readonly var offset = ref GetComponent<SpriteOffsetComponent>(entity);
 				var newOffset = offset.PositionPercentageOffset +
@@ -67,7 +68,7 @@ namespace GraceAttorney.Engines
 			// remove characters only when you're sure they're offscreen
 			// because if they're leaving, say, up, their feet are still on the screen at 1.0 offset
 			// in the future, it'd be a good idea to get the sprite size to calculate exactly when they're offscreen.
-			if (direction == MotionDirection.Out && offsetVector.Length() >= 2.0)
+			if (direction == MotionDirection.Out && offsetVector.Length() >= 1.5)
 				return true;
 
 			return false;
