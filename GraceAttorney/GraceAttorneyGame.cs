@@ -72,7 +72,7 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new CharacterExitEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
-			worldBuilder.AddEngine(new RemoveCharacterEngine());
+			worldBuilder.AddEngine(new RemoveSpriteEngine());
 			worldBuilder.AddEngine(new ClearBackgroundEngine());
 			worldBuilder.AddEngine(new SpriteMotionEngine());
 			worldBuilder.AddEngine(new StartMotionEngine());
@@ -92,14 +92,16 @@ namespace GraceAttorney
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
-			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
+			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 15, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "Ah, shit, I got that Back To The Future disease that makes you go all transparent. I knew I should have helped my parents hook up.",
+				Dialogue = "Some Kinda Courthouse\nRoom 69\nJuly 15, 20XX",
 				Layer = (int)SpriteLayers.DialogueBox,
-				Speaker = "Bird Call"
+				Justification = JustifyText.Center,
+				TextColor = Color.Green,
+				//Speaker = "Bird Call"
 			}));
 
 			_world = worldBuilder.Build();
