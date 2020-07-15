@@ -9,3 +9,4 @@
 - [ ] Cross-Examination
 - [ ] Ink integration
 - [ ] Music and sound
+- [ ] Animated sprites
