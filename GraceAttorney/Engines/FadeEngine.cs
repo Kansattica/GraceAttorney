@@ -9,7 +9,7 @@ namespace GraceAttorney.Engines
 {
 	[Reads(typeof(OpacityComponent))]
 	[Writes(typeof(OpacityComponent), 10)]
-	[Sends(typeof(RemoveCharacterMessage))]
+	[Sends(typeof(RemoveSpriteMessage))]
 	class FadeEngine : Engine
 	{
 		public override void Update(double dt)
@@ -21,7 +21,7 @@ namespace GraceAttorney.Engines
 				if (calculated.Direction == FadeDirection.None)
 				{
 					if (opacity.Direction == FadeDirection.FadeOut)
-						SendMessage(new RemoveCharacterMessage(entity)); // if they fade all the way out, remove 'em
+						SendMessage(new RemoveSpriteMessage(entity)); // if they fade all the way out, remove 'em
 					else
 						RemoveComponent<OpacityComponent>(entity); // if they fade all the way in, stop animating.
 				}

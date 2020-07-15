@@ -10,7 +10,7 @@ using GraceAttorney.Messages;
 namespace GraceAttorney.Engines
 {
 	[Receives(typeof(CharacterExitMessage))]
-	[Sends(typeof(StartMotionMessage), typeof(RemoveCharacterMessage))]
+	[Sends(typeof(StartMotionMessage), typeof(RemoveSpriteMessage))]
 	class CharacterExitEngine : Engine
 	{
 		public override void Update(double dt)
@@ -18,7 +18,7 @@ namespace GraceAttorney.Engines
 			foreach (ref readonly var message in ReadMessages<CharacterExitMessage>())
 			{
 				if (message.ExitTo == EnterExitDirection.NoAnimation)
-					SendMessage(new RemoveCharacterMessage(message.Character));
+					SendMessage(new RemoveSpriteMessage(message.Character));
 				else
 					SendMessage(new StartMotionMessage(message.Character, message.ExitTo, MotionDirection.Out));
 			}
