@@ -20,6 +20,7 @@ namespace GraceAttorney.Engines
 
 			SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: GetOpacity(entity), fadeRate: 1.0f));
 		}
+
 		private float GetOpacity(in Entity entity)
 		{
 			if (HasComponent<OpacityComponent>(entity))
