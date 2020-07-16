@@ -29,12 +29,13 @@ namespace GraceAttorney.Renderers
 
 		public override void Render(Entity entity, in SpriteComponent drawComponent)
 		{
-			if (drawComponent.Sprite != null)
+			if (drawComponent.Frames != null)
 			{
+				var frameToDraw = drawComponent.Frames[(int)drawComponent.CurrentFrame];
 				// look at later:
 				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
-				_spriteBatch.Draw(drawComponent.Sprite,
-					CalculatePosition(drawComponent.Position, drawComponent.Sprite) + CalculateOffset(entity),
+				_spriteBatch.Draw(frameToDraw,
+					CalculatePosition(drawComponent.Position, frameToDraw) + CalculateOffset(entity),
 					null,
 					HasComponent<OpacityComponent>(entity) ? OpacityColor(entity) : Color.White,
 					0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);

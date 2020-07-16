@@ -73,6 +73,7 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new NewCharacterEngine());
 			worldBuilder.AddEngine(new LoadSpriteEngine(_contentLoader));
 			worldBuilder.AddEngine(new CharacterExitEngine());
+			worldBuilder.AddEngine(new SpriteAnimationEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
 			worldBuilder.AddEngine(new RemoveSpriteEngine());
@@ -85,14 +86,14 @@ namespace GraceAttorney
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
 			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
-			//worldBuilder.SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "skunkgrace"), drawLocation: DrawLocation.Left));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Left));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
 			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				Display = true,
+				Display = false,
 				NameTagLocation = NameTagLocation.Left,
 				Dialogue = "Ah, I get it. You want in on the high-flying, wing-flapping world of telecommunications-based bird crime, right? Well, let me tell you, it's not all running out of an ISP's office with your arms full of stolen landlines. It takes a lot of hard work.",
 				Layer = (int)SpriteLayers.DialogueBox,

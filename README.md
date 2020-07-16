@@ -5,10 +5,11 @@
 ### Things to implement
 - [ ] Darkening the sprites that aren't "speaking"
 - [X] Animated exits
+- [ ] Telling a character to exit by name
 - [ ] Choices
 - [ ] Cross-Examination
 - [ ] Ink integration
 - [ ] Music and sound
-- [ ] Animated sprites
+- [X] Animated sprites
 - [ ] Menu for setting options, saving, choosing a case, etc.
 - [X] Proper content loading system

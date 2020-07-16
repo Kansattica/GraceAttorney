@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using Encompass;
 using Microsoft.Xna.Framework;
@@ -11,7 +12,8 @@ namespace GraceAttorney.Components
 	struct SpriteComponent : IDrawableComponent, IComponent
 	{
 		public DrawLocation Position;
-		public Texture2D Sprite;
+		public ImmutableArray<Texture2D> Frames;
+		public double CurrentFrame;
 		public int Layer { get; set; }
 	}
 }

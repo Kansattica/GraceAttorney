@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace GraceAttorney
 	{
 		private readonly ContentManager _content;
 
-		private readonly Dictionary<string, Texture2D> _loadedSprites = new Dictionary<string, Texture2D>();
+		private readonly Dictionary<string, ImmutableArray<Texture2D>> _loadedSprites = new Dictionary<string, ImmutableArray<Texture2D>>();
 		private bool disposedValue;
 
 		public OnDemandContentLoader(ContentManager content)
@@ -21,16 +22,21 @@ namespace GraceAttorney
 			_content = content;
 		}
 
-		public Texture2D GetSpriteByPath(string path)
+		public ImmutableArray<Texture2D> GetSpriteByPath(string path)
 		{
 			return GetOrLoad(path);
 		}
 
-		private Texture2D GetOrLoad(string path)
+		private ImmutableArray<Texture2D> GetOrLoad(string path)
 		{
 			if (!_loadedSprites.TryGetValue(path, out var texture))
 			{
-				texture = _content.Load<Texture2D>(path);
+				var directoryPath = Path.Combine(_content.RootDirectory, path);
+				if (Directory.Exists(directoryPath)) // note that this sorts lexicographically! "10" sorts between "1" and "2"!
+					texture = Directory.EnumerateFiles(directoryPath).Select(x => Path.GetFileName(x)).OrderBy(x => x)
+							.Select(x => _content.Load<Texture2D>(Path.Combine(path, x))).ToImmutableArray();
+				else 
+					texture = ImmutableArray.Create(_content.Load<Texture2D>(path));
 				_loadedSprites.Add(path, texture);
 			}
 			return texture;
@@ -43,10 +49,12 @@ namespace GraceAttorney
 				if (disposing)
 				{
 					// TODO: dispose managed state (managed objects)
-					foreach (var texture in _loadedSprites.Values)
-					{
-						texture.Dispose();
-					}
+					foreach (var textures in _loadedSprites.Values)
+						foreach (var texture in textures)
+							texture.Dispose();
+
+					_content.Unload();
+					_content.Dispose();
 				}
 
 				// TODO: free unmanaged resources (unmanaged objects) and override finalizer
