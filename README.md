@@ -5,7 +5,7 @@
 ### Things to implement
 - [ ] Darkening the sprites that aren't "speaking"
 - [X] Animated exits
-- [ ] Telling a character to exit by name
+- [X] Telling a character to exit by name
 - [ ] Choices
 - [ ] Cross-Examination
 - [ ] Ink integration
