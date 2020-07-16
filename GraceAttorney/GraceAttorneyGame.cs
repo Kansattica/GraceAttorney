@@ -67,8 +67,9 @@ namespace GraceAttorney
 
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
-			worldBuilder.AddEngine(new UpdateBackgroundEngine(Content));
-			worldBuilder.AddEngine(new UpdateCharacterEngine(Content));
+			worldBuilder.AddEngine(new NewBackgroundEngine());
+			worldBuilder.AddEngine(new NewCharacterEngine());
+			worldBuilder.AddEngine(new LoadSpriteEngine(Content));
 			worldBuilder.AddEngine(new CharacterExitEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
@@ -98,11 +99,11 @@ namespace GraceAttorney
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "Some Kinda Courthouse\nRoom 69\nJuly 15, 20XX",
+				Dialogue = "What're you talkin' about? Of course I'm here! Your regular old friend and client, definitely three-dimensional, non-cardboard Bird Call.",
 				Layer = (int)SpriteLayers.DialogueBox,
-				Justification = JustifyText.Center,
-				TextColor = Color.Green,
-				//Speaker = "Bird Call"
+				Justification = JustifyText.Left,
+				TextColor = Color.White,
+				Speaker = "Bird Call"
 			}));
 
 			_world = worldBuilder.Build();
