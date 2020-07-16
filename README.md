@@ -10,3 +10,4 @@
 - [ ] Ink integration
 - [ ] Music and sound
 - [ ] Animated sprites
+- [ ] Menu for setting options, saving, choosing a case, etc.
