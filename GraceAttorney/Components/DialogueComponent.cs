@@ -14,6 +14,6 @@ namespace GraceAttorney.Components
 		public JustifyText Justification;
 		public Color TextColor;
 
-		public int Layer { get; set; }
+		public int Layer { get => (int)SpriteLayers.DialogueBox; }
 	}
 }

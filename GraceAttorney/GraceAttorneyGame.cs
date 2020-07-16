@@ -86,8 +86,8 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new FadeEngine());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
-			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
-			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Left));
+			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Center));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
@@ -96,11 +96,10 @@ namespace GraceAttorney
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "I have to go now. My beople (bird people) need me. Don't ask what they need me for.",
-				Layer = (int)SpriteLayers.DialogueBox,
+				Dialogue = "So, come here often?",
 				Justification = JustifyText.Left,
 				TextColor = Color.White,
-				Speaker = "Bird Call"
+				Speaker = "Grace"
 			}));
 
 			_world = worldBuilder.Build();
