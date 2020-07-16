@@ -11,4 +11,4 @@
 - [ ] Music and sound
 - [ ] Animated sprites
 - [ ] Menu for setting options, saving, choosing a case, etc.
-- [ ] Proper content loading system
+- [X] Proper content loading system
