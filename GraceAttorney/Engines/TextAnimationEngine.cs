@@ -22,8 +22,8 @@ namespace GraceAttorney.Engines
 				{
 					ref readonly var dialogue = ref GetComponent<DialogueComponent>(entity).Dialogue;
 
-					// +6 because the string can have hyphens and such added when printing
-					if (dialogue != null && charactersVisible >= dialogue.Length + 6) 
+					// plus double the line count because the string can have hyphens and newlines and such added when printing
+					if (dialogue != null && charactersVisible >= dialogue.Length + (Constants.ExpectedLineCount * 2)) 
 					{
 						RemoveComponent<AnimatedTextComponent>(entity);
 						continue;
@@ -35,8 +35,6 @@ namespace GraceAttorney.Engines
 						CharactersPerSecond = animatingText.CharactersPerSecond,
 						CharactersVisible = charactersVisible
 					});
-
-
 			}
 		}
 	}
