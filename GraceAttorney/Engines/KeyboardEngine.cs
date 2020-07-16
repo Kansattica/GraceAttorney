@@ -25,7 +25,7 @@ namespace GraceAttorney.Engines
 				SendMessage(new ClearBackgroundMessage());
 
 			if (KeysPressed(keyboardCur, Keys.B))
-				SendMessage(new NewBackgroundMessage(Path.Combine("Case1", "background")));
+				SendMessage(new NewBackgroundMessage("court"));
 
 			if (KeysPressed(keyboardCur, Keys.Up))
 				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Top));
@@ -37,10 +37,10 @@ namespace GraceAttorney.Engines
 				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Left));
 
 			if (KeysPressed(keyboardCur, Keys.Right))
-				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing",  enterFrom: EnterExitDirection.Right));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Right));
 
 			if (KeysPressed(keyboardCur, Keys.F))
-				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing",  enterFrom: EnterExitDirection.Fade));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Fade));
 
 			if (KeysPressed(keyboardCur, Keys.O))
 				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.NoAnimation));
