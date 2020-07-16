@@ -10,7 +10,7 @@ namespace GraceAttorney.Messages
 {
 	readonly struct NewSpriteMessage : IMessage
 	{
-		public readonly string AssetName;
+		public readonly string AssetPath;
 		public readonly DrawLocation Position;
 		public readonly SpriteLayers Layer;
 		public readonly EnterExitDirection EnterFrom;
@@ -18,7 +18,7 @@ namespace GraceAttorney.Messages
 
 		public NewSpriteMessage(string assetName, DrawLocation position, SpriteLayers layer, EnterExitDirection enterFrom, in Entity entity)
 		{
-			AssetName = assetName;
+			AssetPath = assetName;
 			Position = position;
 			Layer = layer;
 			EnterFrom = enterFrom;

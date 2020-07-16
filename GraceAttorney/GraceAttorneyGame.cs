@@ -69,7 +69,7 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
 			worldBuilder.AddEngine(new NewBackgroundEngine());
 			worldBuilder.AddEngine(new NewCharacterEngine());
-			worldBuilder.AddEngine(new LoadSpriteEngine(Content));
+			worldBuilder.AddEngine(new LoadSpriteEngine(new OnDemandContentLoader(Content)));
 			worldBuilder.AddEngine(new CharacterExitEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
