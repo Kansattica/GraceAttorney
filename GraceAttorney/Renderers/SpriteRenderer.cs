@@ -18,7 +18,7 @@ namespace GraceAttorney.Renderers
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly ScaleFactor _scaleFactor;
-		private UpdatedSize _viewport;
+		private readonly UpdatedSize _viewport;
 
 		public SpriteRenderer(SpriteBatch spriteBatch, ScaleFactor scaleFactor, UpdatedSize viewport)
 		{
@@ -55,23 +55,16 @@ namespace GraceAttorney.Renderers
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
 			var originToCenterTheSpriteAlongTheXAxis = (_viewport.Width - (_scaleFactor.Factor * sprite.Width)) / 2;
-			switch (location)
+			return location switch
 			{
-				case DrawLocation.Background:
-					// center the background so that it displays okay even if the window has been maximized to something non-16:9.
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis, 0);
-				case DrawLocation.Center:
-					// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis, CalculateTopOfHeadYPosition(sprite.Height));
-				case DrawLocation.Left:
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis - (SideCharacterXOffset * _viewport.Width)
-						, CalculateTopOfHeadYPosition(sprite.Height));
-				case DrawLocation.Right:
-					return new Vector2(originToCenterTheSpriteAlongTheXAxis + (SideCharacterXOffset * _viewport.Width)
-						, CalculateTopOfHeadYPosition(sprite.Height));
-
-			}
-			throw new NotImplementedException("You fell out of the switch.");
+				DrawLocation.Background => new Vector2(originToCenterTheSpriteAlongTheXAxis, 0),// center the background so that it displays okay even if the window has been maximized to something non-16:9.
+				DrawLocation.Center => new Vector2(originToCenterTheSpriteAlongTheXAxis, CalculateTopOfHeadYPosition(sprite.Height)),// this actually has to get calculated in the sprite renderer, otherwise the sprite moves around when you resize the window
+				DrawLocation.Left => new Vector2(originToCenterTheSpriteAlongTheXAxis - (SideCharacterXOffset * _viewport.Width),
+					CalculateTopOfHeadYPosition(sprite.Height)),
+				DrawLocation.Right => new Vector2(originToCenterTheSpriteAlongTheXAxis + (SideCharacterXOffset * _viewport.Width),
+					CalculateTopOfHeadYPosition(sprite.Height)),
+				_ => throw new NotImplementedException("You fell out of the switch."),
+			};
 		}
 
 		private Vector2 CalculateOffset(in Entity entity)

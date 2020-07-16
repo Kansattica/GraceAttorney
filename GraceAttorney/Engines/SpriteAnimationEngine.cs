@@ -25,7 +25,7 @@ namespace GraceAttorney.Engines
 				var newFrame = sprite.CurrentFrame + (AnimationFramesPerSecond * dt);
 
 				// basically, if the new frame would be a frame that doesn't exist, wrap around to zero again.
-				newFrame = newFrame % sprite.Frames.Length;
+				newFrame %= sprite.Frames.Length;
 
 				SetComponent(entity,
 				  new SpriteComponent { CurrentFrame = newFrame, Frames = sprite.Frames, Layer = sprite.Layer, Position = sprite.Position });

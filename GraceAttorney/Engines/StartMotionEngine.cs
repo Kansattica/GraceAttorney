@@ -44,18 +44,14 @@ namespace GraceAttorney.Engines
 
 		private static Vector2 GetDirectionVector(EnterExitDirection direction)
 		{
-			switch (direction)
+			return direction switch
 			{
-				case EnterExitDirection.Top:
-					return -Vector2.UnitY;
-				case EnterExitDirection.Bottom:
-					return Vector2.UnitY;
-				case EnterExitDirection.Right:
-					return Vector2.UnitX;
-				case EnterExitDirection.Left:
-					return -Vector2.UnitX;
-			}
-			throw new ArgumentException("What, bud, did you invent a new direction or something");
+				EnterExitDirection.Top => -Vector2.UnitY,
+				EnterExitDirection.Bottom => Vector2.UnitY,
+				EnterExitDirection.Right => Vector2.UnitX,
+				EnterExitDirection.Left => -Vector2.UnitX,
+				_ => throw new ArgumentException("What, bud, did you invent a new direction or something"),
+			};
 		}
 	}
 }
