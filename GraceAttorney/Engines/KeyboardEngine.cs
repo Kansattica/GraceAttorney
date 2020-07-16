@@ -9,7 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GraceAttorney.Engines
 {
-	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage), typeof(CharacterEnterMessage), typeof(CharacterExitByPositionMessage), typeof(ClearAllCharactersMessage))]
+	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage),
+		typeof(CharacterEnterMessage), typeof(CharacterExitByPositionMessage), typeof(CharacterExitByNameMessage), typeof(ClearAllCharactersMessage))]
 	class KeyboardEngine : Engine
 	{
 		private KeyboardState _keyboardPrev = new KeyboardState();
@@ -64,6 +65,9 @@ namespace GraceAttorney.Engines
 
 			if (KeysPressed(keyboardCur, Keys.Y))
 				SendMessage(new ClearAllCharactersMessage());
+
+			if (KeysPressed(keyboardCur, Keys.Z))
+				SendMessage(new CharacterExitByNameMessage("Bird Call", EnterExitDirection.Top));
 
 			_keyboardPrev = keyboardCur;
 		}

@@ -10,7 +10,13 @@ namespace GraceAttorney.Messages
 {
 	readonly struct CharacterExitByNameMessage : IMessage
 	{
-		readonly string Name;
-		readonly EnterExitDirection Direction;
+		public readonly string Name;
+		public readonly EnterExitDirection Direction;
+
+		public CharacterExitByNameMessage(string name, EnterExitDirection direction)
+		{
+			Name = name;
+			Direction = direction;
+		}
 	}
 }
