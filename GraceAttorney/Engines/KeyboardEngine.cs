@@ -27,22 +27,22 @@ namespace GraceAttorney.Engines
 				SendMessage(new NewBackgroundMessage(Path.Combine("Case1", "background")));
 
 			if (KeysPressed(keyboardCur, Keys.Up))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Top));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Top));
 
 			if (KeysPressed(keyboardCur, Keys.Down))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Bottom));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Bottom));
 
 			if (KeysPressed(keyboardCur, Keys.Left))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Left));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.Left));
 
 			if (KeysPressed(keyboardCur, Keys.Right))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Right));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing",  enterFrom: EnterExitDirection.Right));
 
 			if (KeysPressed(keyboardCur, Keys.F))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.Fade));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing",  enterFrom: EnterExitDirection.Fade));
 
 			if (KeysPressed(keyboardCur, Keys.O))
-				SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), enterFrom: EnterExitDirection.NoAnimation));
+				SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", enterFrom: EnterExitDirection.NoAnimation));
 
 			if (KeysPressed(keyboardCur, Keys.W))
 				SendMessage(new CharacterExitByPositionMessage(DrawLocation.Center, EnterExitDirection.Top));

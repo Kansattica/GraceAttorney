@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Transactions;
+using System.IO;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.Messages;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GraceAttorney.Engines
 {
@@ -22,8 +16,9 @@ namespace GraceAttorney.Engines
 
 			AddComponent(entity, new CharacterComponent(message.CharacterName));
 
-			SendMessage(new NewSpriteMessage(message.CharacterName, message.DrawLocation, SpriteLayers.CharacterSprites,
-							message.EnterFrom, entity));
+			SendMessage(new NewSpriteMessage(
+					Path.Combine(Constants.CharacterSpriteDirectory, message.CharacterName, message.Pose),
+						message.DrawLocation, SpriteLayers.CharacterSprites, message.EnterFrom, entity));
 		}
 	}
 }

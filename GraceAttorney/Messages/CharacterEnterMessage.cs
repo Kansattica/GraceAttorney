@@ -10,11 +10,13 @@ namespace GraceAttorney.Messages
 	readonly struct CharacterEnterMessage : IMessage
 	{
 		public readonly string CharacterName;
+		public readonly string Pose;
 		public readonly EnterExitDirection EnterFrom;
 		public readonly DrawLocation DrawLocation;
-		public CharacterEnterMessage(string assetName, EnterExitDirection enterFrom = EnterExitDirection.Fade, DrawLocation drawLocation = DrawLocation.Center)
+		public CharacterEnterMessage(string characterName, string pose, EnterExitDirection enterFrom = EnterExitDirection.Fade, DrawLocation drawLocation = DrawLocation.Center)
 		{
-			CharacterName = assetName;
+			CharacterName = characterName;
+			Pose = pose;
 			EnterFrom = enterFrom;
 			DrawLocation = drawLocation;
 		}

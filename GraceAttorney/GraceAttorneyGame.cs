@@ -41,7 +41,7 @@ namespace GraceAttorney
 
 			IsMouseVisible = true;
 
-			Content.RootDirectory = "Content";
+			Content.RootDirectory = Path.Combine("Content", "Case1");
 		}
 
 		private Texture2D MakeColorTexture()
@@ -81,25 +81,18 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new TextAnimationEngine());
 			worldBuilder.AddEngine(new FadeEngine());
 
-			var bg = worldBuilder.CreateEntity();
-			worldBuilder.SetComponent(bg, new BackgroundComponent());
-			worldBuilder.SetComponent(bg, new OpacityComponent());
-			worldBuilder.SetComponent(bg, new SpriteComponent());
-
-
-			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: Path.Combine("Case1", "background")));
-			//worldBuilder.SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
-			//worldBuilder.SendMessage(new NewCharacterMessage(assetName: Path.Combine("Case1", "birdcall"), drawLocation: DrawLocation.Right));
+			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
 			//worldBuilder.SendMessage(new CharacterEnterMessage(assetName: Path.Combine("Case1", "skunkgrace"), drawLocation: DrawLocation.Left));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
-			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 15, CharactersVisible = 0 });
+			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "What're you talkin' about? Of course I'm here! Your regular old friend and client, definitely three-dimensional, non-cardboard Bird Call.",
+				Dialogue = "Ah, I get it. You want in on the high-flying, wing-flapping world of telecommunications-based bird crime, right? Well, let me tell you, it's not all running out of an ISP's office with your arms full of stolen landlines. It takes a lot of hard work.",
 				Layer = (int)SpriteLayers.DialogueBox,
 				Justification = JustifyText.Left,
 				TextColor = Color.White,

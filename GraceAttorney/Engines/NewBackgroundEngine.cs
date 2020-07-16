@@ -1,13 +1,7 @@
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.Messages;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GraceAttorney.Engines
 {
@@ -30,7 +24,7 @@ namespace GraceAttorney.Engines
 
 			SetComponent(newBackground, new BackgroundComponent());
 
-			SendMessage(new NewSpriteMessage(message.AssetName,
+			SendMessage(new NewSpriteMessage(Path.Combine(Constants.BackgroundSpriteDirectory, message.AssetName),
 							DrawLocation.Background, SpriteLayers.Background, EnterExitDirection.Fade, newBackground));
 		}
 	}
