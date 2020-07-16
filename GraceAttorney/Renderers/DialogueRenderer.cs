@@ -252,6 +252,14 @@ namespace GraceAttorney.Renderers
 						bool keepTrying;
 						do
 						{
+							// if breaking the word would leave one or two letters alone on the starting line, 
+							// just start a new line beforehand. 
+							if (tryBreakingWordAtThisIdx <= 2)
+							{
+								_toWrite[beforeLastWordIdx] = '\n';
+								break;
+							}
+
 							// +1 because beforeLastWordIdx is a space
 							// plus another one because we want to insert the newline after whatever HyphenationGuess picked.
 							// (hyphens go on the earlier of the two lines, 
@@ -306,6 +314,7 @@ namespace GraceAttorney.Renderers
 			{
 				return TryPickVowel(word, word.Length / 2) + 1;
 			}
+
 			return hyphenIdx;
 		}
 
