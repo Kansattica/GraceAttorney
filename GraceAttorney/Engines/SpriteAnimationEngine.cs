@@ -12,7 +12,7 @@ namespace GraceAttorney.Engines
 	[Writes(typeof(SpriteComponent), 0)]
 	class SpriteAnimationEngine : Engine
 	{
-		private const int AnimationFramesPerSecond = 10;
+		private const double AnimationFramesPerSecond = 8.333;
 		public override void Update(double dt)
 		{
 			foreach (ref readonly var entity in ReadEntities<SpriteComponent>())
