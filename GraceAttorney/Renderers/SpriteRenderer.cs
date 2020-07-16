@@ -34,6 +34,7 @@ namespace GraceAttorney.Renderers
 				var frameToDraw = drawComponent.Frames[(int)drawComponent.CurrentFrame];
 				// look at later:
 				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
+				// I want to let the sprites be different sizes relative to each other, so the rectangle thing is probably a non-starter.
 				_spriteBatch.Draw(frameToDraw,
 					CalculatePosition(drawComponent.Position, frameToDraw) + CalculateOffset(entity),
 					null, OpacityColor(entity),
@@ -55,6 +56,7 @@ namespace GraceAttorney.Renderers
 		{ 
 			return _viewport.Height - (_scaleFactor.Factor * spriteHeight * ShowThisMuch);
 		}
+
 		Vector2 CalculatePosition(DrawLocation location, Texture2D sprite)
 		{
 			var originToCenterTheSpriteAlongTheXAxis = (_viewport.Width - (_scaleFactor.Factor * sprite.Width)) / 2;
