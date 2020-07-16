@@ -36,16 +36,19 @@ namespace GraceAttorney.Renderers
 				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
 				_spriteBatch.Draw(frameToDraw,
 					CalculatePosition(drawComponent.Position, frameToDraw) + CalculateOffset(entity),
-					null,
-					HasComponent<OpacityComponent>(entity) ? OpacityColor(entity) : Color.White,
+					null, OpacityColor(entity),
 					0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);
 			}
 		}
 
 		private Color OpacityColor(in Entity entity)
 		{
-			ref readonly var opacity = ref GetComponent<OpacityComponent>(entity);
-			return new Color(1f, 1f, 1f, opacity.Opacity);
+			if (HasComponent<OpacityComponent>(entity))
+			{
+				ref readonly var opacity = ref GetComponent<OpacityComponent>(entity);
+				return new Color(1f, 1f, 1f, opacity.Opacity);
+			}
+			return Color.White;
 		}
 
 		private float CalculateTopOfHeadYPosition(int spriteHeight)
@@ -71,7 +74,9 @@ namespace GraceAttorney.Renderers
 		{
 			if (!HasComponent<SpriteOffsetComponent>(entity))
 				return Vector2.Zero;
-			var offset = GetComponent<SpriteOffsetComponent>(entity).PositionPercentageOffset;
+
+			ref readonly var offsetComponent = ref GetComponent<SpriteOffsetComponent>(entity);
+			var offset = offsetComponent.PositionPercentageOffset;
 			return new Vector2(_viewport.Width * offset.X, _viewport.Height * offset.Y);
 		}
 	}
