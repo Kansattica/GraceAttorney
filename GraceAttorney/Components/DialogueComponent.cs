@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Encompass;
 using Microsoft.Xna.Framework;
 
@@ -17,6 +14,6 @@ namespace GraceAttorney.Components
 		public JustifyText Justification;
 		public Color TextColor;
 
-		public int Layer { get; set; }
+		public int Layer { get => (int)SpriteLayers.DialogueBox; }
 	}
 }
