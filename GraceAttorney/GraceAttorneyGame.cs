@@ -42,6 +42,8 @@ namespace GraceAttorney
 			IsMouseVisible = true;
 
 			Content.RootDirectory = Path.Combine("Content", "Case1");
+
+			_contentLoader = new OnDemandContentLoader(Content);
 		}
 
 		private Texture2D MakeColorTexture()
@@ -69,7 +71,7 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
 			worldBuilder.AddEngine(new NewBackgroundEngine());
 			worldBuilder.AddEngine(new NewCharacterEngine());
-			worldBuilder.AddEngine(new LoadSpriteEngine(new OnDemandContentLoader(Content)));
+			worldBuilder.AddEngine(new LoadSpriteEngine(_contentLoader));
 			worldBuilder.AddEngine(new CharacterExitEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
 			worldBuilder.AddEngine(new UpdateDialogueEngine());
@@ -112,6 +114,7 @@ namespace GraceAttorney
 		{
 			// Clean up after yourself!
 			_spriteBatch.Dispose();
+			_contentLoader.Dispose();
 			base.UnloadContent();
 		}
 
@@ -144,6 +147,7 @@ namespace GraceAttorney
 
 		private readonly ScaleFactor _scaleFactor = new ScaleFactor();
 		private readonly GraphicsDeviceManager _graphics;
+		private readonly OnDemandContentLoader _contentLoader;
 		private Point _oldWindowSize;
 		private float _aspectRatio;
 
