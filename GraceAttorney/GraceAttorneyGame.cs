@@ -126,11 +126,10 @@ namespace GraceAttorney
 			base.Update(gameTime);
 		}
 
-		private const float BackgroundHeight = 1080f;
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
-			_scaleFactor.Factor = GraphicsDevice.Viewport.Height / BackgroundHeight;
+			_scaleFactor.Factor = (float)GraphicsDevice.Viewport.Height / Constants.BackgroundHeightInPixels;
 
 			_viewport.Height = GraphicsDevice.Viewport.Height;
 			_viewport.Width = GraphicsDevice.Viewport.Width;
