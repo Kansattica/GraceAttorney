@@ -83,19 +83,38 @@ namespace GraceAttorney
 		}
 	}
 
-	class CaseSprite
+	class CaseSprite : IEquatable<CaseSprite>
 	{
 		public Texture2D Sprite;
 		public int Frames;
 		public int FrameWidth;
 		public int FrameHeight;
 
+		private string name;
 		public CaseSprite(ImageResource resource, ContentManager content)
 		{
 			Sprite = content.Load<Texture2D>(resource.FilePath);
 			Frames = resource.Frames;
 			FrameWidth = resource.FrameWidth;
 			FrameHeight = resource.FrameHeight;
+
+			name = resource.Name;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as CaseSprite);
+		}
+
+		public bool Equals(CaseSprite other)
+		{
+			return other != null &&
+				   name == other.name;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(name);
 		}
 	}
 }
