@@ -7,19 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GraceAttorney
 {
-	class ContentLoader : IDisposable
+	class ContentLoader 
 	{
-		private readonly ContentManager _content;
-
 		private readonly ImmutableDictionary<string, CaseSprite> _backgrounds;
 		private readonly ImmutableDictionary<string, ImmutableDictionary<string, CaseSprite>> _characters;
 
-		private bool disposedValue;
-
 		public ContentLoader(ContentManager content, string caseDirectory)
 		{
-			_content = content;
-
 			var index = ContentIndex.Read(Path.Combine(content.RootDirectory, caseDirectory, Common.Constants.IndexFileName));
 
 			_backgrounds = index.Backgrounds.ToImmutableDictionary(x => x.Name, x => new CaseSprite(x, content));
@@ -46,40 +40,6 @@ namespace GraceAttorney
 		public CaseSprite GetSpritePose(string characterName, string pose)
 		{
 			return _characters[characterName][pose];
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposedValue)
-			{
-				if (disposing)
-				{
-					// TODO: dispose managed state (managed objects)
-					//foreach (var texture in _loadedSprites.Values)
-					//	texture.Dispose();
-
-					_content.Unload();
-					_content.Dispose();
-				}
-
-				// TODO: free unmanaged resources (unmanaged objects) and override finalizer
-				// TODO: set large fields to null
-				disposedValue = true;
-			}
-		}
-
-		// // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-		// ~OnDemandContentLoader()
-		// {
-		//     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-		//     Dispose(disposing: false);
-		// }
-
-		public void Dispose()
-		{
-			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
 		}
 	}
 

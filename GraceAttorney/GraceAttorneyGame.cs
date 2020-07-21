@@ -116,7 +116,6 @@ namespace GraceAttorney
 		{
 			// Clean up after yourself!
 			_spriteBatch.Dispose();
-			_contentLoader.Dispose();
 			base.UnloadContent();
 		}
 
