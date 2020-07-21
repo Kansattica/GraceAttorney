@@ -46,7 +46,7 @@ namespace GraceAttorney.Renderers
 
 			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions(_viewport.Width, _viewport.Height);
 
-			_spriteBatch.Draw(null, dialogueBoxRect, TextBoxColor);
+			_spriteBatch.Draw(_colorTexture, dialogueBoxRect, TextBoxColor);
 
 			DrawDialogueBoxBorder(dialogueBoxRect);
 
@@ -92,7 +92,7 @@ namespace GraceAttorney.Renderers
 				dialogueBoxRect.Y - nameTagHeight,
 				nameTagWidth, nameTagHeight);
 
-			_spriteBatch.Draw(null, nameTagRect, TextBoxColor);
+			_spriteBatch.Draw(_colorTexture, nameTagRect, TextBoxColor);
 
 			GameFonts.NameTag.DrawString(_spriteBatch, name,
 				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, nameTagRect.Y + (nameTagRect.Height - speakerSize.Y) / 2), Color.White);
