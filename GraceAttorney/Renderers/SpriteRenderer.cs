@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GraceAttorney.Renderers
 {
-	[Reads(typeof(SpriteComponent), typeof(OpacityComponent))]
 	class SpriteRenderer : OrderedRenderer<SpriteComponent>
 	{
 		private const float ShowThisMuch = .90f;
