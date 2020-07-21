@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using GraceAttorney.Common;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,17 +11,17 @@ namespace GraceAttorney
 {
 	class ContentLoader 
 	{
-		private readonly ImmutableDictionary<string, CaseSprite> _backgrounds;
-		private readonly ImmutableDictionary<string, ImmutableDictionary<string, CaseSprite>> _characters;
+		private readonly Dictionary<string, CaseSprite> _backgrounds;
+		private readonly Dictionary<string, Dictionary<string, CaseSprite>> _characters;
 
 		public ContentLoader(ContentManager content, string caseDirectory)
 		{
 			var index = ContentIndex.Read(Path.Combine(content.RootDirectory, caseDirectory, Common.Constants.IndexFileName));
 
-			_backgrounds = index.Backgrounds.ToImmutableDictionary(x => x.Name, x => new CaseSprite(x, content));
+			_backgrounds = index.Backgrounds.ToDictionary(x => x.Name, x => new CaseSprite(x, content));
 
 			_characters = index.Characters
-				.ToImmutableDictionary(x => x.Key, x => x.Value.ToImmutableDictionary(pose => pose.Name, pose => new CaseSprite(pose, content)));
+				.ToDictionary(x => x.Key, x => x.Value.ToDictionary(pose => pose.Name, pose => new CaseSprite(pose, content)));
 		}
 
 		public bool BackgroundExists(string name)
