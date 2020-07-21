@@ -1,6 +1,0 @@
-===BACKGROUNDS===
-Case1\Backgrounds\court.jpeg;1;1920;1080
-===CHARACTERS===
-Case1\Characters\Bird Call\standing.png;1;584;896
-Case1\Characters\Grace\plotting.png;30;512;1157
-Case1\Characters\Grace\standing.png;1;645;900

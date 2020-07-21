@@ -26,11 +26,6 @@
 		<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	</PropertyGroup>
   <ItemGroup>
-	  <Content Include="Content\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</Content>
-  </ItemGroup>
-  <ItemGroup>
 	<PackageReference Include="EncompassECS.Framework" Version="0.21.2" />
 	<PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
   </ItemGroup>
@@ -40,5 +35,6 @@
 	<ProjectReference Include="..\GraceAttorney.Common\GraceAttorney.Common.csproj" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
+  <Import Project="..\build\CompileAssets.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
 </Project>

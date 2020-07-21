@@ -86,7 +86,7 @@ namespace GraceAttorney
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
 			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
-			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Center));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "standing", drawLocation: DrawLocation.Center));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
