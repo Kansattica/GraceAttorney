@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using GraceAttorney.Common;
@@ -36,7 +35,9 @@ namespace GraceAttorney
 
 		public bool SpritePoseExists(string characterName, string pose)
 		{
-			return _characters[characterName].ContainsKey(pose);
+			if(_characters.TryGetValue(characterName, out var poses))
+				return poses.ContainsKey(pose);
+			return false;
 		}
 
 		public CaseSprite GetSpritePose(string characterName, string pose)
