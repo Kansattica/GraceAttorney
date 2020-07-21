@@ -13,9 +13,9 @@ namespace GraceAttorney.Tests
         [TestMethod]
         public void RoundTrip()
         {
-			var index = new ContentIndex();
-
-			index.Backgrounds = new List<ImageResource>
+			var index = new ContentIndex
+			{
+				Backgrounds = new List<ImageResource>
 			{
 				new ImageResource
 				{
@@ -38,9 +38,9 @@ namespace GraceAttorney.Tests
 					FrameWidth = 1920,
 					Frames = 1
 				}
-			};
+			},
 
-			index.Characters = new Dictionary<string, List<ImageResource>>
+				Characters = new Dictionary<string, List<ImageResource>>
 			{
 				{ "Cool Guy", new List<ImageResource>
 					{
@@ -78,6 +78,7 @@ namespace GraceAttorney.Tests
 						}
 					}
 				},
+			}
 			};
 
 			var testPath = Path.GetTempFileName();

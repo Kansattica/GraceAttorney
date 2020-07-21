@@ -11,6 +11,12 @@ namespace GraceAttorney.Engines
 	[Receives(typeof(NewBackgroundMessage))]
 	class NewBackgroundEngine : Spawner<NewBackgroundMessage>
 	{
+		private readonly ContentLoader _content;
+		public NewBackgroundEngine(ContentLoader content)
+		{
+			_content = content;
+		}
+
 		protected override void Spawn(NewBackgroundMessage message)
 		{
 			if (SomeComponent<BackgroundComponent>())
@@ -24,7 +30,7 @@ namespace GraceAttorney.Engines
 
 			SetComponent(newBackground, new BackgroundComponent());
 
-			SendMessage(new NewSpriteMessage(Path.Combine(Constants.BackgroundSpriteDirectory, message.AssetName),
+			SendMessage(new NewSpriteMessage(_content.GetBackground(message.AssetName),
 							DrawLocation.Background, SpriteLayers.Background, EnterExitDirection.Fade, newBackground));
 		}
 	}

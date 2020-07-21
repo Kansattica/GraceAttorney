@@ -10,6 +10,11 @@ namespace GraceAttorney.Engines
 	[Sends(typeof(NewSpriteMessage))]
 	class NewCharacterEngine : Spawner<CharacterEnterMessage>
 	{
+		private readonly ContentLoader _content;
+		public NewCharacterEngine(ContentLoader content)
+		{
+			_content = content;
+		}
 		protected override void Spawn(CharacterEnterMessage message)
 		{
 			var entity = CreateEntity();
@@ -17,7 +22,7 @@ namespace GraceAttorney.Engines
 			AddComponent(entity, new CharacterComponent(message.CharacterName));
 
 			SendMessage(new NewSpriteMessage(
-					Path.Combine(Constants.CharacterSpriteDirectory, message.CharacterName, message.Pose),
+					_content.GetSpritePose(message.CharacterName, message.Pose),
 						message.DrawLocation, SpriteLayers.CharacterSprites, message.EnterFrom, entity));
 		}
 	}

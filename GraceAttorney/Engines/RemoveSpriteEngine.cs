@@ -9,8 +9,10 @@ using GraceAttorney.Messages;
 
 namespace GraceAttorney.Engines
 {
+	[DefaultWritePriority(4)]
 	[Receives(typeof(RemoveSpriteMessage))]
-	[Writes(typeof(SpriteComponent), 4)]
+	[Reads(typeof(AnimatedSpriteComponent))]
+	[Writes(typeof(SpriteComponent), typeof(AnimatedSpriteComponent))]
 	class RemoveSpriteEngine : Engine
 	{
 		public override void Update(double dt)
@@ -20,6 +22,9 @@ namespace GraceAttorney.Engines
 				ref readonly var character = ref message.Sprite;
 
 				RemoveComponent<SpriteComponent>(character);
+
+				if (HasComponent<AnimatedSpriteComponent>(character))
+					RemoveComponent<AnimatedSpriteComponent>(character);
 			}
 		}
 	}

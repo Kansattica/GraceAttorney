@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,27 +9,24 @@ using GraceAttorney.Components;
 
 namespace GraceAttorney.Engines
 {
-	[Reads(typeof(SpriteComponent))]
-	[Writes(typeof(SpriteComponent), 0)]
+	[Reads(typeof(AnimatedSpriteComponent))]
+	[Writes(typeof(AnimatedSpriteComponent), 0)]
 	class SpriteAnimationEngine : Engine
 	{
 		private const double AnimationFramesPerSecond = 8.333;
 		public override void Update(double dt)
 		{
-			foreach (ref readonly var entity in ReadEntities<SpriteComponent>())
+			foreach (ref readonly var entity in ReadEntities<AnimatedSpriteComponent>())
 			{
-				ref readonly var sprite = ref GetComponent<SpriteComponent>(entity);
-
-				if (sprite.Frames.Length == 1) { continue; }
+				ref readonly var sprite = ref GetComponent<AnimatedSpriteComponent>(entity);
 
 				// should we guarantee that either zero or one frames pass each run?
-				var newFrame = sprite.CurrentFrame + (AnimationFramesPerSecond * dt);
+				var newFrame = sprite.FrameProgress + (AnimationFramesPerSecond * dt);
 
-				// basically, if the new frame would be a frame that doesn't exist, wrap around to zero again.
-				newFrame %= sprite.Frames.Length;
+ 				// basically, if the new frame would be a frame that doesn't exist, wrap around to zero again.
+				newFrame %= sprite.FrameCount;
 
-				SetComponent(entity,
-				  new SpriteComponent { CurrentFrame = newFrame, Frames = sprite.Frames, Layer = sprite.Layer, Position = sprite.Position });
+				SetComponent(entity, new AnimatedSpriteComponent(newFrame, sprite.FrameCount));
 			}
 		}
 	}

@@ -41,9 +41,7 @@ namespace GraceAttorney
 
 			IsMouseVisible = true;
 
-			Content.RootDirectory = Path.Combine("Content", "Case1");
-
-			_contentLoader = new OnDemandContentLoader(Content);
+			Content.RootDirectory = "Content";
 		}
 
 		private Texture2D MakeColorTexture()
@@ -55,6 +53,7 @@ namespace GraceAttorney
 
 		protected override void Initialize()
 		{
+			_contentLoader = new ContentLoader(Content, "Case1");
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			_aspectRatio = GraphicsDevice.Viewport.AspectRatio;
@@ -69,9 +68,9 @@ namespace GraceAttorney
 
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
-			worldBuilder.AddEngine(new NewBackgroundEngine());
-			worldBuilder.AddEngine(new NewCharacterEngine());
-			worldBuilder.AddEngine(new LoadSpriteEngine(_contentLoader));
+			worldBuilder.AddEngine(new NewBackgroundEngine(_contentLoader));
+			worldBuilder.AddEngine(new NewCharacterEngine(_contentLoader));
+			worldBuilder.AddEngine(new SetUpSpriteEngine());
 			worldBuilder.AddEngine(new CharacterExitEngine());
 			worldBuilder.AddEngine(new SpriteAnimationEngine());
 			worldBuilder.AddEngine(new CharacterExitByPositionEngine());
@@ -96,7 +95,7 @@ namespace GraceAttorney
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "So, come here often?",
+				Dialogue = "Am I closer, dear, or just here to demonstrate Bigger Grace Theory? Hard to say.",
 				Justification = JustifyText.Left,
 				TextColor = Color.White,
 				Speaker = "Grace"
@@ -147,7 +146,7 @@ namespace GraceAttorney
 
 		private readonly ScaleFactor _scaleFactor = new ScaleFactor();
 		private readonly GraphicsDeviceManager _graphics;
-		private readonly OnDemandContentLoader _contentLoader;
+		private ContentLoader _contentLoader;
 		private Point _oldWindowSize;
 		private float _aspectRatio;
 

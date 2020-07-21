@@ -1,34 +1,31 @@
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.Messages;
+using Microsoft.Xna.Framework;
 
 namespace GraceAttorney.Engines
 {
+	[DefaultWritePriority(1)]
 	[Receives(typeof(NewSpriteMessage))]
-	[Writes(typeof(SpriteComponent), 1)]
+	[Writes(typeof(SpriteComponent), typeof(AnimatedSpriteComponent))]
 	[Sends(typeof(StartMotionMessage))]
-	class LoadSpriteEngine : Engine
+	class SetUpSpriteEngine : Engine
 	{
-		private readonly OnDemandContentLoader _content;
-
-		public LoadSpriteEngine(OnDemandContentLoader content)
-		{
-			_content = content;
-		}
-
 		public override void Update(double dt)
 		{
 			foreach (ref readonly var newSprite in ReadMessages<NewSpriteMessage>())
 			{
-				var sprite = new SpriteComponent
+				SetComponent(newSprite.Entity, new SpriteComponent
 				{
 					Layer = (int)newSprite.Layer,
 					Position = newSprite.Position,
-					Frames = _content.GetSpriteByPath(newSprite.AssetPath),
-					CurrentFrame = 0
-				};
+					FrameWidth = newSprite.Asset.FrameWidth,
+					FrameHeight = newSprite.Asset.FrameHeight,
+					Texture = newSprite.Asset.Sprite,
+				}); 
 
-				SetComponent(newSprite.Entity, sprite); 
+				if (newSprite.Asset.Frames > 1)
+					SetComponent(newSprite.Entity, new AnimatedSpriteComponent(0, newSprite.Asset.Frames));
 
 				if (newSprite.EnterFrom != EnterExitDirection.NoAnimation)
 				{

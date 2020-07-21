@@ -10,15 +10,15 @@ namespace GraceAttorney.Messages
 {
 	readonly struct NewSpriteMessage : IMessage
 	{
-		public readonly string AssetPath;
+		public readonly CaseSprite Asset;
 		public readonly DrawLocation Position;
 		public readonly SpriteLayers Layer;
 		public readonly EnterExitDirection EnterFrom;
 		public readonly Entity Entity;
 
-		public NewSpriteMessage(string assetName, DrawLocation position, SpriteLayers layer, EnterExitDirection enterFrom, in Entity entity)
+		public NewSpriteMessage(CaseSprite asset, DrawLocation position, SpriteLayers layer, EnterExitDirection enterFrom, in Entity entity)
 		{
-			AssetPath = assetName;
+			Asset = asset;
 			Position = position;
 			Layer = layer;
 			EnterFrom = enterFrom;

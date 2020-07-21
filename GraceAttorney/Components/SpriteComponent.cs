@@ -12,8 +12,10 @@ namespace GraceAttorney.Components
 	struct SpriteComponent : IDrawableComponent, IComponent
 	{
 		public DrawLocation Position;
-		public ImmutableArray<Texture2D> Frames;
-		public double CurrentFrame;
+		public Texture2D Texture;
+		public int FrameWidth;
+		public int FrameHeight;
+
 		public int Layer { get; set; }
 	}
 }
