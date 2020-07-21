@@ -90,7 +90,7 @@ namespace GraceAttorney
 		public int FrameWidth;
 		public int FrameHeight;
 
-		private string name;
+		private string path;
 		public CaseSprite(ImageResource resource, ContentManager content)
 		{
 			Sprite = content.Load<Texture2D>(resource.FilePath);
@@ -98,7 +98,7 @@ namespace GraceAttorney
 			FrameWidth = resource.FrameWidth;
 			FrameHeight = resource.FrameHeight;
 
-			name = resource.Name;
+			path = resource.FilePath;
 		}
 
 		public override bool Equals(object obj)
@@ -109,12 +109,12 @@ namespace GraceAttorney
 		public bool Equals(CaseSprite other)
 		{
 			return other != null &&
-				   name == other.name;
+				   path == other.path;
 		}
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(name);
+			return HashCode.Combine(path);
 		}
 	}
 }
