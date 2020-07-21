@@ -68,7 +68,7 @@ namespace GraceAttorney.AssetCompiler
 				contentIndex.Characters.Add(characterName, ProcessResourceDirectory(character, Path.Combine(characterTargetDir, characterName)).ToList());
 			}
 
-			using (var indexFile = File.Open(Path.Combine(targetCaseDir, "index.txt"), FileMode.Create))
+			using (var indexFile = File.Open(Path.Combine(targetCaseDir, Constants.IndexFileName), FileMode.Create))
 				contentIndex.Write(indexFile);
 		}
 

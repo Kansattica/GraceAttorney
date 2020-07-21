@@ -25,7 +25,7 @@ namespace GraceAttorney
 		{
 			_content = content;
 
-			var index = ContentIndex.Read(Path.Combine(content.RootDirectory, caseDirectory, "index.txt"));
+			var index = ContentIndex.Read(Path.Combine(content.RootDirectory, caseDirectory, Common.Constants.IndexFileName));
 
 			_backgrounds = index.Backgrounds.ToImmutableDictionary(x => x.Name, x => new CaseSprite(x, content));
 

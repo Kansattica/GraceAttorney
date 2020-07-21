@@ -6,5 +6,7 @@ namespace GraceAttorney.Common
     {
 		public const int BackgroundHeightInPixels = 1080;
 		public const int BackgroundWidthInPixels = 1920;
+
+		public const string IndexFileName = "index.txt";
     }
 }
