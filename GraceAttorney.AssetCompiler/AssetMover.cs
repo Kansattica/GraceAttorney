@@ -80,7 +80,9 @@ namespace GraceAttorney.AssetCompiler
 			{
 				Console.WriteLine("Processing the path {0}", path);
 				if (Directory.Exists(path))
-					yield return ProcessAnimatedImage(path, destPath);
+					yield return AnimatedImageInDirectory(path, destPath);
+				else if (path.EndsWith(".gif"))
+					yield return AnimatedGif(path, destPath);
 				else
 					yield return ProcessSingleImage(path, destPath);
 			}
@@ -107,24 +109,36 @@ namespace GraceAttorney.AssetCompiler
 			return resource;
 		}
 
-		private ImageResource ProcessAnimatedImage(string srcPath, string destPath)
+		private ImageResource AnimatedImageInDirectory(string srcPath, string destPath)
 		{
 			var frames = Directory.EnumerateFiles(srcPath).OrderBy(x => x).Select(x => Image.Load(x)).ToArray();
+			var newestFile = Directory.EnumerateFiles(srcPath).Max(File.GetLastWriteTimeUtc);
+			var targetPath = Path.Combine(destPath, Path.GetFileName(srcPath) + ".png");
+			bool shouldWrite = !File.Exists(targetPath) || newestFile > File.GetLastWriteTimeUtc(targetPath);
 
+			return ProcessAnimatedImage(frames, targetPath, shouldWrite);
+		}
+
+		private ImageResource AnimatedGif(string srcPath, string destPath)
+		{
+			var targetPath = Path.Combine(destPath, Path.GetFileNameWithoutExtension(srcPath) + ".png");
+			using (Image inputGif = Image.Load(srcPath))
+			{
+				return ProcessAnimatedImage(Enumerable.Range(0, inputGif.Frames.Count).Select(x => inputGif.Frames.CloneFrame(x)).ToArray(),
+					targetPath, ShouldCopy(srcPath, targetPath));
+			}
+
+		}
+
+		private ImageResource ProcessAnimatedImage(Image[] frames, string targetPath, bool shouldWrite)
+		{
 			var (Width, Height) = frames.Aggregate((Width: 0, Height: 0), (acc, img)
 				=> (img.Width > acc.Width ? img.Width : acc.Width, img.Height > acc.Height ? img.Height : acc.Height));
 
-			var newestFile = Directory.EnumerateFiles(srcPath).Max(File.GetLastWriteTimeUtc);
-
-			var targetPath = Path.Combine(destPath, Path.GetFileName(srcPath) + ".png");
-
-			Console.WriteLine("Checking animated sprite in directory {0} to {1}. It has {2} frames, and each frame is {3}x{4}.",
-				srcPath, targetPath, frames.Length, Width, Height);
-
-			if (!File.Exists(targetPath) || newestFile > File.GetLastWriteTimeUtc(targetPath))
+			if (shouldWrite)
 			{
-				Console.WriteLine("Change detected. Processing animated sprite in directory {0} to {1}. It has {2} frames, and each frame is {3}x{4}.",
-					srcPath, targetPath, frames.Length, Width, Height);
+				Console.WriteLine("Change detected. Saving animated sprite to {0}. It has {1} frames, and each frame is {2}x{3}.",
+					targetPath, frames.Length, Width, Height);
 
 				using (var targetImage = new Image<Rgba32>(Width * frames.Length, Height))
 				{
