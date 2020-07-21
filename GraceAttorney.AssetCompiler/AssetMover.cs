@@ -14,7 +14,12 @@ namespace GraceAttorney.AssetCompiler
 	{
 		private readonly string _contentRootDir;
 		private readonly string _targetContentDir;
-		public AssetMover(string from, string to)
+
+		private readonly bool _quietMode;
+
+		private bool _changeDetected = false;
+
+		public AssetMover(string from, string to, bool quietMode = false)
 		{
 			if (!Directory.Exists(from)) { throw new ArgumentException($"{from} must be a directory."); }
 
@@ -28,6 +33,8 @@ namespace GraceAttorney.AssetCompiler
 			{
 				_targetContentDir = Path.Combine(_targetContentDir, "Content");
 			}
+
+			_quietMode = quietMode;
 		}
 
 		private const string BackgroundsName = "Backgrounds";
@@ -53,7 +60,8 @@ namespace GraceAttorney.AssetCompiler
 
 			var targetCaseDir = Path.Combine(_targetContentDir, Path.GetFileName(caseDirectory));
 
-			Console.WriteLine("Compiling assets from {0} to {1}", caseDirectory, targetCaseDir);
+			if (!_quietMode)
+				Console.WriteLine("Compiling assets from {0} to {1}", caseDirectory, targetCaseDir);
 
 			var contentIndex = new ContentIndex()
 			{
@@ -68,7 +76,11 @@ namespace GraceAttorney.AssetCompiler
 				contentIndex.Characters.Add(characterName, ProcessResourceDirectory(character, Path.Combine(characterTargetDir, characterName)).ToList());
 			}
 
-			using (var indexFile = File.Open(Path.Combine(targetCaseDir, Constants.IndexFileName), FileMode.Create))
+			if (!_changeDetected) { return; }
+
+			var indexPath = Path.Combine(targetCaseDir, Constants.IndexFileName);
+			Console.WriteLine("Writing {0} because something changed.", indexPath);
+			using (var indexFile = File.Open(indexPath, FileMode.Create))
 				contentIndex.Write(indexFile);
 		}
 
@@ -78,7 +90,9 @@ namespace GraceAttorney.AssetCompiler
 			Directory.CreateDirectory(destPath);
 			foreach (var path in Directory.EnumerateFileSystemEntries(srcPath))
 			{
-				Console.WriteLine("Processing the path {0}", path);
+				if (!_quietMode)
+					Console.WriteLine("Processing the path {0}", path);
+
 				if (Directory.Exists(path))
 					yield return AnimatedImageInDirectory(path, destPath);
 				else if (path.EndsWith(".gif"))
@@ -137,6 +151,7 @@ namespace GraceAttorney.AssetCompiler
 
 			if (shouldWrite)
 			{
+				_changeDetected = true;
 				Console.WriteLine("Change detected. Saving animated sprite to {0}. It has {1} frames, and each frame is {2}x{3}.",
 					targetPath, frames.Length, Width, Height);
 
@@ -169,7 +184,9 @@ namespace GraceAttorney.AssetCompiler
 
 		private void CopyDirIfNewerAndExists(string from, string to)
 		{
-			Console.WriteLine("Copying directory {0} to {1}", from, to);
+			if (!_quietMode)
+				Console.WriteLine("Copying directory {0} to {1}", from, to);
+
 			if (!Directory.Exists(from)) { return; }
 
 			Directory.CreateDirectory(to);
@@ -190,12 +207,14 @@ namespace GraceAttorney.AssetCompiler
 		{
 			if (ShouldCopy(from, to))
 			{
+				_changeDetected = true;
 				Console.WriteLine("Copying {0} to {1}.", from, to);
 				File.Copy(from, to, true);
 			}
 			else
 			{
-				Console.WriteLine("Not copying {0} to {1} because {1} is up to date.", from, to);
+				if (!_quietMode)
+					Console.WriteLine("Not copying {0} to {1} because {1} is up to date.", from, to);
 			}
 		}
 
