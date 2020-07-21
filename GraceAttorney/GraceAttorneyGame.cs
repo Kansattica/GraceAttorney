@@ -102,6 +102,8 @@ namespace GraceAttorney
 			}));
 
 			_world = worldBuilder.Build();
+
+			base.Initialize();
 		}
 
 		protected override void LoadContent()
