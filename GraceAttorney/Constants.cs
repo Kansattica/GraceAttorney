@@ -8,7 +8,6 @@ namespace GraceAttorney
 	enum SpriteLayers { Background, CharacterSprites, DialogueBox, VeryTop}
 	static class Constants
 	{
-		public const int BackgroundHeightInPixels = 1080;
 
 		public const int CharactersPerLine = 40;
 		public const int ExpectedLineCount = 3;

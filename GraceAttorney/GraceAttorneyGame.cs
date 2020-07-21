@@ -129,7 +129,7 @@ namespace GraceAttorney
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
-			_scaleFactor.Factor = (float)GraphicsDevice.Viewport.Height / Constants.BackgroundHeightInPixels;
+			_scaleFactor.Factor = (float)GraphicsDevice.Viewport.Height / Common.Constants.BackgroundHeightInPixels;
 
 			_viewport.Height = GraphicsDevice.Viewport.Height;
 			_viewport.Width = GraphicsDevice.Viewport.Width;

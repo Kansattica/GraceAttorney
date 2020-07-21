@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
 	<PropertyGroup>
 		<BaseIntermediateOutputPath>obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 	</PropertyGroup>
@@ -26,7 +26,7 @@
 		<TrimUnusedDependencies>true</TrimUnusedDependencies>
 	</PropertyGroup>
   <ItemGroup>
-	<Content Include="Content\**\*.*">
+	  <Content Include="Content\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</Content>
   </ItemGroup>
@@ -37,6 +37,7 @@
   <ItemGroup>
 	<ProjectReference Include="..\external\FNA\FNA.csproj" />
 	<ProjectReference Include="..\external\SpriteFontPlus\src\SpriteFontPlus.FNA.csproj" />
+	<ProjectReference Include="..\GraceAttorney.Common\GraceAttorney.Common.csproj" />
   </ItemGroup>
   <Import Project="..\build\CopyFNALibs.targets" />
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
