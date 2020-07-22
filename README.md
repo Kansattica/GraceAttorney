@@ -12,6 +12,7 @@
 - [ ] Ink integration
 - [ ] Music and sound
 - [X] Animated sprites
-- [ ] Optimized animated sprites with RenderTargets.
+- [X] Optimized animated sprites with sprite sheets.
 - [ ] Menu for setting options, saving, choosing a case, etc.
 - [X] Proper content loading system
+- [ ] Custom dialogue box textures
