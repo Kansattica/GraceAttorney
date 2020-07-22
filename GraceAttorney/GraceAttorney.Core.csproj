@@ -23,7 +23,7 @@
     <ProjectReference Include="..\GraceAttorney.Common\GraceAttorney.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EncompassECS.Framework" Version="0.21.2" />
+    <PackageReference Include="EncompassECS.Framework" Version="0.22.0" />
   </ItemGroup>
   <Import Project="..\build\CompileAssets.targets" />
   <Import Project="..\build\CopyFNALibs.targets" />

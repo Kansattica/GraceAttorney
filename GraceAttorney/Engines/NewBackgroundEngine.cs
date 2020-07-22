@@ -17,7 +17,7 @@ namespace GraceAttorney.Engines
 			_content = content;
 		}
 
-		protected override void Spawn(NewBackgroundMessage message)
+		protected override void Spawn(in NewBackgroundMessage message)
 		{
 			if (SomeComponent<BackgroundComponent>())
 			{
