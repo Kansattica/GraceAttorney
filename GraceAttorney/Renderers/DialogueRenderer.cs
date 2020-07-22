@@ -187,6 +187,7 @@ namespace GraceAttorney.Renderers
 			if (ShouldRehyphenate(dialogue, actualDialogueWidth))
 			{
 				_toDisplay.Clear();
+
 				SetFontSize(actualDialogueWidth);
 
 				HyphenateAndWrapString(dialogue, actualDialogueWidth);

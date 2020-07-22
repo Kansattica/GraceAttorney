@@ -33,9 +33,8 @@ namespace GraceAttorney
 				IsFullScreen = false,
 				GraphicsProfile = GraphicsProfile.HiDef,
 				PreferMultiSampling = true,
-				SynchronizeWithVerticalRetrace = false
+				SynchronizeWithVerticalRetrace = true
 			};
-			IsFixedTimeStep = false;
 
 			Window.AllowUserResizing = true;
 			Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
@@ -141,7 +140,6 @@ namespace GraceAttorney
 			GraphicsDevice.Clear(Color.Black);
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 			_world.Draw();
-			GameFonts.Dialogue.DrawString(_spriteBatch, $"{(int)(1 / gameTime.ElapsedGameTime.TotalSeconds)} FPS", Vector2.Zero, Color.Black);
 			_spriteBatch.End();
 
 			base.Draw(gameTime);
