@@ -11,17 +11,14 @@ namespace GraceAttorney.Engines
 {
 	[Receives(typeof(CharacterExitMessage))]
 	[Sends(typeof(StartMotionMessage), typeof(RemoveSpriteMessage))]
-	class CharacterExitEngine : Engine
+	class CharacterExitEngine : Spawner<CharacterExitMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in CharacterExitMessage message)
 		{
-			foreach (ref readonly var message in ReadMessages<CharacterExitMessage>())
-			{
-				if (message.ExitTo == EnterExitDirection.NoAnimation)
-					SendMessage(new RemoveSpriteMessage(message.Character));
-				else
-					SendMessage(new StartMotionMessage(message.Character, message.ExitTo, MotionDirection.Out));
-			}
+			if (message.ExitTo == EnterExitDirection.NoAnimation)
+				SendMessage(new RemoveSpriteMessage(message.Character));
+			else
+				SendMessage(new StartMotionMessage(message.Character, message.ExitTo, MotionDirection.Out));
 		}
 	}
 }

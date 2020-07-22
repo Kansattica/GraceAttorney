@@ -12,15 +12,11 @@ namespace GraceAttorney.Engines
 	[Receives(typeof(NewDialogueMessage))]
 	[Reads(typeof(DialogueComponent))]
 	[Writes(typeof(DialogueComponent), typeof(AnimatedTextComponent))]
-	class UpdateDialogueEngine : Engine
+	class UpdateDialogueEngine : Spawner<NewDialogueMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in NewDialogueMessage message)
 		{
-			if (!SomeMessage<NewDialogueMessage>()) { return; }
-
 			ref readonly var entity = ref ReadEntity<DialogueComponent>();
-
-			ref readonly var message = ref ReadMessage<NewDialogueMessage>();
 
 			SetComponent(entity, message.Dialogue);
 			SetComponent(entity, new AnimatedTextComponent(message.CharactersPerSecond, charactersVisible: 0));

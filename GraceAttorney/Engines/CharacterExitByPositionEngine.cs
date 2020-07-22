@@ -12,21 +12,18 @@ namespace GraceAttorney.Engines
 	[Receives(typeof(CharacterExitByPositionMessage))]
 	[Reads(typeof(SpriteComponent))]
 	[Sends(typeof(CharacterExitMessage))]
-	class CharacterExitByPositionEngine : Engine
+	class CharacterExitByPositionEngine : Spawner<CharacterExitByPositionMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in CharacterExitByPositionMessage message)
 		{
-			foreach (ref readonly var message in ReadMessages<CharacterExitByPositionMessage>())
+			// this is slow, but remember that there's only, like, three of these on screen at most.
+			// we can even probably stop after we find one if it becomes a problem.
+			foreach (ref readonly var entity in ReadEntities<SpriteComponent>())
 			{
-				// this is slow, but remember that there's only, like, three of these on screen at most.
-				// we can even probably stop after we find one if it becomes a problem.
-				foreach (ref readonly var entity in ReadEntities<SpriteComponent>())
+				ref readonly var sprite = ref GetComponent<SpriteComponent>(entity);
+				if (sprite.Position == message.Location)
 				{
-					ref readonly var sprite = ref GetComponent<SpriteComponent>(entity);
-					if (sprite.Position == message.Location)
-					{
-						SendMessage(new CharacterExitMessage(entity, message.Direction));
-					}
+					SendMessage(new CharacterExitMessage(entity, message.Direction));
 				}
 			}
 		}

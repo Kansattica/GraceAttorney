@@ -13,19 +13,16 @@ namespace GraceAttorney.Engines
 	[Receives(typeof(RemoveSpriteMessage))]
 	[Reads(typeof(AnimatedSpriteComponent))]
 	[Writes(typeof(SpriteComponent), typeof(AnimatedSpriteComponent))]
-	class RemoveSpriteEngine : Engine
+	class RemoveSpriteEngine : Spawner<RemoveSpriteMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in RemoveSpriteMessage message)
 		{
-			foreach (ref readonly var message in ReadMessages<RemoveSpriteMessage>())
-			{
-				ref readonly var character = ref message.Sprite;
+			ref readonly var character = ref message.Sprite;
 
-				RemoveComponent<SpriteComponent>(character);
+			RemoveComponent<SpriteComponent>(character);
 
-				if (HasComponent<AnimatedSpriteComponent>(character))
-					RemoveComponent<AnimatedSpriteComponent>(character);
-			}
+			if (HasComponent<AnimatedSpriteComponent>(character))
+				RemoveComponent<AnimatedSpriteComponent>(character);
 		}
 	}
 }

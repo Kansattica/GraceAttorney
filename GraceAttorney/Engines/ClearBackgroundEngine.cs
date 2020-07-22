@@ -10,9 +10,9 @@ namespace GraceAttorney.Engines
 	[Receives(typeof(ClearBackgroundMessage))]
 	[Writes(typeof(OpacityComponent), 1)]
 	[Reads(typeof(BackgroundComponent), typeof(OpacityComponent))]
-	class ClearBackgroundEngine : Engine
+	class ClearBackgroundEngine : Spawner<ClearBackgroundMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in ClearBackgroundMessage message)
 		{
 			if (!SomeMessage<ClearBackgroundMessage>()) { return; }
 

@@ -12,12 +12,10 @@ namespace GraceAttorney.Engines
 	[Reads(typeof(CharacterComponent))]
 	[Sends(typeof(RemoveSpriteMessage))]
 	[Receives(typeof(ClearAllCharactersMessage))]
-	class ClearAllCharactersEngine : Engine
+	class ClearAllCharactersEngine : Spawner<ClearAllCharactersMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in ClearAllCharactersMessage message)
 		{
-			if (!SomeMessage<ClearAllCharactersMessage>()) { return; }
-
 			foreach (ref readonly var entity in ReadEntities<CharacterComponent>())
 			{
 				SendMessage(new RemoveSpriteMessage(entity));

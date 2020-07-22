@@ -11,33 +11,30 @@ namespace GraceAttorney.Engines
 	[DefaultWritePriority(0)]
 	[Receives(typeof(StartMotionMessage))]
 	[Writes(typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent), typeof(OpacityComponent))]
-	class StartMotionEngine : Engine
+	class StartMotionEngine : Spawner<StartMotionMessage>
 	{
-		public override void Update(double dt)
+		protected override void Spawn(in StartMotionMessage message)
 		{
-			foreach (ref readonly var message in ReadMessages<StartMotionMessage>())
-			{
-				ref readonly var entity = ref message.Entity;
+			ref readonly var entity = ref message.Entity;
 
-				if (message.Direction == EnterExitDirection.Fade)
-				{
-					if (message.MotionDirection == MotionDirection.In)
-						SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
-					else
-						SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 1.0f, fadeRate: 1.0f));
-				}
+			if (message.Direction == EnterExitDirection.Fade)
+			{
+				if (message.MotionDirection == MotionDirection.In)
+					SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
 				else
+					SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 1.0f, fadeRate: 1.0f));
+			}
+			else
+			{
+				SetComponent(entity, new MovingSpriteComponent { Direction = message.MotionDirection, Velocity = .5f });
+				SetComponent(entity, new SpriteOffsetComponent
 				{
-					SetComponent(entity, new MovingSpriteComponent { Direction = message.MotionDirection, Velocity = .5f });
-					SetComponent(entity, new SpriteOffsetComponent
-					{
-						// basically, the motion engine always moves the character in the direction they're already going
-						// (I should probably change that and put the direction vector on the moving sprite component)
-						// so if they're leaving, just nudge 'em a bit in the direction so they can get going.
-						PositionPercentageOffset = GetDirectionVector(message.Direction) * 
-									(message.MotionDirection == MotionDirection.In ? 1.0f : .01f)
-					});
-				}
+					// basically, the motion engine always moves the character in the direction they're already going
+					// (I should probably change that and put the direction vector on the moving sprite component)
+					// so if they're leaving, just nudge 'em a bit in the direction so they can get going.
+					PositionPercentageOffset = GetDirectionVector(message.Direction) *
+								(message.MotionDirection == MotionDirection.In ? 1.0f : .01f)
+				});
 			}
 
 		}

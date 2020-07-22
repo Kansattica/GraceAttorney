@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 namespace GraceAttorney.Engines
 {
 	[Receives(typeof(ToggleFullscreenMessage))]
-	class FullScreenEngine : Engine
+	class FullScreenEngine : Spawner<ToggleFullscreenMessage>
 	{
 		private readonly GraphicsDeviceManager _graphics;
 		private readonly UpdatedSize _windowBounds;
@@ -20,10 +20,8 @@ namespace GraceAttorney.Engines
 			_windowBounds = windowBounds;
 		}
 
-		public override void Update(double dt)
+		protected override void Spawn(in ToggleFullscreenMessage message)
 		{
-			if (!SomeMessage<ToggleFullscreenMessage>()) { return; }
-
 			if (!_graphics.IsFullScreen)
 				_windowedScreenSize = new Point(_windowBounds.Width, _windowBounds.Height);
 
