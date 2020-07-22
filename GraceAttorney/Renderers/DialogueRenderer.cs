@@ -149,7 +149,9 @@ namespace GraceAttorney.Renderers
 				color);
 		}
 
-		private static readonly string MaxLineWidth = new string('W', Constants.CharactersPerLine);
+		// that's 40 Ws as a string literal to take advantage of constant optimizations
+		// MaxLineWidth.Length should equal Constants.CharactersPerLine.
+		private const string MaxLineWidth = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
 		private const float LineWidthLeeway = .05f;
 		private float CalculateTextFit(int dialogueBoxWidth)
 		{
