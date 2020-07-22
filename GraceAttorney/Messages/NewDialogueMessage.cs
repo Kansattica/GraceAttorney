@@ -9,10 +9,12 @@ namespace GraceAttorney.Messages
 	readonly struct NewDialogueMessage : IMessage
 	{
 		public readonly DialogueComponent Dialogue;
+		public readonly int CharactersPerSecond;
 
-		public NewDialogueMessage(DialogueComponent dialogue)
+		public NewDialogueMessage(DialogueComponent dialogue, int charactersPerSecond)
 		{
 			Dialogue = dialogue;
+			CharactersPerSecond = charactersPerSecond;
 		}
 	}
 }

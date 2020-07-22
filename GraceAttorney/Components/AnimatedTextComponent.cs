@@ -5,9 +5,15 @@ using Encompass;
 
 namespace GraceAttorney.Components
 {
-	struct AnimatedTextComponent : IComponent
+	readonly struct AnimatedTextComponent : IComponent
 	{
-		public int CharactersPerSecond;
-		public double CharactersVisible;
+		public readonly int CharactersPerSecond;
+		public readonly double CharactersVisible;
+
+		public AnimatedTextComponent(int charactersPerSecond, double charactersVisible)
+		{
+			CharactersPerSecond = charactersPerSecond;
+			CharactersVisible = charactersVisible;
+		}
 	}
 }

@@ -7,18 +7,23 @@ using GraceAttorney.Messages;
 
 namespace GraceAttorney.Engines
 {
+
+	[DefaultWritePriority(0)]
 	[Receives(typeof(NewDialogueMessage))]
 	[Reads(typeof(DialogueComponent))]
-	[Writes(typeof(DialogueComponent), 0)]
+	[Writes(typeof(DialogueComponent), typeof(AnimatedTextComponent))]
 	class UpdateDialogueEngine : Engine
 	{
 		public override void Update(double dt)
 		{
 			if (!SomeMessage<NewDialogueMessage>()) { return; }
 
-			var entity = ReadEntity<DialogueComponent>();
+			ref readonly var entity = ref ReadEntity<DialogueComponent>();
 
-			SetComponent(entity, ReadMessage<NewDialogueMessage>().Dialogue);
+			ref readonly var message = ref ReadMessage<NewDialogueMessage>();
+
+			SetComponent(entity, message.Dialogue);
+			SetComponent(entity, new AnimatedTextComponent(message.CharactersPerSecond, charactersVisible: 0));
 		}
 	}
 }

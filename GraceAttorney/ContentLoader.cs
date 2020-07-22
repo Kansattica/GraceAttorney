@@ -53,7 +53,7 @@ namespace GraceAttorney
 		public int FrameWidth;
 		public int FrameHeight;
 
-		private string path;
+		private readonly string path;
 		public CaseSprite(ImageResource resource, ContentManager content)
 		{
 			Sprite = content.Load<Texture2D>(resource.FilePath);

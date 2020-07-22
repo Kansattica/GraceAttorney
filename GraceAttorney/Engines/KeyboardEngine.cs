@@ -5,12 +5,14 @@ using System.Text;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.Messages;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace GraceAttorney.Engines
 {
 	[Sends(typeof(ToggleFullscreenMessage), typeof(ClearBackgroundMessage), typeof(NewBackgroundMessage),
-		typeof(CharacterEnterMessage), typeof(CharacterExitByPositionMessage), typeof(CharacterExitByNameMessage), typeof(ClearAllCharactersMessage))]
+		typeof(CharacterEnterMessage), typeof(CharacterExitByPositionMessage), typeof(CharacterExitByNameMessage), 
+		typeof(ClearAllCharactersMessage), typeof(NewDialogueMessage))]
 	class KeyboardEngine : Engine
 	{
 		private KeyboardState _keyboardPrev = new KeyboardState();
@@ -69,10 +71,21 @@ namespace GraceAttorney.Engines
 			if (KeysPressed(keyboardCur, Keys.Z))
 				SendMessage(new CharacterExitByNameMessage("Bird Call", EnterExitDirection.Top));
 
+			if (KeysPressed(keyboardCur, Keys.T))
+				SendMessage(new NewDialogueMessage(new DialogueComponent
+				{
+					Dialogue = "I'm saying something else now! Suck it, nerds. I'm so gay all the time.",
+					Display = true,
+					Justification = JustifyText.Left,
+					NameTagLocation = NameTagLocation.Left,
+					Speaker = "Still Grace",
+					TextColor = Color.White
+				}, 30));
+
 			_keyboardPrev = keyboardCur;
 		}
 
-		private bool KeysPressed(KeyboardState current, params Keys[] keys)
+		private bool KeysPressed(in KeyboardState current, params Keys[] keys)
 		{
 			foreach (var key in keys)
 			{

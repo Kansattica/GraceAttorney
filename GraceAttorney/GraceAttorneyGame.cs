@@ -9,6 +9,7 @@ using GraceAttorney.DependencyInjection;
 using GraceAttorney.Engines;
 using GraceAttorney.Messages;
 using GraceAttorney.Renderers;
+using GraceAttorney.Renderers.Fonts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,8 +33,9 @@ namespace GraceAttorney
 				IsFullScreen = false,
 				GraphicsProfile = GraphicsProfile.HiDef,
 				PreferMultiSampling = true,
-				SynchronizeWithVerticalRetrace = true
+				SynchronizeWithVerticalRetrace = false
 			};
+			IsFixedTimeStep = false;
 
 			Window.AllowUserResizing = true;
 			Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
@@ -86,11 +88,10 @@ namespace GraceAttorney
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
 			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
-			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "standing", drawLocation: DrawLocation.Center));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Center));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
-			worldBuilder.SetComponent(dialogueBox, new AnimatedTextComponent() { CharactersPerSecond = 30, CharactersVisible = 0 });
 
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
@@ -99,7 +100,7 @@ namespace GraceAttorney
 				Justification = JustifyText.Left,
 				TextColor = Color.White,
 				Speaker = "Grace"
-			}));
+			}, 30));
 
 			_world = worldBuilder.Build();
 
@@ -140,6 +141,7 @@ namespace GraceAttorney
 			GraphicsDevice.Clear(Color.Black);
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 			_world.Draw();
+			GameFonts.Dialogue.DrawString(_spriteBatch, $"{(int)(1 / gameTime.ElapsedGameTime.TotalSeconds)} FPS", Vector2.Zero, Color.Black);
 			_spriteBatch.End();
 
 			base.Draw(gameTime);

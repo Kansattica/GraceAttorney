@@ -170,21 +170,43 @@ namespace GraceAttorney.Renderers
 			}
 		}
 
+		private string lastDialogue = null;
+		private int lastDialogueWidth = -2;
+		private bool ShouldRehyphenate(string dialogue, int dialogueWidth)
+		{
+			return (dialogueWidth != lastDialogueWidth) || (lastDialogue != dialogue);
+		}
+
 		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
 		{
 			CalculateTextBounds(dialogueBox, out var xDialogueOffset, out var yDialogueOffset, out var actualDialogueWidth);
 
-			SetFontSize(actualDialogueWidth);
+			// rehyphenating the string every frame used to be the most expensive operation
+			// so only rehyphenate if needed
 
-			var toDisplay = HyphenateAndWrapString(dialogue, actualDialogueWidth);
-
-			if (truncateTo != -1 && truncateTo < toDisplay.Length)
+			if (ShouldRehyphenate(dialogue, actualDialogueWidth))
 			{
-				toDisplay.Remove(truncateTo, toDisplay.Length - truncateTo);
+				_toDisplay.Clear();
+				SetFontSize(actualDialogueWidth);
+
+				HyphenateAndWrapString(dialogue, actualDialogueWidth);
+
+				lastDialogue = dialogue;
+				lastDialogueWidth = actualDialogueWidth;
 			}
 
-			GameFonts.Dialogue.DrawString(_spriteBatch, toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
-			_toWrite.Clear();
+			// this allocates on every frame where the text is truncated, but, since we cache the _toDisplay string builder between frames,
+			// this is (I believe) the most efficient way to get a substring out of a StringBuilder without modifying it
+
+			if (truncateTo != -1 && truncateTo < _toDisplay.Length)
+			{
+				GameFonts.Dialogue.DrawString(_spriteBatch, _toDisplay.ToString(0, truncateTo), new Vector2(xDialogueOffset, yDialogueOffset), color);
+			}
+			else
+			{
+				GameFonts.Dialogue.DrawString(_spriteBatch, _toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
+			}
+
 		}
 
 		private const float PaddingBetweenCenteredLines = 1.4f;
@@ -221,9 +243,9 @@ namespace GraceAttorney.Renderers
 		// I'm sorry that this is so hairy, but this does a reasonable job breaking up longer words
 		// and handles the screen resizing pretty gracefully.
 
-		private static readonly StringBuilder _toWrite = new StringBuilder(); // don't leak a stringbuilder every frame
+		private static readonly StringBuilder _toDisplay = new StringBuilder(); // don't leak a stringbuilder every frame
 		private static readonly char[] _space = new char[] { ' ' }; // .net framework 4.6.1 insists
-		private static StringBuilder HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
+		private static void HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
 		{
 			foreach (var line in dialogue.Split('\n'))
 			{
@@ -231,20 +253,20 @@ namespace GraceAttorney.Renderers
 				for (var idx = 0; idx < words.Length; idx++)
 				{
 					var word = words[idx];
-					_toWrite.Append(word);
+					_toDisplay.Append(word);
 
 					// if the string is currently too long to fit in the dialogue box, hoo boy.
-					if (GameFonts.Dialogue.MeasureString(_toWrite).X > dialogueBoxWidth)
+					if (GameFonts.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth)
 					{
 						// length-1 is the last index in the string
 						// toWrite[beforeLastWordIdx] should always be a space
-						int beforeLastWordIdx = _toWrite.Length - 1 - word.Length;
+						int beforeLastWordIdx = _toDisplay.Length - 1 - word.Length;
 
 						// Only hyphenate long words
 						if (word.Length <= 7)
 						{
-							_toWrite[beforeLastWordIdx] = '\n';
-							_toWrite.Append(' ');
+							_toDisplay[beforeLastWordIdx] = '\n';
+							_toDisplay.Append(' ');
 							continue;
 						}
 
@@ -256,7 +278,7 @@ namespace GraceAttorney.Renderers
 							// just start a new line beforehand. 
 							if (tryBreakingWordAtThisIdx <= 2)
 							{
-								_toWrite[beforeLastWordIdx] = '\n';
+								_toDisplay[beforeLastWordIdx] = '\n';
 								break;
 							}
 
@@ -270,22 +292,22 @@ namespace GraceAttorney.Renderers
 							// this -1 is because, if there's a hyphen, insertLineBreakAt is the index after it, because
 							// that's where we want to insert the line break.
 							bool insertedHyphen = false;
-							if (_toWrite[insertLineBreakAt - 1] != '-')
+							if (_toDisplay[insertLineBreakAt - 1] != '-')
 							{
 								insertedHyphen = true;
-								_toWrite.Insert(insertLineBreakAt, "-\n");
+								_toDisplay.Insert(insertLineBreakAt, "-\n");
 							}
 							else
 							{
-								_toWrite.Insert(insertLineBreakAt, '\n');
+								_toDisplay.Insert(insertLineBreakAt, '\n');
 							}
 
-							keepTrying = (GameFonts.Dialogue.MeasureString(_toWrite).X > dialogueBoxWidth);
+							keepTrying = (GameFonts.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth);
 							if (keepTrying)
 							{
 								// if we have to try again, because the string is too long,
 								// undo what we just did.
-								_toWrite.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
+								_toDisplay.Remove(insertLineBreakAt, insertedHyphen ? 2 : 1);
 
 								// and try breaking the word earlier.
 								tryBreakingWordAtThisIdx--;
@@ -298,13 +320,11 @@ namespace GraceAttorney.Renderers
 					// for certain pathological dialogue box sizes, the space makes the string wider than the box,
 					// which means that the rest of the function will put each word on its own line.
 					if (idx != words.Length - 1)
-						_toWrite.Append(' ');
+						_toDisplay.Append(' ');
 				}
 
-				_toWrite.Append('\n');
+				_toDisplay.Append('\n');
 			}
-
-			return _toWrite;
 		}
 
 		private static int HyphenationGuess(string word)

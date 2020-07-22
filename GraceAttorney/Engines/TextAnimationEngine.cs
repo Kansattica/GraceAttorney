@@ -30,11 +30,10 @@ namespace GraceAttorney.Engines
 					}
 				}
 
-				SetComponent(entity, 
-					new AnimatedTextComponent {
-						CharactersPerSecond = animatingText.CharactersPerSecond,
-						CharactersVisible = charactersVisible
-					});
+				SetComponent(entity, new AnimatedTextComponent(
+						charactersPerSecond: animatingText.CharactersPerSecond,
+						charactersVisible: charactersVisible
+					));
 			}
 		}
 	}
