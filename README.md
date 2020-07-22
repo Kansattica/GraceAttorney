@@ -11,6 +11,7 @@
 - [ ] Cross-Examination
 - [ ] Ink integration
 - [ ] Music and sound
+- [ ] Inventory/Court Record
 - [X] Animated sprites
 - [X] Optimized animated sprites with sprite sheets.
 - [ ] Menu for setting options, saving, choosing a case, etc.
