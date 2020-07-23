@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using GraceAttorney.Common;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -168,8 +167,7 @@ namespace GraceAttorney.AssetCompiler
 						frame.Dispose();
 					}
 
-					if (targetImage.Width > Constants.MaximumTextureSize || targetImage.Height > Constants.MaximumTextureSize)
-						Console.WriteLine("WARNING: {0} is larger than FNA's limit on texture sizes, which is {1}x{1}.", targetPath, Constants.MaximumTextureSize);
+					WarnIfImageTooBig(targetImage, targetPath);
 
 					using (var fs = File.OpenWrite(targetPath))
 						targetImage.SaveAsPng(fs);
@@ -183,6 +181,14 @@ namespace GraceAttorney.AssetCompiler
 				FrameWidth = Width,
 				Frames = frames.Length
 			};
+		}
+
+		private void WarnIfImageTooBig(Image image, string targetPath)
+		{
+			var imageSize = image.Width * image.Height;
+			if (imageSize > Constants.MaximumTextureSize)
+				Console.WriteLine("WARNING: {0} is {1} pixels in total, which is larger than larger than FNA's {2}-pixel limit on texture sizes.",
+					targetPath, imageSize, Constants.MaximumTextureSize);
 		}
 
 		private void CopyDirIfNewerAndExists(string from, string to)

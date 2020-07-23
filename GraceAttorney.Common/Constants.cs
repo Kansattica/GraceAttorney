@@ -7,8 +7,9 @@ namespace GraceAttorney.Common
 		public const int BackgroundHeightInPixels = 1080;
 		public const int BackgroundWidthInPixels = 1920;
 
-		// http://www.shawnhargreaves.com/blog/reach-vs-hidef.html
-		public const int MaximumTextureSize = 4096;
+		// dank said that this is true for FNA
+		// the XNA limit is 4096 * 4096
+		public const int MaximumTextureSize = 8192 * 8192;
 
 		public const string IndexFileName = "index.txt";
     }
