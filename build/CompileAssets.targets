@@ -3,4 +3,7 @@
 	<Target Name="CompileAssets" AfterTargets="AfterBuild">
 		<Exec Command="dotnet run --configuration Release --project ../GraceAttorney.AssetCompiler/GraceAttorney.AssetCompiler.csproj -- Content $(OutDir) -q" />
 	</Target>
+	<Target Name="CleanAssets" AfterTargets="Clean">
+		<RemoveDir Directories="$(OutDir)Content" />
+	</Target>
 </Project>
