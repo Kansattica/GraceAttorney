@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace GraceAttorney.Common
 {
@@ -23,9 +24,13 @@ namespace GraceAttorney.Common
 			}
 
 			SerializeAndWriteLine(CharactersHeader, toWrite);
-			foreach (var character in Characters.Values.SelectMany(x => x))
+			foreach (var character in Characters)
 			{
-				SerializeAndWriteLine(character.ToString(), toWrite);
+				foreach (var pose in character.Value)
+				{
+					pose.Character = character.Key;
+					SerializeAndWriteLine(pose.ToString(), toWrite);
+				}
 			}
 		}
 
@@ -50,14 +55,13 @@ namespace GraceAttorney.Common
 						break;
 					case ReadMode.Character:
 						var resource = ImageResource.FromString(line);
-						var characterName = Directory.GetParent(resource.FilePath).Name;
-						if (toReturn.Characters.TryGetValue(characterName, out var resources))
+						if (toReturn.Characters.TryGetValue(resource.Character, out var resources))
 						{
 							resources.Add(resource);
 						}
 						else
 						{
-							toReturn.Characters.Add(characterName, new List<ImageResource> { resource });
+							toReturn.Characters.Add(resource.Character, new List<ImageResource> { resource });
 						}
 						break;
 				}
@@ -79,14 +83,17 @@ namespace GraceAttorney.Common
 	public class ImageResource : IEquatable<ImageResource>
 	{
 		public string FilePath { get; set; }
+		public string Character { get; set; } = "";
 		public string Name { get => Path.GetFileNameWithoutExtension(FilePath); }
 		public int Frames { get; set; }
 		public int FrameWidth { get; set; }
 		public int FrameHeight { get; set; }
+		public int StartsAtX { get; set; } = 0;
+		public int StartsAtY { get; set; } = 0;
 
 		public override string ToString()
 		{
-			return $"{FilePath};{Frames};{FrameWidth};{FrameHeight}";
+			return $"{NormalizePathSeparators(FilePath)};{Character};{Frames};{FrameWidth};{FrameHeight};{StartsAtX};{StartsAtY}";
 		}
 
 		public static ImageResource FromString(string str)
@@ -95,11 +102,18 @@ namespace GraceAttorney.Common
 			return new ImageResource
 			{
 				FilePath = split[0],
-				Frames = int.Parse(split[1]),
-				FrameWidth = int.Parse(split[2]),
-				FrameHeight = int.Parse(split[3]),
+				Character = split[1],
+				Frames = int.Parse(split[2]),
+				FrameWidth = int.Parse(split[3]),
+				FrameHeight = int.Parse(split[4]),
+				StartsAtX = int.Parse(split[5]),
+				StartsAtY = int.Parse(split[6])
 			};
 		}
+
+		// basically, you can use forward slashes to separate directories on any platform (including Windows!)
+		// but backslashes are a Windowsism
+		private static string NormalizePathSeparators(string path) => path.Replace('\\', '/');
 
 		public override bool Equals(object obj)
 		{
@@ -109,12 +123,18 @@ namespace GraceAttorney.Common
 		public bool Equals(ImageResource other)
 		{
 			return other != null &&
-				   FilePath == other.FilePath;
+				   FilePath == other.FilePath &&
+				   StartsAtX == other.StartsAtX &&
+				   StartsAtY == other.StartsAtY;
 		}
 
 		public override int GetHashCode()
 		{
-			return 1230029444 + EqualityComparer<string>.Default.GetHashCode(FilePath);
+			var hashCode = -1237577697;
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FilePath);
+			hashCode = hashCode * -1521134295 + StartsAtX.GetHashCode();
+			hashCode = hashCode * -1521134295 + StartsAtY.GetHashCode();
+			return hashCode;
 		}
 
 		public static bool operator ==(ImageResource left, ImageResource right)
