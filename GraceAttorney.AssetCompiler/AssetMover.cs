@@ -168,6 +168,9 @@ namespace GraceAttorney.AssetCompiler
 						frame.Dispose();
 					}
 
+					if (targetImage.Width > Constants.MaximumTextureSize || targetImage.Height > Constants.MaximumTextureSize)
+						Console.WriteLine("WARNING: {0} is larger than FNA's limit on texture sizes, which is {1}x{1}.", targetPath, Constants.MaximumTextureSize);
+
 					using (var fs = File.OpenWrite(targetPath))
 						targetImage.SaveAsPng(fs);
 				}
