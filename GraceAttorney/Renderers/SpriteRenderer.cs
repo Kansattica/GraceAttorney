@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.DependencyInjection;
@@ -12,7 +10,6 @@ namespace GraceAttorney.Renderers
 {
 	class SpriteRenderer : OrderedRenderer<SpriteComponent>
 	{
-		private const float ShowThisMuch = .90f;
 		private const float SideCharacterXOffset = .30f;
 
 		private readonly SpriteBatch _spriteBatch;
@@ -62,7 +59,7 @@ namespace GraceAttorney.Renderers
 
 		private float CalculateTopOfHeadYPosition(int spriteHeight)
 		{ 
-			return _viewport.Height - (_scaleFactor.Factor * spriteHeight * ShowThisMuch);
+			return _viewport.Height - (_scaleFactor.Factor * spriteHeight);
 		}
 
 		Vector2 CalculatePosition(DrawLocation location, int spriteFrameWidth, int spriteFrameHeight)
