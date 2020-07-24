@@ -73,19 +73,19 @@ namespace GraceAttorney.Engines
 
 			if (KeysPressed(keyboardCur, Keys.T))
 				SendMessage(new NewDialogueMessage(new DialogueComponent
-				{
-					Dialogue = "I'm saying something else now! Suck it, nerds. I'm so gay all the time.",
-					Display = true,
-					Justification = JustifyText.Left,
-					NameTagLocation = NameTagLocation.Left,
-					Speaker = "Still Grace",
-					TextColor = Color.White
-				}, 30));
+				(
+					dialogue: "I'm saying something else now! Suck it, nerds. I'm so gay all the time.",
+					display: true,
+					justification: JustifyText.Left,
+					nameTagLocation: NameTagLocation.Left,
+					speaker: "Still Grace",
+					textColor: Color.White
+				), 30));
 
 			_keyboardPrev = keyboardCur;
 		}
 
-		private bool KeysPressed(in KeyboardState current, params Keys[] keys)
+		private bool KeysPressed(KeyboardState current, params Keys[] keys)
 		{
 			foreach (var key in keys)
 			{

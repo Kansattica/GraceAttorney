@@ -6,8 +6,13 @@ using Microsoft.Xna.Framework;
 
 namespace GraceAttorney.Components
 {
-	struct SpriteOffsetComponent : IComponent
+	readonly struct SpriteOffsetComponent : IComponent
 	{
-		public Vector2 PositionPercentageOffset;
+		public readonly Vector2 PositionPercentageOffset;
+
+		public SpriteOffsetComponent(Vector2 positionPercentageOffset)
+		{
+			PositionPercentageOffset = positionPercentageOffset;
+		}
 	}
 }
