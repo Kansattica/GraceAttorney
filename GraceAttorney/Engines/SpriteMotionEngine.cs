@@ -37,7 +37,7 @@ namespace GraceAttorney.Engines
 				else
 				{
 					SetComponent(entity,
-						new SpriteOffsetComponent { PositionPercentageOffset = newOffset });
+						new SpriteOffsetComponent(newOffset));
 				}
 			}
 		}

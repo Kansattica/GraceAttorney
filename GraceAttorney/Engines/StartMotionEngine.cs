@@ -26,15 +26,15 @@ namespace GraceAttorney.Engines
 			}
 			else
 			{
-				SetComponent(entity, new MovingSpriteComponent { Direction = message.MotionDirection, Velocity = .5f });
-				SetComponent(entity, new SpriteOffsetComponent
-				{
+				SetComponent(entity, new MovingSpriteComponent(message.MotionDirection, velocity: .5f));
+				SetComponent(entity, new SpriteOffsetComponent(
+				
 					// basically, the motion engine always moves the character in the direction they're already going
 					// (I should probably change that and put the direction vector on the moving sprite component)
 					// so if they're leaving, just nudge 'em a bit in the direction so they can get going.
-					PositionPercentageOffset = GetDirectionVector(message.Direction) *
-								(message.MotionDirection == MotionDirection.In ? 1.0f : .01f)
-				});
+					positionPercentageOffset: GetDirectionVector(message.Direction) *
+								(message.MotionDirection == MotionDirection.In ? 1.0f : .01f))
+			);
 			}
 
 		}

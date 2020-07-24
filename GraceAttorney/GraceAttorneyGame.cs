@@ -92,14 +92,14 @@ namespace GraceAttorney
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
 
-			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
-				Display = true,
-				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "What's up, gamers? It's me, a real live bird, coming at you live from Some Kinda Courtroom. I'm extremely gay and ready to fucking party. Anyways, first one to touch my butt gets three entire bird dollars.",
-				Justification = JustifyText.Left,
-				TextColor = Color.White,
-				Speaker = "Bird Call"
-			}, 30));
+			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent( 
+				display: true,
+				nameTagLocation: NameTagLocation.Left,
+				dialogue: "What's up, gamers? It's me, a real live bird, coming at you live from Some Kinda Courtroom. I'm extremely gay and ready to fucking party. Anyways, first one to touch my butt gets three entire bird dollars.",
+				justification: JustifyText.Left,
+				textColor: Color.White,
+				speaker: "Bird Call"
+			), 30));
 
 			_world = worldBuilder.Build();
 

@@ -14,13 +14,13 @@ namespace GraceAttorney.Engines
 		protected override void Spawn(in NewSpriteMessage newSprite)
 		{
 			SetComponent(newSprite.Entity, new SpriteComponent
-			{
-				Layer = (int)newSprite.Layer,
-				Position = newSprite.Position,
-				FrameWidth = newSprite.Asset.FrameWidth,
-				FrameHeight = newSprite.Asset.FrameHeight,
-				Texture = newSprite.Asset.Sprite,
-			});
+			(
+				position: newSprite.Position,
+				frameWidth: newSprite.Asset.FrameWidth,
+				frameHeight: newSprite.Asset.FrameHeight,
+				texture: newSprite.Asset.Sprite,
+				layer: (int)newSprite.Layer
+			));
 
 			if (newSprite.Asset.Frames > 1)
 				SetComponent(newSprite.Entity, new AnimatedSpriteComponent(0, newSprite.Asset.Frames));
