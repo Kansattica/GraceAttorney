@@ -26,13 +26,13 @@ namespace GraceAttorney.Renderers
 		public override void Render(Entity entity, in SpriteComponent drawComponent)
 		{
 
-				// look at later:
-				// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
-				// I want to let the sprites be different sizes relative to each other, so the rectangle thing is probably a non-starter.
-				_spriteBatch.Draw(drawComponent.Texture,
-					CalculatePosition(drawComponent.Position, drawComponent.FrameWidth, drawComponent.FrameHeight) + CalculateOffset(entity),
-					GetFrameBounds(entity, drawComponent), OpacityColor(entity),
-					0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);
+			// look at later:
+			// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
+			// I want to let the sprites be different sizes relative to each other, so the rectangle thing is probably a non-starter.
+			_spriteBatch.Draw(drawComponent.Texture,
+				CalculatePosition(drawComponent.Position, drawComponent.FrameWidth, drawComponent.FrameHeight) + CalculateOffset(entity),
+				GetFrameBounds(entity, drawComponent), OpacityColor(entity),
+				0, Vector2.Zero, _scaleFactor.Factor, SpriteEffects.None, 0);
 		}
 
 		private Rectangle GetFrameBounds(in Entity entity, in SpriteComponent spriteComponent)
@@ -58,7 +58,7 @@ namespace GraceAttorney.Renderers
 		}
 
 		private float CalculateTopOfHeadYPosition(int spriteHeight)
-		{ 
+		{
 			return _viewport.Height - (_scaleFactor.Factor * spriteHeight);
 		}
 
