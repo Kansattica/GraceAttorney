@@ -123,7 +123,7 @@ namespace GraceAttorney.Renderers
 				, InnerBorderColor);
 		}
 
-		private void DrawBorder(in Rectangle bounds, in Color color, bool drawBottom = true)
+		private void DrawBorder(in Rectangle bounds, Color color, bool drawBottom = true)
 		{
 			// top border
 			_spriteBatch.Draw(_colorTexture,
@@ -184,7 +184,7 @@ namespace GraceAttorney.Renderers
 			return (dialogueWidth != lastDialogueWidth) || (lastDialogue != dialogue);
 		}
 
-		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
+		private void DrawDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, Color color)
 		{
 			CalculateTextBounds(dialogueBox, out var xDialogueOffset, out var yDialogueOffset, out var actualDialogueWidth);
 
@@ -218,7 +218,7 @@ namespace GraceAttorney.Renderers
 		}
 
 		private const float PaddingBetweenCenteredLines = 1.4f;
-		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, in Color color)
+		private void DrawCenteredDialogue(string dialogue, in Rectangle dialogueBox, int truncateTo, Color color)
 		{
 			CalculateTextBounds(dialogueBox, out var xDialogueOffset, out var yDialogueOffset, out var actualDialogueWidth);
 
@@ -239,7 +239,7 @@ namespace GraceAttorney.Renderers
 			}
 		}
 
-		private static void CalculateTextBounds(Rectangle dialogueBox, out int xDialogueOffset, out int yDialogueOffset, out int actualDialogueWidth)
+		private static void CalculateTextBounds(in Rectangle dialogueBox, out int xDialogueOffset, out int yDialogueOffset, out int actualDialogueWidth)
 		{
 			int dialoguePadding = BorderWidthInPixels + (int)(dialogueBox.Width * HorizontalDialoguePadding);
 
