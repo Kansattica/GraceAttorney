@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using GraceAttorney.Common;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -34,6 +35,14 @@ namespace GraceAttorney.AssetCompiler
 			}
 
 			_quietMode = quietMode;
+
+			Configuration.Default.ImageFormatsManager.SetEncoder(PngFormat.Instance, new PngEncoder
+			{
+				CompressionLevel = PngCompressionLevel.BestCompression,
+				ChunkFilter = PngChunkFilter.ExcludeAll,
+				FilterMethod = PngFilterMethod.Adaptive,
+				IgnoreMetadata = true
+			});
 		}
 
 		private const string BackgroundsName = "Backgrounds";
@@ -119,6 +128,8 @@ namespace GraceAttorney.AssetCompiler
 
 			CopyIfNewer(srcPath, destPath);
 
+			WarnIfImageTooBig(srcPath, destPath);
+
 			return resource;
 		}
 
@@ -187,8 +198,15 @@ namespace GraceAttorney.AssetCompiler
 		{
 			var imageSize = image.Width * image.Height;
 			if (imageSize > Constants.MaximumTextureSize)
-				Console.WriteLine("WARNING: {0} is {1} pixels in total, which is larger than larger than FNA's {2}-pixel limit on texture sizes.",
-					targetPath, imageSize, Constants.MaximumTextureSize);
+				PrintWarning($"{targetPath} is {imageSize} pixels in total, which is larger than larger than FNA's {Constants.MaximumTextureSize}-pixel limit on texture sizes.");
+		}
+
+		private void WarnIfImageTooBig(string pathToCheck, string targetPath)
+		{
+			var metadata = Image.Identify(pathToCheck);
+			var imageSize = metadata.Width * metadata.Height;
+			if (imageSize > Constants.MaximumTextureSize)
+				PrintWarning($"{targetPath} is {imageSize} pixels in total, which is larger than larger than FNA's {Constants.MaximumTextureSize}-pixel limit on texture sizes.");
 		}
 
 		private void CopyDirIfNewerAndExists(string from, string to)
@@ -230,6 +248,13 @@ namespace GraceAttorney.AssetCompiler
 		private static bool ShouldCopy(string from, string to)
 		{
 			return File.GetLastWriteTimeUtc(from) > File.GetLastWriteTimeUtc(to);
+		}
+
+		private static void PrintWarning(string message)
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("WARNING: {0}", message);
+			Console.ResetColor();
 		}
 	}
 }
