@@ -86,8 +86,8 @@ namespace GraceAttorney
 			worldBuilder.AddEngine(new FadeEngine());
 
 			worldBuilder.SendMessage(new NewBackgroundMessage(assetName: "court"));
-			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Right));
-			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Center));
+			worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Bird Call", pose: "standing", drawLocation: DrawLocation.Center));
+			//worldBuilder.SendMessage(new CharacterEnterMessage(characterName: "Grace", pose: "plotting", drawLocation: DrawLocation.Center));
 
 			var dialogueBox = worldBuilder.CreateEntity();
 			worldBuilder.SetComponent(dialogueBox, new DialogueComponent());
@@ -95,10 +95,10 @@ namespace GraceAttorney
 			worldBuilder.SendMessage(new NewDialogueMessage(new DialogueComponent {
 				Display = true,
 				NameTagLocation = NameTagLocation.Left,
-				Dialogue = "Am I closer, dear, or just here to demonstrate Bigger Grace Theory? Hard to say.",
+				Dialogue = "What's up, gamers? It's me, a real live bird, coming at you live from Some Kinda Courtroom. I'm extremely gay and ready to fucking party. Anyways, first one to touch my butt gets three entire bird dollars.",
 				Justification = JustifyText.Left,
 				TextColor = Color.White,
-				Speaker = "Grace"
+				Speaker = "Bird Call"
 			}, 30));
 
 			_world = worldBuilder.Build();
