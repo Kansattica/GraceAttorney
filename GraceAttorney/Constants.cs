@@ -8,8 +8,7 @@ namespace GraceAttorney
 	enum SpriteLayers { Background, CharacterSprites, DialogueBox, VeryTop}
 	static class Constants
 	{
-
-		public const int CharactersPerLine = 40;
+		public const int CharactersPerLine = 35;
 		public const int ExpectedLineCount = 3;
 
 		// Note that this only applies to left-justified "normal" dialogue.

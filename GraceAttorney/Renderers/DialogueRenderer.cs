@@ -16,7 +16,7 @@ namespace GraceAttorney.Renderers
 		private readonly Color InnerBorderColor = Color.DarkGray;
 
 		private const float DialogueBoxVerticalScreenPercentage = .30f;
-		private const float DialogueBoxHorizontalScreenPercentage = .80f;
+		private const float DialogueBoxHorizontalScreenPercentage = .70f;
 
 		private const float DialogueBoxVerticalOffsetFromGroundPercentage = .05f;
 
@@ -149,9 +149,7 @@ namespace GraceAttorney.Renderers
 				color);
 		}
 
-		// that's 40 Ws as a string literal to take advantage of constant optimizations
-		// MaxLineWidth.Length should equal Constants.CharactersPerLine.
-		private const string MaxLineWidth = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
+		private readonly string MaxLineWidth = new string('W', Constants.CharactersPerLine);
 		private const float LineWidthLeeway = .05f;
 		private const float LineSpacingAsDialogueBoxHeightPercentage = .04f;
 		private float CalculateTextFit(int dialogueBoxWidth)
