@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target Name="CompileAssets" AfterTargets="AfterBuild">
+	<Target Name="CompileAssets" BeforeTargets="PrepareForBuild">
 		<Exec Command="dotnet run --configuration Release --project ../GraceAttorney.AssetCompiler/GraceAttorney.AssetCompiler.csproj -- Content $(OutDir) -q" />
 	</Target>
-	<Target Name="CleanAssets" AfterTargets="Clean">
+	<Target Name="CleanAssets" AfterTargets="Clean;IncrementalClean;BeforeRebuild">
 		<RemoveDir Directories="$(OutDir)Content" />
 	</Target>
 </Project>

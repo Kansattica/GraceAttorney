@@ -3,7 +3,6 @@ using System.Text;
 using Encompass;
 using GraceAttorney.Components;
 using GraceAttorney.DependencyInjection;
-using GraceAttorney.Renderers.Fonts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -33,11 +32,14 @@ namespace GraceAttorney.Renderers
 		private readonly SpriteBatch _spriteBatch;
 		private readonly UpdatedSize _viewport;
 		private readonly Texture2D _colorTexture;
-		public DialogueRenderer(SpriteBatch spriteBatch, UpdatedSize viewport, Texture2D colorTexture)
+		private readonly ContentLoader _content;
+
+		public DialogueRenderer(SpriteBatch spriteBatch, UpdatedSize viewport, Texture2D colorTexture, ContentLoader content)
 		{
 			_spriteBatch = spriteBatch;
 			_viewport = viewport;
 			_colorTexture = colorTexture;
+			_content = content;
 		}
 
 		public override void Render(Entity entity, in DialogueComponent drawComponent)
@@ -82,7 +84,7 @@ namespace GraceAttorney.Renderers
 		// https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/in-parameter-modifier
 		private void DrawNameTag(string name, in Rectangle dialogueBoxRect, NameTagLocation location)
 		{
-			var speakerSize = GameFonts.NameTag.MeasureString(name);
+			var speakerSize = _content.NameTag.MeasureString(name);
 
 			// this should probably be based on the width of the screen so long names don't get a weirdly wide name tag.
 			int nameTagWidth = (int)(speakerSize.X + (dialogueBoxRect.Width * PadNameTagWidthByThisPercentageOfTheDialogueBox));
@@ -94,7 +96,7 @@ namespace GraceAttorney.Renderers
 
 			_spriteBatch.Draw(_colorTexture, nameTagRect, TextBoxColor);
 
-			GameFonts.NameTag.DrawString(_spriteBatch, name,
+			_content.NameTag.DrawString(_spriteBatch, name,
 				new Vector2(nameTagRect.X + (nameTagRect.Width - speakerSize.X) / 2, nameTagRect.Y + BorderWidthInPixels + (nameTagRect.Height - speakerSize.Y) / 2), Color.White);
 
 			DrawBorder(nameTagRect, OuterBorderColor, drawBottom: false);
@@ -154,7 +156,7 @@ namespace GraceAttorney.Renderers
 		private const float LineSpacingAsDialogueBoxHeightPercentage = .04f;
 		private float CalculateTextFit(int dialogueBoxWidth)
 		{
-			var textHeight = GameFonts.Dialogue.MeasureString(MaxLineWidth).X;
+			var textHeight = _content.Dialogue.MeasureString(MaxLineWidth).X;
 			return dialogueBoxWidth / textHeight;
 		}
 
@@ -164,15 +166,15 @@ namespace GraceAttorney.Renderers
 			// if the line is too long, increase the font size.
 
 			// do the same loop thing for the line spacing, maybe?
-			GameFonts.Dialogue.LineSpacing = dialogueBoxHeight * LineSpacingAsDialogueBoxHeightPercentage;
+			_content.Dialogue.LineSpacing = dialogueBoxHeight * LineSpacingAsDialogueBoxHeightPercentage;
 			for (var lineWidthFit = CalculateTextFit(dialogueBoxWidth); !(1 < lineWidthFit && lineWidthFit < (1 + LineWidthLeeway)); lineWidthFit = CalculateTextFit(dialogueBoxWidth))
 			{
 				// if the text is too big, make the font smaller
-				if (lineWidthFit < 1) GameFonts.Dialogue.Size--;
-				else GameFonts.Dialogue.Size++;
+				if (lineWidthFit < 1) _content.Dialogue.Size--;
+				else _content.Dialogue.Size++;
 			}
 
-			GameFonts.NameTag.Size = GameFonts.Dialogue.Size;
+			_content.NameTag.Size = _content.Dialogue.Size;
 		}
 
 		private string lastDialogue = null;
@@ -206,11 +208,11 @@ namespace GraceAttorney.Renderers
 
 			if (truncateTo != -1 && truncateTo < _toDisplay.Length)
 			{
-				GameFonts.Dialogue.DrawString(_spriteBatch, _toDisplay.ToString(0, truncateTo), new Vector2(xDialogueOffset, yDialogueOffset), color);
+				_content.Dialogue.DrawString(_spriteBatch, _toDisplay.ToString(0, truncateTo), new Vector2(xDialogueOffset, yDialogueOffset), color);
 			}
 			else
 			{
-				GameFonts.Dialogue.DrawString(_spriteBatch, _toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
+				_content.Dialogue.DrawString(_spriteBatch, _toDisplay, new Vector2(xDialogueOffset, yDialogueOffset), color);
 			}
 
 		}
@@ -230,9 +232,9 @@ namespace GraceAttorney.Renderers
 			float runningYOffset = yDialogueOffset;
 			foreach (var line in dialogue.Split('\n'))
 			{
-				var lineSize = GameFonts.Dialogue.MeasureString(line);
+				var lineSize = _content.Dialogue.MeasureString(line);
 				int centeredX = (int)((actualDialogueWidth - lineSize.X) / 2 + xDialogueOffset);
-				GameFonts.Dialogue.DrawString(_spriteBatch, line, new Vector2(centeredX, runningYOffset), color);
+				_content.Dialogue.DrawString(_spriteBatch, line, new Vector2(centeredX, runningYOffset), color);
 				runningYOffset += (lineSize.Y * PaddingBetweenCenteredLines);
 			}
 		}
@@ -251,7 +253,7 @@ namespace GraceAttorney.Renderers
 
 		private static readonly StringBuilder _toDisplay = new StringBuilder(); // don't leak a stringbuilder every frame
 		private static readonly char[] _space = new char[] { ' ' }; // .net framework 4.6.1 insists
-		private static void HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
+		private void HyphenateAndWrapString(string dialogue, int dialogueBoxWidth)
 		{
 			foreach (var line in dialogue.Split('\n'))
 			{
@@ -262,7 +264,7 @@ namespace GraceAttorney.Renderers
 					_toDisplay.Append(word);
 
 					// if the string is currently too long to fit in the dialogue box, hoo boy.
-					if (GameFonts.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth)
+					if (_content.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth)
 					{
 						// length-1 is the last index in the string
 						// toWrite[beforeLastWordIdx] should always be a space
@@ -308,7 +310,7 @@ namespace GraceAttorney.Renderers
 								_toDisplay.Insert(insertLineBreakAt, '\n');
 							}
 
-							keepTrying = (GameFonts.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth);
+							keepTrying = (_content.Dialogue.MeasureString(_toDisplay).X > dialogueBoxWidth);
 							if (keepTrying)
 							{
 								// if we have to try again, because the string is too long,

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http.Headers;
 using System.Text;
 using Encompass;
 using GraceAttorney.Components;
@@ -9,7 +7,6 @@ using GraceAttorney.DependencyInjection;
 using GraceAttorney.Engines;
 using GraceAttorney.Messages;
 using GraceAttorney.Renderers;
-using GraceAttorney.Renderers.Fonts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -65,7 +62,7 @@ namespace GraceAttorney
 			for (int i = 0; i <= (int)SpriteLayers.VeryTop; i++)
 				worldBuilder.RegisterDrawLayer(i);
 			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch, _scaleFactor, _viewport));
-			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture()));
+			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture(), _contentLoader));
 
 			worldBuilder.AddEngine(new KeyboardEngine());
 			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));

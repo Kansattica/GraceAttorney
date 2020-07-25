@@ -5,6 +5,7 @@ using System.Linq;
 using GraceAttorney.Common;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteFontPlus;
 
 namespace GraceAttorney
 {
@@ -12,6 +13,9 @@ namespace GraceAttorney
 	{
 		private readonly Dictionary<string, CaseSprite> _backgrounds;
 		private readonly Dictionary<string, Dictionary<string, CaseSprite>> _characters;
+
+		public readonly DynamicSpriteFont Dialogue;
+		public readonly DynamicSpriteFont NameTag;
 
 		public ContentLoader(ContentManager content, string caseDirectory)
 		{
@@ -21,6 +25,10 @@ namespace GraceAttorney
 
 			_characters = index.Characters
 				.ToDictionary(x => x.Key, x => x.Value.ToDictionary(pose => pose.Name, pose => new CaseSprite(pose, content)));
+
+			// probably put fonts in the index later
+			Dialogue = DynamicSpriteFont.FromTtf(File.ReadAllBytes(Path.Combine(content.RootDirectory, "Fonts", "Dialogue.ttf")), 24);
+			NameTag = DynamicSpriteFont.FromTtf(File.ReadAllBytes(Path.Combine(content.RootDirectory, "Fonts", "NameTag.ttf")), 24);
 		}
 
 		public bool BackgroundExists(string name)
