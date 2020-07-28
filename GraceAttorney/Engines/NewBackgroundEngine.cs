@@ -31,7 +31,7 @@ namespace GraceAttorney.Engines
 			SetComponent(newBackground, new BackgroundComponent());
 
 			SendMessage(new NewSpriteMessage(_content.GetBackground(message.AssetName),
-							DrawLocation.Background, SpriteLayers.Background, EnterExitDirection.Fade, newBackground));
+							DrawLocation.Background, DrawLayers.Background, EnterExitDirection.Fade, newBackground));
 		}
 	}
 }

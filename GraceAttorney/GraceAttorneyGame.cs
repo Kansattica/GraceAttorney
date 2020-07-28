@@ -16,8 +16,7 @@ namespace GraceAttorney
 	{
 		private World _world;
 		private SpriteBatch _spriteBatch;
-		private readonly UpdatedSize _viewport = new UpdatedSize();
-		private readonly UpdatedSize _windowSize = new UpdatedSize();
+		private readonly UpdatedSize _screenSize = new UpdatedSize();
 
 		public GraceAttorneyGame()
 		{
@@ -57,15 +56,19 @@ namespace GraceAttorney
 			_aspectRatio = GraphicsDevice.Viewport.AspectRatio;
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
 
+			_spriteRenderTarget = new RenderTarget2D(GraphicsDevice, Common.Constants.BackgroundWidthInPixels, Common.Constants.BackgroundHeightInPixels);
+
 			var worldBuilder = new WorldBuilder();
 
-			for (int i = 0; i <= (int)SpriteLayers.VeryTop; i++)
+			for (int i = 0; i < (int)DrawLayers.VeryTop; i++)
 				worldBuilder.RegisterDrawLayer(i);
-			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch, _scaleFactor, _viewport));
-			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, _viewport, MakeColorTexture(), _contentLoader));
+			worldBuilder.AddGeneralRenderer(new SpriteTargetRenderer(GraphicsDevice, _spriteRenderTarget, _spriteBatch), (int)DrawLayers.StartSpriteDraw);
+			worldBuilder.AddGeneralRenderer(new EndSpriteTargetRenderer(GraphicsDevice, _graphics, _spriteRenderTarget, _spriteBatch), (int)DrawLayers.EndSpriteDraw);
+			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch));
+			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, MakeColorTexture(), _screenSize, _contentLoader));
 
 			worldBuilder.AddEngine(new KeyboardEngine());
-			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _windowSize));
+			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _screenSize));
 			worldBuilder.AddEngine(new NewBackgroundEngine(_contentLoader));
 			worldBuilder.AddEngine(new NewCharacterEngine(_contentLoader));
 			worldBuilder.AddEngine(new SetUpSpriteEngine());
@@ -126,26 +129,20 @@ namespace GraceAttorney
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
-			_scaleFactor.Factor = (float)GraphicsDevice.Viewport.Height / Common.Constants.BackgroundHeightInPixels;
+			_screenSize.Width = _graphics.PreferredBackBufferWidth;
+			_screenSize.Height = _graphics.PreferredBackBufferHeight;
 
-			_viewport.Height = GraphicsDevice.Viewport.Height;
-			_viewport.Width = GraphicsDevice.Viewport.Width;
-
-			_windowSize.Height = Window.ClientBounds.Height;
-			_windowSize.Width = Window.ClientBounds.Width;
-
-			GraphicsDevice.Clear(Color.Black);
-			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+			// the SpriteTargetRenderer and UITargetRenderers begin and end the sprite batch in their own way
 			_world.Draw();
 			_spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
 
-		private readonly ScaleFactor _scaleFactor = new ScaleFactor();
 		private readonly GraphicsDeviceManager _graphics;
 		private ContentLoader _contentLoader;
 		private Point _oldWindowSize;
+		private RenderTarget2D _spriteRenderTarget;
 		private float _aspectRatio;
 
 		private const int MinimumWindowWidth = 1000;
@@ -174,6 +171,9 @@ namespace GraceAttorney
 
 			// Update the old window size with what it is currently
 			_oldWindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
+
+			_screenSize.Height = Window.ClientBounds.Height;
+			_screenSize.Width = Window.ClientBounds.Width;
 
 			// add this event handler back
 			Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);

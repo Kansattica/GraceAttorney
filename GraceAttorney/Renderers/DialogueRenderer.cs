@@ -30,23 +30,23 @@ namespace GraceAttorney.Renderers
 		private const float NameTagIsThisPercentTallerThanTheText = 1.8f;
 
 		private readonly SpriteBatch _spriteBatch;
-		private readonly UpdatedSize _viewport;
 		private readonly Texture2D _colorTexture;
 		private readonly ContentLoader _content;
+		private readonly UpdatedSize _screenSize;
 
-		public DialogueRenderer(SpriteBatch spriteBatch, UpdatedSize viewport, Texture2D colorTexture, ContentLoader content)
+		public DialogueRenderer(SpriteBatch spriteBatch, Texture2D colorTexture, UpdatedSize screenSize, ContentLoader content)
 		{
 			_spriteBatch = spriteBatch;
-			_viewport = viewport;
 			_colorTexture = colorTexture;
 			_content = content;
+			_screenSize = screenSize;
 		}
 
 		public override void Render(Entity entity, in DialogueComponent drawComponent)
 		{
 			if (!drawComponent.Display) { return; }
 
-			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions(_viewport.Width, _viewport.Height);
+			Rectangle dialogueBoxRect = CalculateDialogueBoxDimensions(_screenSize.Width, _screenSize.Height);
 
 			_spriteBatch.Draw(_colorTexture, dialogueBoxRect, TextBoxColor);
 
@@ -107,7 +107,7 @@ namespace GraceAttorney.Renderers
 			switch (location)
 			{
 				case NameTagLocation.Center:
-					return (_viewport.Width - nameTagWidth) / 2;
+					return (_screenSize.Width - nameTagWidth) / 2;
 				case NameTagLocation.Right:
 					return (int)(dialogueBoxStartX + (RightNameTagXOffsetPercent * dialogueBoxWidth) - nameTagWidth);
 				case NameTagLocation.Left:

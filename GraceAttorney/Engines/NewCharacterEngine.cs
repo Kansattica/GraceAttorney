@@ -23,7 +23,7 @@ namespace GraceAttorney.Engines
 
 			SendMessage(new NewSpriteMessage(
 					_content.GetSpritePose(message.CharacterName, message.Pose),
-						message.DrawLocation, SpriteLayers.CharacterSprites, message.EnterFrom, entity));
+						message.DrawLocation, DrawLayers.CharacterSprites, message.EnterFrom, entity));
 		}
 	}
 }

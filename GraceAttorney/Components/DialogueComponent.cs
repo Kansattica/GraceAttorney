@@ -14,7 +14,7 @@ namespace GraceAttorney.Components
 		public readonly JustifyText Justification;
 		public readonly Color TextColor;
 
-		public int Layer { get => (int)SpriteLayers.DialogueBox; }
+		public int Layer { get => (int)DrawLayers.DialogueBox; }
 
 		public DialogueComponent(bool display, string speaker, string dialogue, NameTagLocation nameTagLocation, JustifyText justification, Color textColor)
 		{

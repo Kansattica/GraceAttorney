@@ -12,11 +12,11 @@ namespace GraceAttorney.Messages
 	{
 		public readonly CaseSprite Asset;
 		public readonly DrawLocation Position;
-		public readonly SpriteLayers Layer;
+		public readonly DrawLayers Layer;
 		public readonly EnterExitDirection EnterFrom;
 		public readonly Entity Entity;
 
-		public NewSpriteMessage(CaseSprite asset, DrawLocation position, SpriteLayers layer, EnterExitDirection enterFrom, in Entity entity)
+		public NewSpriteMessage(CaseSprite asset, DrawLocation position, DrawLayers layer, EnterExitDirection enterFrom, in Entity entity)
 		{
 			Asset = asset;
 			Position = position;
