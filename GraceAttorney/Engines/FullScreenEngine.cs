@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Encompass;
-using GraceAttorney.DependencyInjection;
 using GraceAttorney.Messages;
 using Microsoft.Xna.Framework;
 
