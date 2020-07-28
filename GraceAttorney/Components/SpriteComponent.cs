@@ -11,8 +11,7 @@ namespace GraceAttorney.Components
 		public readonly int FrameWidth;
 		public readonly int FrameHeight;
 
-		private readonly int _layer;
-		public int Layer { get => _layer; }
+		public int Layer { get; }
 
 		public SpriteComponent(DrawLocation position, Texture2D texture, int frameWidth, int frameHeight, int layer)
 		{
@@ -20,7 +19,7 @@ namespace GraceAttorney.Components
 			Texture = texture;
 			FrameWidth = frameWidth;
 			FrameHeight = frameHeight;
-			_layer = layer;
+			Layer = layer;
 		}
 	}
 }

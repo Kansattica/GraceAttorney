@@ -129,6 +129,7 @@ namespace GraceAttorney
 		protected override void Draw(GameTime gameTime)
 		{
 			// Render stuff in here. Do NOT run game logic in here!
+
 			_screenSize.Width = _graphics.PreferredBackBufferWidth;
 			_screenSize.Height = _graphics.PreferredBackBufferHeight;
 
