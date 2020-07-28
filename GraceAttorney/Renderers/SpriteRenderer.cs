@@ -27,7 +27,7 @@ namespace GraceAttorney.Renderers
 				GetFrameBounds(entity, drawComponent), OpacityColor(entity));
 		}
 
-		private Rectangle GetFrameBounds(in Entity entity, in SpriteComponent spriteComponent)
+		private Rectangle GetFrameBounds(Entity entity, in SpriteComponent spriteComponent)
 		{
 			int xOffset = 0;
 			if (HasComponent<AnimatedSpriteComponent>(entity))
