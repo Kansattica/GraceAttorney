@@ -63,12 +63,12 @@ namespace GraceAttorney
 			for (int i = 0; i < (int)DrawLayers.VeryTop; i++)
 				worldBuilder.RegisterDrawLayer(i);
 			worldBuilder.AddGeneralRenderer(new SpriteTargetRenderer(GraphicsDevice, _spriteRenderTarget, _spriteBatch), (int)DrawLayers.StartSpriteDraw);
-			worldBuilder.AddGeneralRenderer(new EndSpriteTargetRenderer(GraphicsDevice, _graphics, _spriteRenderTarget, _spriteBatch), (int)DrawLayers.EndSpriteDraw);
+			worldBuilder.AddGeneralRenderer(new EndSpriteTargetRenderer(GraphicsDevice, _screenSize, _spriteRenderTarget, _spriteBatch), (int)DrawLayers.EndSpriteDraw);
 			worldBuilder.AddOrderedRenderer(new SpriteRenderer(_spriteBatch));
 			worldBuilder.AddOrderedRenderer(new DialogueRenderer(_spriteBatch, MakeColorTexture(), _screenSize, _contentLoader));
 
 			worldBuilder.AddEngine(new KeyboardEngine());
-			worldBuilder.AddEngine(new FullScreenEngine(_graphics, _screenSize));
+			worldBuilder.AddEngine(new FullScreenEngine(_graphics, Window));
 			worldBuilder.AddEngine(new NewBackgroundEngine(_contentLoader));
 			worldBuilder.AddEngine(new NewCharacterEngine(_contentLoader));
 			worldBuilder.AddEngine(new SetUpSpriteEngine());

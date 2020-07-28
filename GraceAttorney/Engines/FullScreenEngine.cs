@@ -12,9 +12,9 @@ namespace GraceAttorney.Engines
 	class FullScreenEngine : Spawner<ToggleFullscreenMessage>
 	{
 		private readonly GraphicsDeviceManager _graphics;
-		private readonly UpdatedSize _windowBounds;
+		private readonly GameWindow _windowBounds;
 		private Point _windowedScreenSize;
-		public FullScreenEngine(GraphicsDeviceManager graphics, UpdatedSize windowBounds)
+		public FullScreenEngine(GraphicsDeviceManager graphics, GameWindow windowBounds)
 		{
 			_graphics = graphics;
 			_windowBounds = windowBounds;
@@ -23,7 +23,7 @@ namespace GraceAttorney.Engines
 		protected override void Spawn(in ToggleFullscreenMessage message)
 		{
 			if (!_graphics.IsFullScreen)
-				_windowedScreenSize = new Point(_windowBounds.Width, _windowBounds.Height);
+				_windowedScreenSize = new Point(_windowBounds.ClientBounds.Width, _windowBounds.ClientBounds.Height);
 
 			_graphics.ToggleFullScreen();
 
@@ -31,8 +31,14 @@ namespace GraceAttorney.Engines
 			{
 				_graphics.PreferredBackBufferWidth = _windowedScreenSize.X;
 				_graphics.PreferredBackBufferHeight = _windowedScreenSize.Y;
-				_graphics.ApplyChanges();
 			}
+			else
+			{
+				_graphics.PreferredBackBufferWidth = _windowBounds.ClientBounds.Width;
+				_graphics.PreferredBackBufferHeight = _windowBounds.ClientBounds.Height;
+			}
+
+			_graphics.ApplyChanges();
 		}
 	}
 }
