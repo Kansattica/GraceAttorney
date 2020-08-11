@@ -10,7 +10,7 @@ using GraceAttorney.Messages;
 namespace GraceAttorney.Engines
 {
 	[Receives(typeof(CharacterExitByPositionMessage))]
-	[Reads(typeof(SpriteComponent))]
+	[Reads(typeof(SpriteComponent), typeof(CharacterComponent))]
 	[Sends(typeof(CharacterExitMessage))]
 	class CharacterExitByPositionEngine : Spawner<CharacterExitByPositionMessage>
 	{
@@ -18,10 +18,11 @@ namespace GraceAttorney.Engines
 		{
 			// this is slow, but remember that there's only, like, three of these on screen at most.
 			// we can even probably stop after we find one if it becomes a problem.
-			foreach (ref readonly var entity in ReadEntities<SpriteComponent>())
+			foreach (ref readonly var entity in ReadEntities<CharacterComponent>())
 			{
 				ref readonly var sprite = ref GetComponent<SpriteComponent>(entity);
-				if (sprite.Position == message.Location)
+				var positionToLeave = Helpers.CalculatePosition(message.Location, sprite.FrameWidth, sprite.FrameHeight);
+				if (sprite.Position == positionToLeave)
 				{
 					SendMessage(new CharacterExitMessage(entity, message.Direction));
 				}

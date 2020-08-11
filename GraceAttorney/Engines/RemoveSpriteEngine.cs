@@ -11,8 +11,7 @@ namespace GraceAttorney.Engines
 {
 	[DefaultWritePriority(4)]
 	[Receives(typeof(RemoveSpriteMessage))]
-	[Reads(typeof(AnimatedSpriteComponent))]
-	[Writes(typeof(SpriteComponent), typeof(AnimatedSpriteComponent))]
+	[Writes(typeof(SpriteComponent), typeof(AnimatedSpriteComponent), typeof(CharacterComponent), typeof(BackgroundComponent))]
 	class RemoveSpriteEngine : Spawner<RemoveSpriteMessage>
 	{
 		protected override void Spawn(in RemoveSpriteMessage message)
@@ -20,9 +19,9 @@ namespace GraceAttorney.Engines
 			ref readonly var character = ref message.Sprite;
 
 			RemoveComponent<SpriteComponent>(character);
-
-			if (HasComponent<AnimatedSpriteComponent>(character))
-				RemoveComponent<AnimatedSpriteComponent>(character);
+			RemoveComponent<AnimatedSpriteComponent>(character);
+			RemoveComponent<CharacterComponent>(character);
+			RemoveComponent<BackgroundComponent>(character);
 		}
 	}
 }

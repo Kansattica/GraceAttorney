@@ -2,19 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Encompass;
+using Microsoft.Xna.Framework;
 
 namespace GraceAttorney.Components
 {
-	enum MotionDirection { In, Out }
 	readonly struct MovingSpriteComponent : IComponent
 	{
-		public readonly MotionDirection Direction;
+		public readonly Vector2 TargetPosition;
 		public readonly float Velocity;
+		public readonly bool RemoveAfterAnimating;
 
-		public MovingSpriteComponent(MotionDirection direction, float velocity)
+		public MovingSpriteComponent(Vector2 targetPosition, float velocity, bool removeAfterAnimating)
 		{
-			Direction = direction;
+			TargetPosition = targetPosition;
 			Velocity = velocity;
+			RemoveAfterAnimating = removeAfterAnimating;
 		}
 	}
 }

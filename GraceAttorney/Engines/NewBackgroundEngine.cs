@@ -5,7 +5,7 @@ using GraceAttorney.Messages;
 
 namespace GraceAttorney.Engines
 {
-	[Writes(typeof(BackgroundComponent))]
+	[Writes(typeof(BackgroundComponent), 0)]
 	[Reads(typeof(BackgroundComponent))]
 	[Sends(typeof(RemoveSpriteMessage), typeof(NewSpriteMessage))]
 	[Receives(typeof(NewBackgroundMessage))]

@@ -10,45 +10,18 @@ namespace GraceAttorney.Engines
 {
 	[DefaultWritePriority(0)]
 	[Receives(typeof(StartMotionMessage))]
-	[Writes(typeof(MovingSpriteComponent), typeof(SpriteOffsetComponent), typeof(OpacityComponent))]
+	[Writes(typeof(MovingSpriteComponent), typeof(PositionOverrideComponent))]
 	class StartMotionEngine : Spawner<StartMotionMessage>
 	{
 		protected override void Spawn(in StartMotionMessage message)
 		{
 			ref readonly var entity = ref message.Entity;
 
-			if (message.Direction == EnterExitDirection.Fade)
-			{
-				if (message.MotionDirection == MotionDirection.In)
-					SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeIn, opacity: 0, fadeRate: 1.0f));
-				else
-					SetComponent(entity, new OpacityComponent(direction: FadeDirection.FadeOut, opacity: 1.0f, fadeRate: 1.0f));
-			}
-			else
-			{
-				SetComponent(entity, new MovingSpriteComponent(message.MotionDirection, velocity: .5f));
-				SetComponent(entity, new SpriteOffsetComponent(
-				
-					// basically, the motion engine always moves the character in the direction they're already going
-					// (I should probably change that and put the direction vector on the moving sprite component)
-					// so if they're leaving, just nudge 'em a bit in the direction so they can get going.
-					positionPercentageOffset: GetDirectionVector(message.Direction) *
-								(message.MotionDirection == MotionDirection.In ? 1.0f : .01f))
-			);
-			}
-
-		}
-
-		private static Vector2 GetDirectionVector(EnterExitDirection direction)
-		{
-			return direction switch
-			{
-				EnterExitDirection.Top => -Vector2.UnitY,
-				EnterExitDirection.Bottom => Vector2.UnitY,
-				EnterExitDirection.Right => Vector2.UnitX,
-				EnterExitDirection.Left => -Vector2.UnitX,
-				_ => throw new ArgumentException("What, bud, did you invent a new direction or something"),
-			};
+			SetComponent(entity, new PositionOverrideComponent(message.StartPosition));
+			SetComponent(entity, new MovingSpriteComponent(
+				velocity: 500f,
+				targetPosition: message.TargetPosition,
+				removeAfterAnimating: message.RemoveAfterAnimating));
 		}
 	}
 }

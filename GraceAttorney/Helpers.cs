@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GraceAttorney.Components;
+using GraceAttorney.Messages;
 using Microsoft.Xna.Framework;
 
 namespace GraceAttorney
@@ -32,6 +33,22 @@ namespace GraceAttorney
 		private static float CalculateTopOfHeadYPosition(int spriteHeight)
 		{
 			return Common.Constants.BackgroundHeightInPixels - spriteHeight;
+		}
+
+		public static Vector2 CalculateOffscreenPosition(EnterExitDirection direction, in Vector2 currentPosition, int spriteWidth, int spriteHeight)
+		{
+			switch (direction)
+			{
+				case EnterExitDirection.Top:
+					return new Vector2(currentPosition.X, -spriteHeight); // wait until they're off the screen by their height
+				case EnterExitDirection.Bottom:
+					return new Vector2(currentPosition.X, Common.Constants.BackgroundHeightInPixels);
+				case EnterExitDirection.Left:
+					return new Vector2(-spriteWidth, currentPosition.Y);
+				case EnterExitDirection.Right:
+					return new Vector2(Common.Constants.BackgroundWidthInPixels, currentPosition.Y);
+			}
+			throw new ArgumentException("Hey, buddy, you gotta pass in a cardinal direction here.");
 		}
 	}
 }

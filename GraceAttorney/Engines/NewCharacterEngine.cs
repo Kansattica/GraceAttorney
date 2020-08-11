@@ -5,7 +5,7 @@ using GraceAttorney.Messages;
 
 namespace GraceAttorney.Engines
 {
-	[Writes(typeof(CharacterComponent))]
+	[Writes(typeof(CharacterComponent),0)]
 	[Receives(typeof(CharacterEnterMessage))]
 	[Sends(typeof(NewSpriteMessage))]
 	class NewCharacterEngine : Spawner<CharacterEnterMessage>
@@ -19,11 +19,11 @@ namespace GraceAttorney.Engines
 		{
 			var entity = CreateEntity();
 
-			AddComponent(entity, new CharacterComponent(message.CharacterName));
-
 			SendMessage(new NewSpriteMessage(
 					_content.GetSpritePose(message.CharacterName, message.Pose),
 						message.DrawLocation, DrawLayers.CharacterSprites, message.EnterFrom, entity));
+
+			AddComponent(entity, new CharacterComponent(message.CharacterName));
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace GraceAttorney.Renderers
 			// the DestinationRectangle thing might make more sense than the scale factor? I'll have to mess with it.
 			// I want to let the sprites be different sizes relative to each other, so the rectangle thing is probably a non-starter.
 			_spriteBatch.Draw(drawComponent.Texture,
-				Helpers.CalculatePosition(drawComponent.Position, drawComponent.FrameWidth, drawComponent.FrameHeight) + CalculateOffset(entity),
+				GetPosition(drawComponent, entity),
 				GetFrameBounds(entity, drawComponent), OpacityColor(entity));
 		}
 
@@ -49,14 +49,11 @@ namespace GraceAttorney.Renderers
 			return Color.White;
 		}
 
-		private Vector2 CalculateOffset(in Entity entity)
+		private Vector2 GetPosition(in SpriteComponent sprite, Entity entity)
 		{
-			if (!HasComponent<SpriteOffsetComponent>(entity))
-				return Vector2.Zero;
-
-			ref readonly var offsetComponent = ref GetComponent<SpriteOffsetComponent>(entity);
-			var offset = offsetComponent.PositionPercentageOffset;
-			return new Vector2(Common.Constants.BackgroundWidthInPixels * offset.X, Common.Constants.BackgroundHeightInPixels * offset.Y);
+			if (HasComponent<PositionOverrideComponent>(entity))
+				return GetComponent<PositionOverrideComponent>(entity).Position;
+			return sprite.Position;
 		}
 	}
 }
