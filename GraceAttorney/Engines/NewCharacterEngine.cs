@@ -15,6 +15,7 @@ namespace GraceAttorney.Engines
 		{
 			_content = content;
 		}
+
 		protected override void Spawn(in CharacterEnterMessage message)
 		{
 			var entity = CreateEntity();
