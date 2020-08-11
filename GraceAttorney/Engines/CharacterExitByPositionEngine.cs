@@ -16,7 +16,7 @@ namespace GraceAttorney.Engines
 	{
 		protected override void Spawn(in CharacterExitByPositionMessage message)
 		{
-			// this is slow, but remember that there's only, like, three of these on screen at most.
+			// this is "slow" (O(n) for the number of sprites), but remember that there's only, like, three of these on screen at most.
 			// we can even probably stop after we find one if it becomes a problem.
 			foreach (ref readonly var entity in ReadEntities<CharacterComponent>())
 			{
