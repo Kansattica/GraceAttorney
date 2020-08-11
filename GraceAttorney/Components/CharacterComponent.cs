@@ -10,9 +10,12 @@ namespace GraceAttorney.Components
 	readonly struct CharacterComponent : IComponent
 	{
 		public readonly string Name;
-		public CharacterComponent(string name)
+		public readonly DrawLocation Location;
+
+		public CharacterComponent(string name, DrawLocation location)
 		{
 			Name = name;
+			Location = location;
 		}
 	}
 }

@@ -24,7 +24,7 @@ namespace GraceAttorney.Engines
 					_content.GetSpritePose(message.CharacterName, message.Pose),
 						message.DrawLocation, DrawLayers.CharacterSprites, message.EnterFrom, entity));
 
-			AddComponent(entity, new CharacterComponent(message.CharacterName));
+			AddComponent(entity, new CharacterComponent(message.CharacterName, message.DrawLocation));
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace GraceAttorney
 				justification: JustifyText.Left,
 				textColor: Color.White,
 				speaker: "Bird Call"
-			), 30));
+			), charactersPerSecond: 30));
 
 			_world = worldBuilder.Build();
 
