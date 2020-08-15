@@ -10,6 +10,7 @@
 - [ ] Choices
 - [ ] Cross-Examination
 - [ ] Ink integration
+- [ ] Something that validates that the ink script is correct (i.e. only specifies characters and poses and backgrounds that you have sprites for)
 - [ ] Music and sound
 - [ ] Inventory/Court Record
 - [ ] Menus
