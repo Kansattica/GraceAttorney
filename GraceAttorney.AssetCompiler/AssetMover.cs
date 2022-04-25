@@ -207,6 +207,7 @@ namespace GraceAttorney.AssetCompiler
 			var imageSize = metadata.Width * metadata.Height;
 			if (imageSize > Constants.MaximumTextureSize)
 				PrintWarning($"{targetPath} is {imageSize} pixels in total, which is larger than larger than FNA's {Constants.MaximumTextureSize}-pixel limit on texture sizes.");
+			// add something to yell or fix it if the image isn't RGBA, since I think that's the only kind of PNG FNA likes
 		}
 
 		private void CopyDirIfNewerAndExists(string from, string to)
